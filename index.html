@@ -101,7 +101,7 @@
             </span>
           </div>
           <p class="text-emerald-200/90 text-sm mt-0.5">
-            Inventario mágico de tesoros lúdicos · <span id="headerCount" class="font-semibold text-white">25</span> juegos catalogados
+            Inventario mágico de tesoros lúdicos · <span id="headerCount" class="font-semibold text-white">57</span> juegos catalogados
           </p>
         </div>
       </div>
@@ -127,28 +127,28 @@
         <div class="w-11 h-11 rounded-xl bg-emerald-100 text-kobold-700 flex items-center justify-center text-xl font-bold">♟️</div>
         <div>
           <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Total Juegos</p>
-          <p id="kpiTotal" class="text-2xl font-extrabold text-kobold-900">25</p>
+          <p id="kpiTotal" class="text-2xl font-extrabold text-kobold-900">57</p>
         </div>
       </div>
       <div class="bg-white rounded-2xl p-4 shadow-sm border border-emerald-100 flex items-center gap-3.5">
         <div class="w-11 h-11 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-xl font-bold">🗄️</div>
         <div>
           <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Huecos Ocupados</p>
-          <p id="kpiSlots" class="text-2xl font-extrabold text-kobold-900">7 <span class="text-sm font-normal text-slate-400">/ 56</span></p>
+          <p id="kpiSlots" class="text-2xl font-extrabold text-kobold-900">15 <span class="text-sm font-normal text-slate-400">/ 56</span></p>
         </div>
       </div>
       <div class="bg-white rounded-2xl p-4 shadow-sm border border-emerald-100 flex items-center gap-3.5">
         <div class="w-11 h-11 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-xl font-bold">⏱️</div>
         <div>
           <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Duración Media</p>
-          <p id="kpiAvgTime" class="text-2xl font-extrabold text-kobold-900">46 min</p>
+          <p id="kpiAvgTime" class="text-2xl font-extrabold text-kobold-900">61 min</p>
         </div>
       </div>
       <div class="bg-white rounded-2xl p-4 shadow-sm border border-emerald-100 flex items-center gap-3.5">
         <div class="w-11 h-11 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center text-xl font-bold">🧠</div>
         <div>
           <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Complejidad Media</p>
-          <p id="kpiAvgWeight" class="text-2xl font-extrabold text-kobold-900">1.95 <span class="text-sm font-normal text-slate-400">/ 5</span></p>
+          <p id="kpiAvgWeight" class="text-2xl font-extrabold text-kobold-900">2.27 <span class="text-sm font-normal text-slate-400">/ 5</span></p>
         </div>
       </div>
     </section>
@@ -286,7 +286,7 @@
       <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
         <div>
           <h2 class="font-display text-xl font-bold text-kobold-900">
-            Tesoros Encontrados (<span id="resultsCount">25</span>)
+            Tesoros Encontrados (<span id="resultsCount">57</span>)
           </h2>
           <p class="text-xs text-slate-500">Mostrando juegos ordenados por ubicación en la estantería</p>
         </div>
@@ -404,6 +404,7 @@
       { slot: "B1", title: "Turing Machine", minP: 1, maxP: 4, playersText: "1 - 4", duration: 20, durationText: "20 min", theme: "Deducción / Lógica", subTheme: "Ordenadores", mechanics: ["Deducción", "Combinatoria"], weight: 2.5 },
       { slot: "B1", title: "Senbazuru", minP: 1, maxP: 5, playersText: "1 - 5", duration: 25, durationText: "20 - 30 min", theme: "Cultura / Arte", subTheme: "Origami", mechanics: ["Colección de sets", "Gestión de mano"], weight: 1.3 },
       { slot: "B1", title: "Unstable Unicorns", minP: 2, maxP: 8, playersText: "2 - 8", duration: 40, durationText: "30 - 45 min", theme: "Humor / Party", subTheme: "Fantasía", mechanics: ["Gestión de mano", "Toma eso"], weight: 1.6 },
+      { slot: "B1", title: "Kabuto Sumo (+ Expansiones)", minP: 2, maxP: 4, playersText: "2 - 4", duration: 20, durationText: "15 - 20 min", theme: "Animales / Lucha", subTheme: "Insectos Sumo + Exp.", mechanics: ["Destreza física", "Poderes variables"], weight: 1.5 },
 
       { slot: "D1", title: "Kano", minP: 2, maxP: 4, playersText: "2 - 4", duration: 20, durationText: "20 min", theme: "Abstracto", subTheme: "Cartas", mechanics: ["Memoria", "Deducción"], weight: 1.3 },
       { slot: "D1", title: "When I Dream", minP: 4, maxP: 10, playersText: "4 - 10", duration: 35, durationText: "30 - 40 min", theme: "Humor / Party", subTheme: "Sueños", mechanics: ["Roles ocultos", "Asociación de palabras"], weight: 1.2 },
@@ -418,6 +419,47 @@
       { slot: "F1", title: "Paleo", minP: 1, maxP: 4, playersText: "1 - 4", duration: 50, durationText: "45 - 60 min", theme: "Histórico / Prehistoria", subTheme: "Supervivencia", mechanics: ["Cooperativo", "Gestión de mano"], weight: 2.4 },
       { slot: "F1", title: "Santa Mónica", minP: 2, maxP: 4, playersText: "2 - 4", duration: 45, durationText: "45 min", theme: "Construcción", subTheme: "Playa", mechanics: ["Draft de cartas", "Construcción de motor"], weight: 2.1 },
 
+      // Columna 2
+      { slot: "B2", title: "Arkham Horror (La Llamada de Cthulhu)", minP: 1, maxP: 6, playersText: "1 - 6", duration: 150, durationText: "120 - 180 min", theme: "Terror / Lovecraft", subTheme: "Mitos de Cthulhu", mechanics: ["Cooperativo", "Gestión de mano", "Tablero modular"], weight: 3.4 },
+      { slot: "B2", title: "Arkham Horror: El Juego de Cartas", minP: 1, maxP: 2, playersText: "1 - 2", duration: 90, durationText: "60 - 120 min", theme: "Terror / Lovecraft", subTheme: "LCG / Campaña", mechanics: ["Cooperativo", "Construcción de mazos", "Narrativo"], weight: 3.5 },
+
+      { slot: "D2", title: "Warhammer Quest: Blackstone Fortress - Escalada", minP: 1, maxP: 5, playersText: "1 - 5", duration: 150, durationText: "120 - 180 min", theme: "Ciencia ficción", subTheme: "Warhammer 40.000 / Exploración", mechanics: ["Cooperativo", "Exploración de mazmorras", "Tirada de dados"], weight: 3.1 },
+      { slot: "D2", title: "Orquesta Negra", minP: 1, maxP: 5, playersText: "1 - 5", duration: 90, durationText: "90 min", theme: "Histórico", subTheme: "Segunda Guerra Mundial / Conspiración", mechanics: ["Cooperativo", "Gestión de mano", "Tentación a la suerte"], weight: 2.6 },
+      { slot: "D2", title: "Pandemic Legacy: Temporada 1", minP: 2, maxP: 4, playersText: "2 - 4", duration: 60, durationText: "60 min", theme: "Médico / Supervivencia", subTheme: "Legacy / Campaña", mechanics: ["Cooperativo", "Gestión de mano", "Movimiento punto a punto"], weight: 2.8 },
+      { slot: "D2", title: "Warhammer Quest: Ciudad Maldita", minP: 1, maxP: 4, playersText: "1 - 4", duration: 150, durationText: "120 - 180 min", theme: "Fantasía", subTheme: "Age of Sigmar / Terror gótico", mechanics: ["Cooperativo", "Exploración de mazmorras", "Tirada de dados"], weight: 2.9 },
+
+      { slot: "E2", title: "Extraordinary Adventures: Pirates", minP: 2, maxP: 6, playersText: "2 - 6", duration: 45, durationText: "45 min", theme: "Piratas / Aventura", subTheme: "Navegación y saqueo", mechanics: ["Construcción de mazos", "Carreras"], weight: 1.8 },
+      { slot: "E2", title: "Slay the Spire: El Juego de Mesa", minP: 1, maxP: 4, playersText: "1 - 4", duration: 120, durationText: "90 - 150 min", theme: "Fantasía", subTheme: "Roguelike / Mazmorras", mechanics: ["Cooperativo", "Construcción de mazos"], weight: 2.9 },
+      { slot: "E2", title: "Zombicide: Black Plague", minP: 1, maxP: 6, playersText: "1 - 6", duration: 60, durationText: "60 min", theme: "Zombis / Acción", subTheme: "Fantasía medieval", mechanics: ["Cooperativo", "Tirada de dados"], weight: 2.5 },
+
+      // Columna 3
+      { slot: "A3", title: "Star Wars: Imperial Assault", minP: 1, maxP: 5, playersText: "1 - 5", duration: 90, durationText: "60 - 120 min", theme: "Ciencia ficción", subTheme: "Star Wars / Táctico", mechanics: ["Tirada de dados", "Movimiento en cuadrícula", "Escenarios / Campaña"], weight: 3.3 },
+      { slot: "A3", title: "Imperial Assault: El Reino de Jabba", minP: 1, maxP: 5, playersText: "1 - 5", duration: 90, durationText: "60 - 120 min", theme: "Ciencia ficción", subTheme: "Star Wars / Expansión", mechanics: ["Tirada de dados", "Movimiento en cuadrícula", "Escenarios / Campaña"], weight: 3.3 },
+
+      { slot: "B3", title: "Arkham Horror: Vástagos de Sangre", minP: 1, maxP: 8, playersText: "1 - 8", duration: 180, durationText: "120 - 240 min", theme: "Terror / Lovecraft", subTheme: "Expansión Mitos de Cthulhu", mechanics: ["Cooperativo", "Gestión de mano", "Tirada de dados"], weight: 3.6 },
+      { slot: "B3", title: "Arkham Horror: El Juego de Cartas", minP: 1, maxP: 2, playersText: "1 - 2", duration: 90, durationText: "60 - 120 min", theme: "Terror / Lovecraft", subTheme: "LCG / Campaña", mechanics: ["Cooperativo", "Construcción de mazos", "Narrativo"], weight: 3.5 },
+      { slot: "B3", title: "Las Mansiones de la Locura", minP: 1, maxP: 5, playersText: "1 - 5", duration: 120, durationText: "90 - 180 min", theme: "Terror / Lovecraft", subTheme: "Investigación sobrenatural", mechanics: ["Cooperativo", "Exploración de mazmorras", "App híbrida"], weight: 2.7 },
+
+      { slot: "D3", title: "Patchwork", minP: 2, maxP: 2, playersText: "2", duration: 30, durationText: "30 min", theme: "Artesanía / Textil", subTheme: "Edredones / Patchwork", mechanics: ["Poliominós", "Gestión de tiempo"], weight: 1.6 },
+      { slot: "D3", title: "Res Arcana", minP: 2, maxP: 4, playersText: "2 - 4", duration: 45, durationText: "45 - 60 min", theme: "Fantasía", subTheme: "Alquimia / Mago", mechanics: ["Construcción de motor", "Gestión de mano", "Gestión de recursos"], weight: 2.6 },
+      { slot: "D3", title: "Quarriors: Quarmageddon", minP: 2, maxP: 4, playersText: "2 - 4", duration: 45, durationText: "45 min", theme: "Fantasía", subTheme: "Dados / Duelo de magos", mechanics: ["Construcción de mazos con dados", "Tirada de dados"], weight: 2.0 },
+      { slot: "D3", title: "It's a Wonderful World", minP: 1, maxP: 5, playersText: "1 - 5", duration: 45, durationText: "45 - 60 min", theme: "Ciencia ficción", subTheme: "Imperios / Steampunk", mechanics: ["Draft simultáneo de cartas", "Construcción de motor"], weight: 2.3 },
+      { slot: "D3", title: "Mariposas", minP: 2, maxP: 5, playersText: "2 - 5", duration: 45, durationText: "30 - 45 min", theme: "Naturaleza", subTheme: "Migración de mariposas monarca", mechanics: ["Colección de sets", "Movimiento punto a punto"], weight: 1.8 },
+
+      { slot: "E3", title: "Azul: Edición de Viaje", minP: 2, maxP: 4, playersText: "2 - 4", duration: 40, durationText: "30 - 45 min", theme: "Abstracto", subTheme: "Azulejos / Viaje", mechanics: ["Draft de losetas", "Reconocimiento de patrones"], weight: 1.8 },
+      { slot: "E3", title: "Palabra de Pirata", minP: 2, maxP: 5, playersText: "2 - 5", duration: 20, durationText: "15 - 20 min", theme: "Piratas / Humor", subTheme: "Mentiras / Faroleo", mechanics: ["Faroleo", "Gestión de mano"], weight: 1.2 },
+      { slot: "E3", title: "Tragedy Looper", minP: 2, maxP: 4, playersText: "2 - 4", duration: 120, durationText: "90 - 150 min", theme: "Ciencia ficción / Misterio", subTheme: "Bucles temporales / Tragedia", mechanics: ["Deducción", "Gestión de mano", "Uno contra todos"], weight: 3.4 },
+      { slot: "E3", title: "Terraforming Mars", minP: 1, maxP: 5, playersText: "1 - 5", duration: 120, durationText: "90 - 120 min", theme: "Ciencia ficción", subTheme: "Terraformación de Marte", mechanics: ["Draft de cartas", "Construcción de motor", "Gestión de recursos"], weight: 3.2 },
+      { slot: "E3", title: "That Time You Killed Me", minP: 2, maxP: 2, playersText: "2", duration: 20, durationText: "15 - 25 min", theme: "Ciencia ficción", subTheme: "Viajes en el tiempo / Duelo", mechanics: ["Abstracto", "Movimiento en cuadrícula", "Escenarios / Campaña"], weight: 2.0 },
+      { slot: "E3", title: "El Club de los Martes", minP: 2, maxP: 6, playersText: "2 - 6", duration: 45, durationText: "30 - 60 min", theme: "Detective / Crimen", subTheme: "Misterio / Investigación", mechanics: ["Deducción", "Gestión de mano"], weight: 1.9 },
+      { slot: "E3", title: "A Taste for Murder", minP: 2, maxP: 6, playersText: "2 - 6", duration: 60, durationText: "45 - 60 min", theme: "Detective / Crimen", subTheme: "Gastronomía macabra / Misterio", mechanics: ["Deducción", "Colección de sets"], weight: 2.1 },
+      { slot: "E3", title: "Tank Clash: Western Front", minP: 2, maxP: 4, playersText: "2 - 4", duration: 60, durationText: "45 - 75 min", theme: "Histórico", subTheme: "Segunda Guerra Mundial / Tanques", mechanics: ["Táctico", "Movimiento en cuadrícula", "Tirada de dados"], weight: 2.5 },
+
+      { slot: "F3", title: "War Chest", minP: 2, maxP: 4, playersText: "2 - 4", duration: 45, durationText: "30 - 60 min", theme: "Histórico / Táctico", subTheme: "Edad Media / Batallas", mechanics: ["Construcción de bolsa", "Control de áreas", "Movimiento en cuadrícula"], weight: 2.4 },
+      { slot: "F3", title: "El Hobbit: Historia de una Ida y de una Vuelta", minP: 2, maxP: 4, playersText: "2 - 4", duration: 45, durationText: "45 min", theme: "Fantasía", subTheme: "Tierra Media / Aventura", mechanics: ["Gestión de mano", "Colección de sets"], weight: 1.8 },
+      { slot: "F3", title: "Incómodos Invitados", minP: 2, maxP: 8, playersText: "2 - 8", duration: 60, durationText: "45 - 60 min", theme: "Detective / Crimen", subTheme: "Mansión / Asesinato", mechanics: ["Deducción", "Gestión de mano"], weight: 2.3 },
+      { slot: "F3", title: "Corrosión", minP: 2, maxP: 4, playersText: "2 - 4", duration: 90, durationText: "60 - 120 min", theme: "Ciencia ficción", subTheme: "Postapocalíptico / Fabril", mechanics: ["Construcción de motor", "Gestión de recursos", "Colocación de trabajadores"], weight: 2.9 },
+
       // Columna 4
       { slot: "A4", title: "Pathfinder: El Auge de los Señores de las Runas", minP: 1, maxP: 4, playersText: "1 - 4", duration: 90, durationText: "90 min", theme: "Fantasía", subTheme: "Rol / Aventura", mechanics: ["Cooperativo", "Construcción de mazos"], weight: 2.8 },
       { slot: "B4", title: "Greylune", minP: 2, maxP: 4, playersText: "2 - 4", duration: 90, durationText: "90 min", theme: "Fantasía", subTheme: "Aventura medieval", mechanics: ["Colocación de trabajadores", "Gestión de recursos"], weight: 2.5 },
@@ -426,7 +468,7 @@
       { slot: "B4", title: "Lords of Waterdeep", minP: 2, maxP: 5, playersText: "2 - 5", duration: 90, durationText: "60 - 120 min", theme: "Fantasía", subTheme: "Reinos Olvidados", mechanics: ["Colocación de trabajadores", "Cumplimiento de misiones"], weight: 2.4 }
     ];
 
-    const confirmedEmptySlots = new Set(["C1", "G1"]);
+    const confirmedEmptySlots = new Set(["C1", "G1", "C2", "G2", "C3", "G3"]);
     let games = [...initialGames];
     let selectedSlot = null;
     let selectedWeight = "";
@@ -707,7 +749,7 @@
     }
 
     function initCharts() {
-      const palette = ["#1c4d3a", "#eab308", "#e11d48", "#2563eb", "#9333ea", "#10b981", "#f97316", "#06b6d4"];
+      const palette = ["#1c4d3a", "#eab308", "#e11d48", "#2563eb", "#9333ea", "#10b981", "#f97316", "#06b6d4", "#84cc16", "#f43f5e", "#6366f1", "#14b8a6"];
 
       charts.theme = new Chart(document.getElementById("themeChart"), {
         type: "doughnut",
