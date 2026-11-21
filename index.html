@@ -108,8 +108,8 @@
         <button onclick="rollD20()" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-kobold-950 font-bold text-sm shadow-md hover:shadow-lg transition cursor-pointer">
           <span>🎲</span> Tirar d20 (¿Qué jugamos?)
         </button>
-        <button onclick="openAddModal()" class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-kobold-700 hover:bg-kobold-600 text-white font-semibold text-sm border border-emerald-400/30 shadow transition cursor-pointer">
-          <span>+</span> Añadir juego
+        <button onclick="openPlayModal()" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-kobold-700 hover:bg-kobold-600 text-white font-semibold text-sm border border-emerald-400/30 shadow transition cursor-pointer">
+          <span>✨</span> Elige tu propia aventura
         </button>
       </div>
     </div>
@@ -119,7 +119,7 @@
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6 flex-1 w-full">
 
     <!-- KPI Cards -->
-    <section class="grid grid-cols-2 lg:grid-cols-5 gap-4">
+    <section class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
       <div class="bg-white rounded-2xl p-4 shadow-sm border border-emerald-100 flex items-center gap-3.5">
         <div class="w-11 h-11 rounded-xl bg-emerald-100 text-kobold-700 flex items-center justify-center text-xl font-bold">♟️</div>
         <div>
@@ -148,11 +148,19 @@
           <p id="kpiAvgWeight" class="text-2xl font-extrabold text-kobold-900">2.27 <span class="text-sm font-normal text-slate-400">/ 5</span></p>
         </div>
       </div>
-      <div class="col-span-2 lg:col-span-1 bg-white rounded-2xl p-4 shadow-sm border border-emerald-100 flex items-center gap-3.5">
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-emerald-100 flex items-center gap-3.5">
         <div class="w-11 h-11 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-xl font-bold">⭐</div>
         <div>
           <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Nota Media BGG</p>
           <p id="kpiAvgBgg" class="text-2xl font-extrabold text-kobold-900">7.41 <span class="text-sm font-normal text-slate-400">/ 10</span></p>
+        </div>
+      </div>
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-emerald-100 flex items-center gap-3.5">
+        <div class="w-11 h-11 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center text-xl font-bold">🏆</div>
+        <div class="min-w-0">
+          <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Mejor Rank BGG</p>
+          <p id="kpiBestRank" class="text-2xl font-extrabold text-kobold-900">#3</p>
+          <p id="kpiBestRankGame" class="text-[11px] text-slate-500 truncate">Pandemic Legacy: T1</p>
         </div>
       </div>
     </section>
@@ -277,15 +285,18 @@
       </div>
     </section>
 
-    <!-- Charts Section -->
+    <!-- Charts Section (Order: Por temática, Duración estimada, Jugadores soportados, Mecánicas top) -->
     <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       <div class="bg-white rounded-2xl p-4 shadow-sm border border-emerald-100">
-        <h3 class="text-xs font-bold uppercase tracking-wider text-kobold-800 mb-2">🎭 Por Temática</h3>
-        <div class="h-48 relative"><canvas id="themeChart"></canvas></div>
-      </div>
-      <div class="bg-white rounded-2xl p-4 shadow-sm border border-emerald-100">
-        <h3 class="text-xs font-bold uppercase tracking-wider text-kobold-800 mb-2">⚙️ Mecánicas Top</h3>
-        <div class="h-48 relative"><canvas id="mechanicChart"></canvas></div>
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-kobold-800">🎭 Por Temática</h3>
+          <span class="text-[10px] text-slate-400">Desliza ↓</span>
+        </div>
+        <div class="h-48 overflow-y-auto pr-1 relative">
+          <div id="themeChartBox" class="relative min-h-full">
+            <canvas id="themeChart"></canvas>
+          </div>
+        </div>
       </div>
       <div class="bg-white rounded-2xl p-4 shadow-sm border border-emerald-100">
         <h3 class="text-xs font-bold uppercase tracking-wider text-kobold-800 mb-2">⏱️ Duración Estimada</h3>
@@ -294,6 +305,10 @@
       <div class="bg-white rounded-2xl p-4 shadow-sm border border-emerald-100">
         <h3 class="text-xs font-bold uppercase tracking-wider text-kobold-800 mb-2">👥 Jugadores Soportados</h3>
         <div class="h-48 relative"><canvas id="playersChart"></canvas></div>
+      </div>
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-emerald-100">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-kobold-800 mb-2">⚙️ Mecánicas Top</h3>
+        <div class="h-48 relative"><canvas id="mechanicChart"></canvas></div>
       </div>
     </section>
 
@@ -307,11 +322,22 @@
           <p class="text-xs text-slate-500">Incluye puntuación media y ranking mundial de BoardGameGeek (BGG)</p>
         </div>
         <div class="flex flex-wrap items-center gap-2">
-          <select id="sortOrder" onchange="applyFilters()" class="px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 bg-slate-50 outline-none">
-            <option value="slot">Ordenar: Por Hueco Kallax</option>
-            <option value="bggRating">Ordenar: Mejor Nota BGG</option>
-            <option value="bggRank">Ordenar: Mejor Ranking BGG</option>
-          </select>
+          <div class="inline-flex items-center gap-1 bg-slate-50 border border-slate-200 rounded-xl px-2 py-1">
+            <select id="sortField" onchange="applyFilters()" class="text-xs font-semibold text-slate-700 bg-transparent outline-none cursor-pointer">
+              <option value="slot">Ordenar: Hueco</option>
+              <option value="title">Nombre del juego</option>
+              <option value="bggRating">Mejor nota de BGG</option>
+              <option value="bggRank">Mejor ranking de BGG</option>
+              <option value="players">Jugadores</option>
+              <option value="duration">Duración</option>
+              <option value="theme">Temática</option>
+              <option value="mechanic">Mecánica</option>
+              <option value="weight">Complejidad</option>
+            </select>
+            <button id="sortDirBtn" type="button" onclick="toggleSortDir()" title="Cambiar sentido de ordenación" class="px-1.5 py-0.5 rounded-lg hover:bg-emerald-100 text-kobold-800 font-bold text-xs cursor-pointer transition">
+              ↑
+            </button>
+          </div>
           <div class="inline-flex rounded-xl bg-slate-100 p-1">
             <button id="viewCardsBtn" onclick="setView('cards')" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-white text-kobold-800 shadow-sm cursor-pointer">Tarjetas</button>
             <button id="viewTableBtn" onclick="setView('table')" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:text-kobold-800 cursor-pointer">Tabla</button>
@@ -326,15 +352,16 @@
       <div id="tableContainer" class="hidden overflow-x-auto">
         <table class="w-full text-left border-collapse text-sm">
           <thead>
-            <tr class="border-b-2 border-emerald-100 text-kobold-900 bg-kobold-50/70">
-              <th class="py-2.5 px-3 font-bold">Hueco</th>
-              <th class="py-2.5 px-3 font-bold">Juego</th>
-              <th class="py-2.5 px-3 font-bold">BGG (Nota / Rank)</th>
-              <th class="py-2.5 px-3 font-bold">Jugadores</th>
-              <th class="py-2.5 px-3 font-bold">Duración</th>
-              <th class="py-2.5 px-3 font-bold">Temática</th>
-              <th class="py-2.5 px-3 font-bold">Mecánica</th>
-              <th class="py-2.5 px-3 font-bold">Complejidad</th>
+            <tr class="border-b-2 border-emerald-100 text-kobold-900 bg-kobold-50/70 select-none">
+              <th onclick="sortByColumn('slot')" class="py-2.5 px-3 font-bold cursor-pointer hover:bg-emerald-100/70 transition whitespace-nowrap">Hueco <span id="thArrow-slot" class="text-kobold-600 ml-0.5">↑</span></th>
+              <th onclick="sortByColumn('title')" class="py-2.5 px-3 font-bold cursor-pointer hover:bg-emerald-100/70 transition whitespace-nowrap">Juego <span id="thArrow-title" class="text-slate-400 ml-0.5">↕</span></th>
+              <th onclick="sortByColumn('bggRating')" class="py-2.5 px-3 font-bold cursor-pointer hover:bg-emerald-100/70 transition whitespace-nowrap">Nota BGG <span id="thArrow-bggRating" class="text-slate-400 ml-0.5">↕</span></th>
+              <th onclick="sortByColumn('bggRank')" class="py-2.5 px-3 font-bold cursor-pointer hover:bg-emerald-100/70 transition whitespace-nowrap">Rank BGG <span id="thArrow-bggRank" class="text-slate-400 ml-0.5">↕</span></th>
+              <th onclick="sortByColumn('players')" class="py-2.5 px-3 font-bold cursor-pointer hover:bg-emerald-100/70 transition whitespace-nowrap">Jugadores <span id="thArrow-players" class="text-slate-400 ml-0.5">↕</span></th>
+              <th onclick="sortByColumn('duration')" class="py-2.5 px-3 font-bold cursor-pointer hover:bg-emerald-100/70 transition whitespace-nowrap">Duración <span id="thArrow-duration" class="text-slate-400 ml-0.5">↕</span></th>
+              <th onclick="sortByColumn('theme')" class="py-2.5 px-3 font-bold cursor-pointer hover:bg-emerald-100/70 transition whitespace-nowrap">Temática <span id="thArrow-theme" class="text-slate-400 ml-0.5">↕</span></th>
+              <th onclick="sortByColumn('mechanic')" class="py-2.5 px-3 font-bold cursor-pointer hover:bg-emerald-100/70 transition whitespace-nowrap">Mecánica <span id="thArrow-mechanic" class="text-slate-400 ml-0.5">↕</span></th>
+              <th onclick="sortByColumn('weight')" class="py-2.5 px-3 font-bold cursor-pointer hover:bg-emerald-100/70 transition whitespace-nowrap">Complejidad <span id="thArrow-weight" class="text-slate-400 ml-0.5">↕</span></th>
             </tr>
           </thead>
           <tbody id="tableBody" class="divide-y divide-slate-100"></tbody>
@@ -360,67 +387,121 @@
     </div>
   </div>
 
-  <!-- Add Game Modal -->
-  <div id="addModal" class="hidden fixed inset-0 bg-kobold-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-lg w-full p-6 border-2 border-kobold-600 shadow-2xl space-y-4">
-      <div class="flex items-center justify-between">
-        <h3 class="font-display text-lg font-bold text-kobold-900">Añadir nuevo tesoro a la Kallax</h3>
-        <button onclick="closeAddModal()" class="text-slate-400 hover:text-slate-700 text-xl font-bold cursor-pointer">×</button>
+  <!-- What Do You Want To Play Modal -->
+  <div id="playModal" class="hidden fixed inset-0 bg-kobold-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-2xl w-full p-6 border-2 border-kobold-600 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-emerald-100 pb-3">
+        <div>
+          <h3 class="font-display text-xl font-bold text-kobold-900 flex items-center gap-2">
+            <span>✨</span> Elige tu propia aventura
+          </h3>
+          <p class="text-xs text-slate-500">Elige cómo os apetece la partida y mira tus opciones al instante o pásalas al panel.</p>
+        </div>
+        <button onclick="closePlayModal()" class="text-slate-400 hover:text-slate-700 text-2xl font-bold cursor-pointer leading-none">×</button>
       </div>
-      <form id="addGameForm" onsubmit="handleAddGame(event)" class="space-y-3 text-sm">
-        <div class="grid grid-cols-3 gap-3">
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Hueco (A1-G8)</label>
-            <input required id="newSlot" placeholder="Ej: C4" class="w-full px-3 py-2 rounded-xl border border-slate-200 uppercase" />
-          </div>
-          <div class="col-span-2">
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Nombre del juego</label>
-            <input required id="newTitle" placeholder="Ej: Carcassonne" class="w-full px-3 py-2 rounded-xl border border-slate-200" />
-          </div>
+
+      <!-- Quick Mood / Vibe Presets -->
+      <div>
+        <p class="text-xs font-bold uppercase tracking-wider text-kobold-800 mb-2">Atajos rápidos de plan</p>
+        <div class="flex flex-wrap gap-2">
+          <button type="button" onclick="applyPlayPreset('duoQuick')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-50 hover:bg-emerald-100 text-kobold-900 border border-emerald-200 cursor-pointer transition">
+            🥂 Dúo rápido (2 jug. · ≤ 30 min)
+          </button>
+          <button type="button" onclick="applyPlayPreset('party')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-200 cursor-pointer transition">
+            🎉 Risas y grupo (5+ jug.)
+          </button>
+          <button type="button" onclick="applyPlayPreset('coop')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-blue-50 hover:bg-blue-100 text-blue-950 border border-blue-200 cursor-pointer transition">
+            🤝 Todos a una (Cooperativo)
+          </button>
+          <button type="button" onclick="applyPlayPreset('solo')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-purple-50 hover:bg-purple-100 text-purple-950 border border-purple-200 cursor-pointer transition">
+            🧘 Partida en solitario (1 jug.)
+          </button>
+          <button type="button" onclick="applyPlayPreset('heavyEpic')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-rose-50 hover:bg-rose-100 text-rose-950 border border-rose-200 cursor-pointer transition">
+            ⚔️ Tarde épica (Dura · &gt; 60 min)
+          </button>
         </div>
-        <div class="grid grid-cols-3 gap-3">
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Min Jugadores</label>
-            <input required type="number" min="1" max="20" id="newMinP" value="2" class="w-full px-3 py-2 rounded-xl border border-slate-200" />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Max Jugadores</label>
-            <input required type="number" min="1" max="99" id="newMaxP" value="4" class="w-full px-3 py-2 rounded-xl border border-slate-200" />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Duración (min)</label>
-            <input required type="number" min="5" max="600" id="newDur" value="45" class="w-full px-3 py-2 rounded-xl border border-slate-200" />
-          </div>
+      </div>
+
+      <!-- Interactive Choices -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-sm bg-kobold-50/70 p-4 rounded-2xl border border-emerald-100">
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">¿Cuántos sois?</label>
+          <select id="playPlayers" onchange="updatePlaySuggestions()" class="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white outline-none text-sm">
+            <option value="">Da igual</option>
+            <option value="1">1 jugador</option>
+            <option value="2">2 jugadores</option>
+            <option value="3">3 jugadores</option>
+            <option value="4">4 jugadores</option>
+            <option value="5">5 jugadores</option>
+            <option value="6">6 jugadores</option>
+            <option value="7">7+ jugadores</option>
+          </select>
         </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Temática</label>
-            <input required id="newTheme" placeholder="Ej: Fantasía" class="w-full px-3 py-2 rounded-xl border border-slate-200" />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Mecánica</label>
-            <input required id="newMech" placeholder="Ej: Colocación de losetas" class="w-full px-3 py-2 rounded-xl border border-slate-200" />
-          </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">¿Cuánto tiempo tenéis?</label>
+          <select id="playDuration" onchange="updatePlaySuggestions()" class="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white outline-none text-sm">
+            <option value="">Sin límite</option>
+            <option value="30">Hasta 30 min</option>
+            <option value="45">Hasta 45 min</option>
+            <option value="60">Hasta 60 min</option>
+            <option value="90">Hasta 90 min</option>
+            <option value="999">Más de 90 min</option>
+          </select>
         </div>
-        <div class="grid grid-cols-3 gap-3">
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Complejidad (1-5)</label>
-            <input required type="number" step="0.1" min="1" max="5" id="newWeight" value="2.0" class="w-full px-3 py-2 rounded-xl border border-slate-200" />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Nota BGG (1-10)</label>
-            <input type="number" step="0.1" min="1" max="10" id="newBggRating" placeholder="Ej: 7.5" class="w-full px-3 py-2 rounded-xl border border-slate-200" />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Rank BGG (#)</label>
-            <input type="number" min="1" id="newBggRank" placeholder="Ej: 450" class="w-full px-3 py-2 rounded-xl border border-slate-200" />
-          </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Complejidad</label>
+          <select id="playWeight" onchange="updatePlaySuggestions()" class="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white outline-none text-sm">
+            <option value="">Cualquiera</option>
+            <option value="low">Ligera (&lt;2.0)</option>
+            <option value="med">Media (2.0-2.5)</option>
+            <option value="high">Dura (&gt;2.5)</option>
+          </select>
         </div>
-        <div class="flex justify-end gap-2 pt-2">
-          <button type="button" onclick="closeAddModal()" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 font-semibold cursor-pointer">Cancelar</button>
-          <button type="submit" class="px-4 py-2 rounded-xl bg-kobold-700 hover:bg-kobold-600 text-white font-bold cursor-pointer">Guardar en Kallax</button>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Temática</label>
+          <select id="playTheme" onchange="updatePlaySuggestions()" class="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white outline-none text-sm">
+            <option value="">Cualquiera</option>
+          </select>
         </div>
-      </form>
+
+        <div class="sm:col-span-2">
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Mecánica</label>
+          <select id="playMechanic" onchange="updatePlaySuggestions()" class="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white outline-none text-sm">
+            <option value="">Cualquiera</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Live Candidates -->
+      <div class="space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold uppercase tracking-wider text-kobold-900">
+            Candidatos (<span id="playMatchCount">0</span>)
+          </span>
+          <button type="button" onclick="resetPlayPicker()" class="text-xs font-semibold text-kobold-600 hover:text-kobold-800 underline cursor-pointer">
+            Reiniciar selección
+          </button>
+        </div>
+        <div id="playCandidatesList" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-60 overflow-y-auto pr-1"></div>
+      </div>
+
+      <!-- Footer Actions -->
+      <div class="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-slate-100">
+        <button type="button" onclick="pickRandomFromPlay()" class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-kobold-950 font-bold text-sm cursor-pointer">
+          🎲 Elegir uno al azar
+        </button>
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="closePlayModal()" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm cursor-pointer">
+            Cerrar
+          </button>
+          <button type="button" onclick="sendPlayChoicesToMainFilters()" class="px-4 py-2 rounded-xl bg-kobold-700 hover:bg-kobold-600 text-white font-bold text-sm cursor-pointer">
+            Ver todos en el panel
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -536,6 +617,7 @@
     let selectedSlot = null;
     let selectedWeight = "";
     let currentView = "cards";
+    let sortDir = "asc";
     let filteredGames = [...games];
 
     let charts = {};
@@ -594,7 +676,8 @@
       document.getElementById("themeFilter").value = "";
       document.getElementById("mechanicFilter").value = "";
       document.getElementById("bggFilter").value = "";
-      document.getElementById("sortOrder").value = "slot";
+      document.getElementById("sortField").value = "slot";
+      sortDir = "asc";
       selectedSlot = null;
       document.getElementById("clearSlotBtn").classList.add("hidden");
       setWeightFilter("");
@@ -607,7 +690,8 @@
       const theme = document.getElementById("themeFilter").value;
       const mech = document.getElementById("mechanicFilter").value;
       const bggFilter = document.getElementById("bggFilter").value;
-      const sortOrder = document.getElementById("sortOrder").value;
+      const sortField = document.getElementById("sortField").value;
+      updateSortArrows(sortField, sortDir);
 
       filteredGames = games.filter(g => {
         if (selectedSlot && g.slot !== selectedSlot) return false;
@@ -645,11 +729,40 @@
         return true;
       });
 
-      if (sortOrder === "bggRating") {
-        filteredGames.sort((a, b) => (b.bggRating || 0) - (a.bggRating || 0));
-      } else if (sortOrder === "bggRank") {
-        filteredGames.sort((a, b) => (a.bggRank || 999999) - (b.bggRank || 999999));
-      }
+      const parseSlotKey = (s) => {
+        const m = /^([A-G])(\d+)$/.exec((s || "").toUpperCase().trim());
+        if (!m) return 999999;
+        const rowIdx = rows.indexOf(m[1]);
+        const colIdx = parseInt(m[2], 10);
+        return (rowIdx === -1 ? 99 : rowIdx) * 100 + colIdx;
+      };
+
+      const collator = new Intl.Collator("es", { sensitivity: "base" });
+      const mult = sortDir === "asc" ? 1 : -1;
+
+      filteredGames.sort((a, b) => {
+        let cmp = 0;
+        if (sortField === "slot") {
+          cmp = parseSlotKey(a.slot) - parseSlotKey(b.slot);
+        } else if (sortField === "title") {
+          cmp = collator.compare(a.title, b.title);
+        } else if (sortField === "bggRating") {
+          cmp = (a.bggRating ?? -1) - (b.bggRating ?? -1);
+        } else if (sortField === "bggRank") {
+          cmp = (a.bggRank ?? 999999) - (b.bggRank ?? 999999);
+        } else if (sortField === "players") {
+          cmp = (a.maxP - b.maxP) || (a.minP - b.minP);
+        } else if (sortField === "duration") {
+          cmp = a.duration - b.duration;
+        } else if (sortField === "theme") {
+          cmp = collator.compare(a.theme, b.theme);
+        } else if (sortField === "mechanic") {
+          cmp = collator.compare(a.mechanics[0] || "", b.mechanics[0] || "");
+        } else if (sortField === "weight") {
+          cmp = a.weight - b.weight;
+        }
+        return (cmp * mult) || collator.compare(a.title, b.title);
+      });
 
       updateKPIs();
       renderKallax();
@@ -678,10 +791,23 @@
         document.getElementById("kpiAvgBgg").innerHTML = avgBgg !== "-"
           ? `${avgBgg} <span class="text-sm font-normal text-slate-400">/ 10</span>`
           : "-";
+        const rankedGames = filteredGames
+          .filter(g => typeof g.bggRank === "number" && g.bggRank > 0)
+          .sort((a, b) => a.bggRank - b.bggRank);
+
+        if (rankedGames.length > 0) {
+          document.getElementById("kpiBestRank").textContent = `#${rankedGames[0].bggRank.toLocaleString("es-ES")}`;
+          document.getElementById("kpiBestRankGame").textContent = rankedGames[0].title;
+        } else {
+          document.getElementById("kpiBestRank").textContent = "-";
+          document.getElementById("kpiBestRankGame").textContent = "Sin ranking BGG";
+        }
       } else {
         document.getElementById("kpiAvgTime").textContent = "-";
         document.getElementById("kpiAvgWeight").textContent = "-";
         document.getElementById("kpiAvgBgg").textContent = "-";
+        document.getElementById("kpiBestRank").textContent = "-";
+        document.getElementById("kpiBestRankGame").textContent = "Sin resultados";
       }
     }
 
@@ -781,7 +907,7 @@
           <p class="text-sm mt-1">Prueba a ampliar el tiempo de partida o limpiar los filtros.</p>
         </div>`;
         cardsEl.innerHTML = emptyMsg;
-        tableBody.innerHTML = `<tr><td colspan="8" class="py-8 text-center text-slate-500">No hay juegos que coincidan con la búsqueda.</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="9" class="py-8 text-center text-slate-500">No hay juegos que coincidan con la búsqueda.</td></tr>`;
         return;
       }
 
@@ -821,17 +947,19 @@
 
       tableBody.innerHTML = filteredGames.map(g => {
         const w = getWeightBadge(g.weight);
-        const bgg = getBggBadge(g);
+        const ratingText = g.bggRating ? `⭐ ${g.bggRating.toFixed(1)}` : "N/D";
+        const rankText = g.bggRank ? `#${g.bggRank.toLocaleString("es-ES")}` : (g.bggNote || "-");
         return `
           <tr class="hover:bg-kobold-50/60 transition">
             <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded bg-kobold-800 text-amber-300 font-bold text-xs">${g.slot}</span></td>
             <td class="py-2.5 px-3 font-bold text-kobold-950">${g.title}</td>
-            <td class="py-2.5 px-3 whitespace-nowrap">${bgg.html}</td>
-            <td class="py-2.5 px-3 text-slate-600">${g.playersText}</td>
-            <td class="py-2.5 px-3 text-slate-600">${g.durationText}</td>
+            <td class="py-2.5 px-3 whitespace-nowrap font-semibold text-indigo-900">${ratingText}</td>
+            <td class="py-2.5 px-3 whitespace-nowrap text-slate-700">${rankText}</td>
+            <td class="py-2.5 px-3 text-slate-600 whitespace-nowrap">${g.playersText}</td>
+            <td class="py-2.5 px-3 text-slate-600 whitespace-nowrap">${g.durationText}</td>
             <td class="py-2.5 px-3 text-slate-700">${g.theme}</td>
             <td class="py-2.5 px-3 text-slate-600 text-xs">${g.mechanics.join(", ")}</td>
-            <td class="py-2.5 px-3"><span class="text-xs font-semibold px-2 py-0.5 rounded-full border ${w.cls}">${w.label}</span></td>
+            <td class="py-2.5 px-3 whitespace-nowrap"><span class="text-xs font-semibold px-2 py-0.5 rounded-full border ${w.cls}">${w.label}</span></td>
           </tr>
         `;
       }).join("");
@@ -858,12 +986,22 @@
     }
 
     function initCharts() {
-      const palette = ["#1c4d3a", "#eab308", "#e11d48", "#2563eb", "#9333ea", "#10b981", "#f97316", "#06b6d4", "#84cc16", "#f43f5e", "#6366f1", "#14b8a6"];
-
       charts.theme = new Chart(document.getElementById("themeChart"), {
+        type: "bar",
+        data: { labels: [], datasets: [{ label: "Juegos", data: [], backgroundColor: "#1c4d3a", borderRadius: 6 }] },
+        options: { indexAxis: "y", responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { stepSize: 1, font: { size: 10 } } }, y: { ticks: { font: { size: 10 } } } } }
+      });
+
+      charts.duration = new Chart(document.getElementById("durationChart"), {
         type: "doughnut",
-        data: { labels: [], datasets: [{ data: [], backgroundColor: palette, borderWidth: 1 }] },
+        data: { labels: ["≤ 30 min", "31-45 min", "46-60 min", "> 60 min"], datasets: [{ data: [0,0,0,0], backgroundColor: ["#10b981", "#eab308", "#2563eb", "#e11d48"], borderWidth: 1 }] },
         options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: "right", labels: { boxWidth: 10, font: { size: 10 } } } } }
+      });
+
+      charts.players = new Chart(document.getElementById("playersChart"), {
+        type: "bar",
+        data: { labels: ["1J", "2J", "3J", "4J", "5J", "6J+"], datasets: [{ label: "Compatibles", data: [0,0,0,0,0,0], backgroundColor: "#9333ea", borderRadius: 6 }] },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { font: { size: 10 } } }, y: { beginAtZero: true, ticks: { stepSize: 5, font: { size: 10 } } } } }
       });
 
       charts.mechanic = new Chart(document.getElementById("mechanicChart"), {
@@ -871,35 +1009,21 @@
         data: { labels: [], datasets: [{ label: "Juegos", data: [], backgroundColor: "#25664d", borderRadius: 6 }] },
         options: { indexAxis: "y", responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { stepSize: 1, font: { size: 10 } } }, y: { ticks: { font: { size: 10 } } } } }
       });
-
-      charts.duration = new Chart(document.getElementById("durationChart"), {
-        type: "bar",
-        data: { labels: ["≤ 30 min", "31-45 min", "46-60 min", "> 60 min"], datasets: [{ label: "Juegos", data: [0,0,0,0], backgroundColor: ["#10b981", "#eab308", "#2563eb", "#e11d48"], borderRadius: 6 }] },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { ticks: { stepSize: 1, font: { size: 10 } } }, x: { ticks: { font: { size: 10 } } } } }
-      });
-
-      charts.players = new Chart(document.getElementById("playersChart"), {
-        type: "bar",
-        data: { labels: ["1J", "2J", "3J", "4J", "5J", "6J+"], datasets: [{ label: "Compatibles", data: [0,0,0,0,0,0], backgroundColor: "#9333ea", borderRadius: 6 }] },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { ticks: { stepSize: 2, font: { size: 10 } } }, x: { ticks: { font: { size: 10 } } } } }
-      });
     }
 
     function updateCharts() {
-      // Theme
+      // Theme (horizontal scrollable bars)
       const themeCounts = {};
       filteredGames.forEach(g => themeCounts[g.theme] = (themeCounts[g.theme] || 0) + 1);
-      charts.theme.data.labels = Object.keys(themeCounts);
-      charts.theme.data.datasets[0].data = Object.values(themeCounts);
+      const sortedThemes = Object.entries(themeCounts).sort((a, b) => b[1] - a[1]);
+      const themeBox = document.getElementById("themeChartBox");
+      if (themeBox) {
+        themeBox.style.height = `${Math.max(192, sortedThemes.length * 28)}px`;
+      }
+      charts.theme.data.labels = sortedThemes.map(x => x[0]);
+      charts.theme.data.datasets[0].data = sortedThemes.map(x => x[1]);
+      charts.theme.resize();
       charts.theme.update();
-
-      // Mechanics (Top 6)
-      const mechCounts = {};
-      filteredGames.forEach(g => g.mechanics.forEach(m => mechCounts[m] = (mechCounts[m] || 0) + 1));
-      const sortedMechs = Object.entries(mechCounts).sort((a,b) => b[1] - a[1]).slice(0, 6);
-      charts.mechanic.data.labels = sortedMechs.map(x => x[0]);
-      charts.mechanic.data.datasets[0].data = sortedMechs.map(x => x[1]);
-      charts.mechanic.update();
 
       // Duration
       const durBuckets = [0, 0, 0, 0];
@@ -912,12 +1036,20 @@
       charts.duration.data.datasets[0].data = durBuckets;
       charts.duration.update();
 
-      // Players
+      // Players (vertical bars)
       const pCounts = [1, 2, 3, 4, 5, 6].map(p =>
         filteredGames.filter(g => p === 6 ? g.maxP >= 6 : (p >= g.minP && p <= g.maxP)).length
       );
       charts.players.data.datasets[0].data = pCounts;
       charts.players.update();
+
+      // Mechanics (Top 6)
+      const mechCounts = {};
+      filteredGames.forEach(g => g.mechanics.forEach(m => mechCounts[m] = (mechCounts[m] || 0) + 1));
+      const sortedMechs = Object.entries(mechCounts).sort((a,b) => b[1] - a[1]).slice(0, 6);
+      charts.mechanic.data.labels = sortedMechs.map(x => x[0]);
+      charts.mechanic.data.datasets[0].data = sortedMechs.map(x => x[1]);
+      charts.mechanic.update();
     }
 
     function rollD20() {
@@ -938,51 +1070,201 @@
       document.getElementById("d20Modal").classList.add("hidden");
     }
 
-    function openAddModal() {
-      document.getElementById("addModal").classList.remove("hidden");
+    function populatePlayDropdowns() {
+      const playTheme = document.getElementById("playTheme");
+      const playMech = document.getElementById("playMechanic");
+      if (!playTheme || !playMech) return;
+
+      const themes = [...new Set(games.map(g => g.theme))].sort();
+      const mechs = [...new Set(games.flatMap(g => g.mechanics))].sort();
+
+      playTheme.innerHTML = '<option value="">Cualquiera</option>' +
+        themes.map(t => `<option value="${t}">${t}</option>`).join("");
+
+      playMech.innerHTML = '<option value="">Cualquiera</option>' +
+        mechs.map(m => `<option value="${m}">${m}</option>`).join("");
     }
 
-    function closeAddModal() {
-      document.getElementById("addModal").classList.add("hidden");
+    function openPlayModal() {
+      populatePlayDropdowns();
+      updatePlaySuggestions();
+      document.getElementById("playModal").classList.remove("hidden");
     }
 
-    function handleAddGame(e) {
-      e.preventDefault();
-      const slot = document.getElementById("newSlot").value.toUpperCase().trim();
-      const title = document.getElementById("newTitle").value.trim();
-      const minP = parseInt(document.getElementById("newMinP").value, 10);
-      const maxP = parseInt(document.getElementById("newMaxP").value, 10);
-      const duration = parseInt(document.getElementById("newDur").value, 10);
-      const theme = document.getElementById("newTheme").value.trim();
-      const mech = document.getElementById("newMech").value.trim();
-      const weight = parseFloat(document.getElementById("newWeight").value);
-      const bggRatingVal = document.getElementById("newBggRating").value;
-      const bggRankVal = document.getElementById("newBggRank").value;
+    function closePlayModal() {
+      document.getElementById("playModal").classList.add("hidden");
+    }
 
-      games.push({
-        slot,
-        title,
-        minP,
-        maxP,
-        playersText: minP === maxP ? `${minP}` : `${minP} - ${maxP}`,
-        duration,
-        durationText: `${duration} min`,
-        theme,
-        subTheme: "Añadido",
-        mechanics: mech.split(",").map(s => s.trim()),
-        weight,
-        bggRating: bggRatingVal ? parseFloat(bggRatingVal) : null,
-        bggRank: bggRankVal ? parseInt(bggRankVal, 10) : null
+    function resetPlayPicker() {
+      document.getElementById("playPlayers").value = "";
+      document.getElementById("playDuration").value = "";
+      document.getElementById("playWeight").value = "";
+      document.getElementById("playTheme").value = "";
+      document.getElementById("playMechanic").value = "";
+      updatePlaySuggestions();
+    }
+
+    function applyPlayPreset(preset) {
+      resetPlayPicker();
+      if (preset === "duoQuick") {
+        document.getElementById("playPlayers").value = "2";
+        document.getElementById("playDuration").value = "30";
+      } else if (preset === "party") {
+        document.getElementById("playPlayers").value = "5";
+      } else if (preset === "coop") {
+        const mechSelect = document.getElementById("playMechanic");
+        if ([...mechSelect.options].some(o => o.value === "Cooperativo")) {
+          mechSelect.value = "Cooperativo";
+        }
+      } else if (preset === "solo") {
+        document.getElementById("playPlayers").value = "1";
+      } else if (preset === "heavyEpic") {
+        document.getElementById("playDuration").value = "999";
+        document.getElementById("playWeight").value = "high";
+      }
+      updatePlaySuggestions();
+    }
+
+    function getPlayMatches() {
+      const players = document.getElementById("playPlayers").value;
+      const maxDur = document.getElementById("playDuration").value;
+      const weight = document.getElementById("playWeight").value;
+      const theme = document.getElementById("playTheme").value;
+      const mech = document.getElementById("playMechanic").value;
+
+      return games.filter(g => {
+        if (players) {
+          const pNum = parseInt(players, 10);
+          if (pNum === 7) {
+            if (g.maxP < 7) return false;
+          } else {
+            if (pNum < g.minP || pNum > g.maxP) return false;
+          }
+        }
+        if (maxDur) {
+          const dNum = parseInt(maxDur, 10);
+          if (dNum === 999) {
+            if (g.duration <= 90) return false;
+          } else {
+            if (g.duration > dNum) return false;
+          }
+        }
+        if (weight === "low" && g.weight >= 2.0) return false;
+        if (weight === "med" && (g.weight < 2.0 || g.weight > 2.5)) return false;
+        if (weight === "high" && g.weight <= 2.5) return false;
+        if (theme && g.theme !== theme) return false;
+        if (mech && !g.mechanics.includes(mech)) return false;
+        return true;
       });
+    }
 
-      confirmedEmptySlots.delete(slot);
-      populateFilterDropdowns();
+    function updatePlaySuggestions() {
+      const matches = getPlayMatches();
+      document.getElementById("playMatchCount").textContent = matches.length;
+      const listEl = document.getElementById("playCandidatesList");
+
+      if (matches.length === 0) {
+        listEl.innerHTML = `<div class="col-span-full py-6 text-center text-xs text-slate-500 bg-slate-50 rounded-xl border border-dashed border-slate-200">
+          No hay juegos con esa combinación exacta. Prueba a relajar algún criterio.
+        </div>`;
+        return;
+      }
+
+      listEl.innerHTML = matches.map(g => `
+        <div onclick="chooseGameFromPlay('${g.title.replace(/'/g, "\'")}')" class="p-3 rounded-xl border border-emerald-100 bg-white hover:bg-kobold-50/70 hover:border-kobold-400 cursor-pointer transition flex items-start justify-between gap-2">
+          <div class="min-w-0">
+            <div class="flex items-center gap-1.5 mb-0.5">
+              <span class="px-1.5 py-0.5 rounded bg-kobold-800 text-amber-300 font-bold text-[10px]">${g.slot}</span>
+              <span class="text-[11px] text-slate-500">👥 ${g.playersText} · ⏱️ ${g.durationText}</span>
+            </div>
+            <p class="font-bold text-xs text-kobold-950 truncate">${g.title}</p>
+            <p class="text-[11px] text-kobold-700 truncate">${g.theme} · ${g.mechanics[0] || ""}</p>
+          </div>
+          <span class="text-xs font-bold text-kobold-600 shrink-0">Elegir →</span>
+        </div>
+      `).join("");
+    }
+
+    function chooseGameFromPlay(title) {
+      closePlayModal();
+      document.getElementById("searchInput").value = title;
       applyFilters();
-      closeAddModal();
-      e.target.reset();
+      document.getElementById("cardsContainer").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function pickRandomFromPlay() {
+      const matches = getPlayMatches();
+      if (matches.length === 0) {
+        updatePlaySuggestions();
+        return;
+      }
+      const pick = matches[Math.floor(Math.random() * matches.length)];
+      const bgg = getBggBadge(pick);
+      closePlayModal();
+      document.getElementById("d20Result").innerHTML = `
+        <span class="inline-block px-3 py-1 rounded-full bg-kobold-800 text-amber-300 font-bold text-xs">Hueco ${pick.slot} · Entre ${matches.length} candidato(s)</span>
+        <h4 class="font-display text-xl font-bold text-kobold-950">${pick.title}</h4>
+        <div>${bgg.html}</div>
+        <p class="text-xs text-slate-600">${pick.theme} · ${pick.playersText} jugadores · ${pick.durationText}</p>
+        <p class="text-xs text-kobold-700 font-medium">${pick.mechanics.join(" · ")}</p>
+      `;
+      document.getElementById("d20Modal").classList.remove("hidden");
+    }
+
+    function sendPlayChoicesToMainFilters() {
+      const players = document.getElementById("playPlayers").value;
+      const maxDur = document.getElementById("playDuration").value;
+      const weight = document.getElementById("playWeight").value;
+      const theme = document.getElementById("playTheme").value;
+      const mech = document.getElementById("playMechanic").value;
+
+      document.getElementById("playersFilter").value = players;
+      document.getElementById("durationFilter").value = maxDur;
+      document.getElementById("themeFilter").value = theme;
+      document.getElementById("mechanicFilter").value = mech;
+      setWeightFilter(weight);
+
+      closePlayModal();
+      document.getElementById("cardsContainer").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function toggleSortDir() {
+      sortDir = sortDir === "asc" ? "desc" : "asc";
+      applyFilters();
+    }
+
+    function sortByColumn(field) {
+      const selectEl = document.getElementById("sortField");
+      if (selectEl.value === field) {
+        sortDir = sortDir === "asc" ? "desc" : "asc";
+      } else {
+        selectEl.value = field;
+        sortDir = "asc";
+      }
+      applyFilters();
+    }
+
+    function updateSortArrows(activeField, dir) {
+      const btn = document.getElementById("sortDirBtn");
+      if (btn) {
+        btn.textContent = dir === "asc" ? "↑" : "↓";
+      }
+      const allFields = ["slot", "title", "bggRating", "bggRank", "players", "duration", "theme", "mechanic", "weight"];
+      allFields.forEach(f => {
+        const el = document.getElementById(`thArrow-${f}`);
+        if (!el) return;
+        if (f === activeField) {
+          el.textContent = dir === "asc" ? "↑" : "↓";
+          el.className = "text-kobold-700 font-extrabold ml-0.5";
+        } else {
+          el.textContent = "↕";
+          el.className = "text-slate-400 ml-0.5";
+        }
+      });
     }
 
     init();
   </script>
 </body>
 </html>
+```[cite: 8]
