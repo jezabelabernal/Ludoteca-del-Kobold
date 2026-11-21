@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>La Ludoteca del Kobold — Dashboard Kallax 7x8</title>
+  <title>La Ludoteca del Kobold — Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -96,9 +96,6 @@
             <h1 class="font-display text-2xl sm:text-3xl font-bold tracking-wide text-amber-300 drop-shadow">
               La Ludoteca del Kobold
             </h1>
-            <span class="hidden sm:inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-kobold-700 text-emerald-200 border border-emerald-500/40">
-              Kallax 7×8
-            </span>
           </div>
           <p class="text-emerald-200/90 text-sm mt-0.5">
             Inventario mágico de tesoros lúdicos · <span id="headerCount" class="font-semibold text-white">57</span> juegos catalogados
@@ -499,13 +496,42 @@
 
       // Columna 4
       { slot: "A4", title: "Pathfinder: El Auge de los Señores de las Runas", minP: 1, maxP: 4, playersText: "1 - 4", duration: 90, durationText: "90 min", theme: "Fantasía", subTheme: "Rol / Aventura", mechanics: ["Cooperativo", "Construcción de mazos"], weight: 2.8, bggRating: 7.2, bggRank: 737 },
+      { slot: "A4", title: "Kingdom Come: Deliverance – The Board Game", minP: 1, maxP: 4, playersText: "1 - 4", duration: 220, durationText: "120 - 320 min", theme: "Histórico", subTheme: "Bohemia medieval", mechanics: ["Construcción de mazos", "Gestión de mano", "Movimiento en áreas"], weight: 3.4, bggRating: 8.6, bggRank: null },
       { slot: "B4", title: "Greylune", minP: 2, maxP: 4, playersText: "2 - 4", duration: 90, durationText: "90 min", theme: "Fantasía", subTheme: "Aventura medieval", mechanics: ["Colocación de trabajadores", "Gestión de recursos"], weight: 2.5, bggRating: 7.3, bggRank: 11852 },
       { slot: "B4", title: "Colt Express", minP: 2, maxP: 6, playersText: "2 - 6", duration: 40, durationText: "40 min", theme: "Lejano Oeste", subTheme: "Robo de trenes", mechanics: ["Programación de acciones", "Toma eso"], weight: 1.9, bggRating: 7.1, bggRank: 495 },
       { slot: "B4", title: "Fromage", minP: 1, maxP: 4, playersText: "1 - 4", duration: 40, durationText: "30 - 45 min", theme: "Gastronomía", subTheme: "Quesos", mechanics: ["Colocación de trabajadores", "Tablero giratorio"], weight: 2.2, bggRating: 7.7, bggRank: 361 },
-      { slot: "B4", title: "Lords of Waterdeep", minP: 2, maxP: 5, playersText: "2 - 5", duration: 90, durationText: "60 - 120 min", theme: "Fantasía", subTheme: "Reinos Olvidados", mechanics: ["Colocación de trabajadores", "Cumplimiento de misiones"], weight: 2.4, bggRating: 7.7, bggRank: 88 }
+      { slot: "B4", title: "Lords of Waterdeep", minP: 2, maxP: 5, playersText: "2 - 5", duration: 90, durationText: "60 - 120 min", theme: "Fantasía", subTheme: "Reinos Olvidados", mechanics: ["Colocación de trabajadores", "Cumplimiento de misiones"], weight: 2.4, bggRating: 7.7, bggRank: 88 },
+      { slot: "C4", title: "Railroad Ink: Edición Azul Profundo", minP: 1, maxP: 6, playersText: "1 - 6", duration: 30, durationText: "20 - 30 min", theme: "Abstracto", subTheme: "Rutas y ferrocarriles", mechanics: ["Tirada de dados", "Conexión de rutas"], weight: 1.5, bggRating: 7.4, bggRank: 426 },
+      { slot: "C4", title: "Railroad Ink: Edición Rojo Abrasador", minP: 1, maxP: 6, playersText: "1 - 6", duration: 30, durationText: "20 - 30 min", theme: "Abstracto", subTheme: "Rutas y volcanes", mechanics: ["Tirada de dados", "Conexión de rutas"], weight: 1.6, bggRating: 7.5, bggRank: 398 },
+      { slot: "C4", title: "Railroad Ink Challenge: Lush Green Edition", minP: 1, maxP: 4, playersText: "1 - 4", duration: 30, durationText: "20 - 30 min", theme: "Abstracto", subTheme: "Bosques y senderos", mechanics: ["Tirada de dados", "Conexión de rutas"], weight: 1.7, bggRating: 7.7, bggRank: 345 },
+      { slot: "C4", title: "Fugitive", minP: 2, maxP: 2, playersText: "2", duration: 20, durationText: "15 - 20 min", theme: "Detective / Crimen", subTheme: "Persecución", mechanics: ["Deducción", "Gestión de mano", "Faroleo"], weight: 1.6, bggRating: 7.2, bggRank: 1145 },
+      { slot: "C4", title: "Tiny Mountain Goats", minP: 2, maxP: 4, playersText: "2 - 4", duration: 30, durationText: "20 - 30 min", theme: "Animales / Lucha", subTheme: "Cabras montesas", mechanics: ["Tirada de dados", "Gestión de riesgo"], weight: 1.5, bggRating: 6.8, bggRank: 4820 },
+      { slot: "C4", title: "Kingdom Legacy: Exploration", minP: 1, maxP: 1, playersText: "1", duration: 60, durationText: "45 - 60 min", theme: "Fantasía", subTheme: "Expansión Kingdom Legacy", mechanics: ["Solitario", "Construcción de mazos"], weight: 2.1, bggRating: 7.6, bggRank: null, bggNote: "Expansión" },
+      { slot: "C4", title: "Kingdom Legacy: Feudal Kingdom", minP: 1, maxP: 1, playersText: "1", duration: 60, durationText: "45 - 60 min", theme: "Fantasía", subTheme: "Expansión Kingdom Legacy", mechanics: ["Solitario", "Construcción de mazos"], weight: 2.2, bggRating: 7.5, bggRank: null, bggNote: "Expansión" },
+      { slot: "C4", title: "Feudal Kingdom Adventures", minP: 1, maxP: 1, playersText: "1", duration: 60, durationText: "45 - 60 min", theme: "Fantasía", subTheme: "Expansión Kingdom Legacy", mechanics: ["Solitario", "Construcción de mazos"], weight: 2.2, bggRating: 7.4, bggRank: null, bggNote: "Expansión" },
+      { slot: "C4", title: "Barbecubes", minP: 2, maxP: 5, playersText: "2 - 5", duration: 20, durationText: "15 - 25 min", theme: "Gastronomía", subTheme: "Barbacoa / Dados", mechanics: ["Tirada de dados", "Colección de sets"], weight: 1.3, bggRating: 6.5, bggRank: 9410 },
+      { slot: "C4", title: "Sushi Go!", minP: 2, maxP: 5, playersText: "2 - 5", duration: 20, durationText: "20 min", theme: "Gastronomía", subTheme: "Sushi", mechanics: ["Draft de cartas", "Colección de sets"], weight: 1.2, bggRating: 7.0, bggRank: 652 },
+      { slot: "C4", title: "Time's Up!", minP: 4, maxP: 12, playersText: "4 - 12", duration: 40, durationText: "30 - 45 min", theme: "Humor / Party", subTheme: "Adivinanza", mechanics: ["Juego por equipos", "Tiempo real"], weight: 1.2, bggRating: 7.1, bggRank: 785 },
+      { slot: "C4", title: "Dados Zombi", minP: 2, maxP: 8, playersText: "2 - 8", duration: 20, durationText: "15 - 20 min", theme: "Zombis / Acción", subTheme: "Dados", mechanics: ["Tirada de dados", "Gestión de riesgo"], weight: 1.1, bggRating: 6.2, bggRank: 3120 },
+      { slot: "C4", title: "Los Hombres Lobo de Castronegro", minP: 8, maxP: 18, playersText: "8 - 18", duration: 45, durationText: "30 - 60 min", theme: "Terror / Lovecraft", subTheme: "Aldea / Licántropos", mechanics: ["Roles ocultos", "Deducción"], weight: 1.3, bggRating: 6.3, bggRank: 2890 },
+      { slot: "C4", title: "Dobble", minP: 2, maxP: 8, playersText: "2 - 8", duration: 15, durationText: "15 min", theme: "Abstracto", subTheme: "Reflejos", mechanics: ["Tiempo real", "Cooperativo"], weight: 1.1, bggRating: 6.5, bggRank: 1840 },
+      { slot: "C4", title: "Bang!", minP: 4, maxP: 7, playersText: "4 - 7", duration: 30, durationText: "20 - 40 min", theme: "Lejano Oeste", subTheme: "Duelo en el Oeste", mechanics: ["Roles ocultos", "Gestión de mano"], weight: 1.6, bggRating: 6.2, bggRank: 2240 },
+      { slot: "C4", title: "Bang!: Dodge City", minP: 3, maxP: 8, playersText: "3 - 8", duration: 40, durationText: "30 - 45 min", theme: "Lejano Oeste", subTheme: "Expansión Bang!", mechanics: ["Roles ocultos", "Gestión de mano", "Toma eso"], weight: 1.7, bggRating: 6.8, bggRank: null, bggNote: "Expansión" },
+      { slot: "C4", title: "Bang!: A Fistful of Cards", minP: 4, maxP: 7, playersText: "4 - 7", duration: 35, durationText: "30 - 40 min", theme: "Lejano Oeste", subTheme: "Expansión Bang!", mechanics: ["Roles ocultos", "Gestión de mano"], weight: 1.7, bggRating: 6.8, bggRank: null, bggNote: "Expansión" },
+      { slot: "D4", title: "Sky Team", minP: 2, maxP: 2, playersText: "2", duration: 20, durationText: "15 - 30 min", theme: "Ciencia ficción", subTheme: "Aviación", mechanics: ["Cooperativo", "Draft de dados"], weight: 2.0, bggRating: 8.1, bggRank: 32 },
+      { slot: "D4", title: "El Señor de los Anillos: Duelo por la Tierra Media", minP: 2, maxP: 2, playersText: "2", duration: 30, durationText: "30 min", theme: "Fantasía", subTheme: "Tierra Media", mechanics: ["Colección de sets", "Cooperativo"], weight: 2.1, bggRating: 8.4, bggRank: 18 },
+      { slot: "D4", title: "Splendor", minP: 2, maxP: 4, playersText: "2 - 4", duration: 30, durationText: "30 min", theme: "Histórico", subTheme: "Gemas / Renacimiento", mechanics: ["Colección de sets", "Gestión de recursos"], weight: 1.8, bggRating: 7.4, bggRank: 244 },
+      { slot: "D4", title: "Nova Luna", minP: 1, maxP: 4, playersText: "1 - 4", duration: 45, durationText: "30 - 60 min", theme: "Abstracto", subTheme: "Fases lunares", mechanics: ["Colocación de losetas", "Reconocimiento de patrones"], weight: 1.9, bggRating: 7.4, bggRank: 697 },
+      { slot: "D4", title: "Babylon", minP: 2, maxP: 4, playersText: "2 - 4", duration: 50, durationText: "40 - 60 min", theme: "Histórico", subTheme: "Jardines colgantes", mechanics: ["Colocación de losetas", "Gestión de recursos"], weight: 2.4, bggRating: 7.1, bggRank: 3796 },
+      { slot: "D4", title: "Flamecraft: Dragons & Dragons", minP: 1, maxP: 5, playersText: "1 - 5", duration: 60, durationText: "60 min", theme: "Fantasía", subTheme: "Expansión Flamecraft", mechanics: ["Colocación de trabajadores", "Colección de sets"], weight: 2.2, bggRating: 7.0, bggRank: null, bggNote: "Expansión" },
+      { slot: "E4", title: "Last Bastion", minP: 1, maxP: 4, playersText: "1 - 4", duration: 45, durationText: "45 min", theme: "Fantasía", subTheme: "Defensa de bastión", mechanics: ["Cooperativo", "Tirada de dados", "Gestión de mano"], weight: 2.2, bggRating: 7.3, bggRank: 910 },
+      { slot: "E4", title: "Rooms & Roomies", minP: 2, maxP: 6, playersText: "2 - 6", duration: 30, durationText: "25 - 35 min", theme: "Humor / Party", subTheme: "Convivencia", mechanics: ["Colocación de losetas", "Colección de sets", "Gestión de mano"], weight: 1.7, bggRating: 6.8, bggRank: 6420 },
+      { slot: "E4", title: "Almighty (The Godliest God Game)", minP: 2, maxP: 4, playersText: "2 - 4", duration: 60, durationText: "45 - 75 min", theme: "Fantasía", subTheme: "Mitología / Dioses", mechanics: ["Gestión de recursos", "Toma eso"], weight: 2.5, bggRating: 7.1, bggRank: 4890 },
+      { slot: "E4", title: "A.D.E.L.E.", minP: 1, maxP: 4, playersText: "1 - 4", duration: 45, durationText: "30 - 60 min", theme: "Ciencia ficción", subTheme: "Investigación", mechanics: ["Deducción", "Gestión de mano"], weight: 2.1, bggRating: 7.0, bggRank: 5310 },
+      { slot: "F4", title: "Takenoko: Collector's Edition", minP: 2, maxP: 4, playersText: "2 - 4", duration: 45, durationText: "45 min", theme: "Naturaleza", subTheme: "Edición coleccionista", mechanics: ["Colocación de losetas", "Tirada de dados"], weight: 2.0, bggRating: 8.1, bggRank: null, bggNote: "Edición" }
     ];
 
-    const confirmedEmptySlots = new Set(["C1", "G1", "C2", "G2", "C3", "G3"]);
+    const confirmedEmptySlots = new Set(["C1", "C2", "C3", "G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8"]);
     let games = [...initialGames];
     let selectedSlot = null;
     let selectedWeight = "";
