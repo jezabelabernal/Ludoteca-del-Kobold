@@ -98,7 +98,7 @@
             </h1>
           </div>
           <p class="text-emerald-200/90 text-sm mt-0.5">
-            Inventario mágico de tesoros lúdicos · <span id="headerCount" class="font-semibold text-white">57</span> juegos catalogados
+            Inventario mágico de tesoros lúdicos · <span id="headerCount" class="font-semibold text-white">58</span> juegos catalogados
           </p>
         </div>
       </div>
@@ -124,7 +124,7 @@
         <div class="w-11 h-11 rounded-xl bg-emerald-100 text-kobold-700 flex items-center justify-center text-xl font-bold">♟️</div>
         <div>
           <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Total Juegos</p>
-          <p id="kpiTotal" class="text-2xl font-extrabold text-kobold-900">57</p>
+          <p id="kpiTotal" class="text-2xl font-extrabold text-kobold-900">58</p>
         </div>
       </div>
       <div class="bg-white rounded-2xl p-4 shadow-sm border border-emerald-100 flex items-center gap-3.5">
@@ -152,7 +152,7 @@
         <div class="w-11 h-11 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-xl font-bold">⭐</div>
         <div>
           <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Nota Media BGG</p>
-          <p id="kpiAvgBgg" class="text-2xl font-extrabold text-kobold-900">7.41 <span class="text-sm font-normal text-slate-400">/ 10</span></p>
+          <p id="kpiAvgBgg" class="text-2xl font-extrabold text-kobold-900">7.40 <span class="text-sm font-normal text-slate-400">/ 10</span></p>
         </div>
       </div>
       <div class="bg-white rounded-2xl p-4 shadow-sm border border-emerald-100 flex items-center gap-3.5">
@@ -260,15 +260,16 @@
           </div>
         </div>
 
-        <!-- BGG Filter -->
+        <!-- BGG & Edition Filter -->
         <div>
-          <label class="block text-xs font-semibold text-slate-600 mb-1">Ranking / Nota BoardGameGeek</label>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Ranking / Nota BoardGameGeek / Tipo</label>
           <select id="bggFilter" onchange="applyFilters()" class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:border-kobold-500 outline-none text-sm bg-white">
             <option value="">Cualquier puntuación BGG</option>
             <option value="top100">Top 100 Mundial BGG</option>
             <option value="top500">Top 500 Mundial BGG</option>
             <option value="top1500">Top 1.500 Mundial BGG</option>
             <option value="rating75">Nota BGG ≥ 7.5</option>
+            <option value="expansionsOnly">🧩 Solo Expansiones</option>
           </select>
         </div>
 
@@ -317,9 +318,12 @@
       <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
         <div>
           <h2 class="font-display text-xl font-bold text-kobold-900">
-            Tesoros Encontrados (<span id="resultsCount">57</span>)
+            Tesoros Encontrados (<span id="resultsCount">58</span>)
           </h2>
-          <p class="text-xs text-slate-500">Incluye puntuación media y ranking mundial de BoardGameGeek (BGG)</p>
+          <p class="text-xs text-slate-500">
+            Incluye puntuación media y ranking mundial de BoardGameGeek (BGG) ·
+            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-emerald-100/90 text-emerald-900 font-semibold border border-emerald-300">🧩 Expansión marcada en verde</span>
+          </p>
         </div>
         <div class="flex flex-wrap items-center gap-2">
           <div class="inline-flex items-center gap-1 bg-slate-50 border border-slate-200 rounded-xl px-2 py-1">
@@ -367,6 +371,30 @@
           <tbody id="tableBody" class="divide-y divide-slate-100"></tbody>
         </table>
       </div>
+    </section>
+
+    <!-- Compact Expansions Finder Section -->
+    <section id="expansionsSection" class="bg-gradient-to-br from-emerald-50/90 via-white to-kobold-50 rounded-2xl p-4 sm:p-5 shadow-sm border-2 border-emerald-200/80">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-3">
+        <div>
+          <h2 class="font-display text-base sm:text-lg font-bold text-kobold-900 flex items-center gap-2">
+            <span>🧩</span> Buscador Rápido de Expansiones (<span id="expansionsCount">0</span>)
+          </h2>
+          <p class="text-xs text-slate-600">Consulta qué expansiones tienes en la estantería (incluidas las guardadas dentro de la caja del juego base).</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <input id="expansionSearchInput" type="text" placeholder="Buscar expansión o juego base..." oninput="renderExpansionsPanel()"
+            class="px-3 py-1.5 rounded-xl border border-emerald-200 bg-white focus:border-kobold-500 outline-none text-xs w-52 sm:w-60" />
+          <select id="expansionSlotFilter" onchange="renderExpansionsPanel()" class="px-2.5 py-1.5 rounded-xl border border-emerald-200 bg-white focus:border-kobold-500 outline-none text-xs">
+            <option value="">Todos los huecos</option>
+          </select>
+          <button type="button" onclick="filterOnlyExpansionsMain()" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs transition cursor-pointer shadow-xs">
+            Ver en tabla principal ↑
+          </button>
+        </div>
+      </div>
+
+      <div id="expansionsList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2.5 max-h-64 overflow-y-auto pr-1"></div>
     </section>
 
   </main>
@@ -519,14 +547,14 @@
       { slot: "B1", title: "Turing Machine", minP: 1, maxP: 4, playersText: "1 - 4", duration: 20, durationText: "20 min", theme: "Deducción / Lógica", subTheme: "Ordenadores", mechanics: ["Deducción", "Combinatoria"], weight: 2.5, bggRating: 7.6, bggRank: 265 },
       { slot: "B1", title: "Senbazuru", minP: 1, maxP: 5, playersText: "1 - 5", duration: 25, durationText: "20 - 30 min", theme: "Cultura / Arte", subTheme: "Origami", mechanics: ["Colección de sets", "Gestión de mano"], weight: 1.3, bggRating: 6.4, bggRank: 18450 },
       { slot: "B1", title: "Unstable Unicorns", minP: 2, maxP: 8, playersText: "2 - 8", duration: 40, durationText: "30 - 45 min", theme: "Humor / Party", subTheme: "Fantasía", mechanics: ["Gestión de mano", "Toma eso"], weight: 1.6, bggRating: 6.3, bggRank: 3650 },
-      { slot: "B1", title: "Kabuto Sumo (+ Expansiones)", minP: 2, maxP: 4, playersText: "2 - 4", duration: 20, durationText: "15 - 20 min", theme: "Animales / Lucha", subTheme: "Insectos Sumo + Exp.", mechanics: ["Destreza física", "Poderes variables"], weight: 1.5, bggRating: 6.7, bggRank: 2034 },
+      { slot: "B1", title: "Kabuto Sumo (+ Expansiones)", minP: 2, maxP: 4, playersText: "2 - 4", duration: 20, durationText: "15 - 20 min", theme: "Animales / Lucha", subTheme: "Insectos Sumo + Exp.", mechanics: ["Destreza física", "Poderes variables"], weight: 1.5, bggRating: 6.7, bggRank: 2034, hasExpansionInside: true, baseGame: "Kabuto Sumo" },
 
       { slot: "D1", title: "Kano", minP: 2, maxP: 4, playersText: "2 - 4", duration: 20, durationText: "20 min", theme: "Abstracto", subTheme: "Cartas", mechanics: ["Memoria", "Deducción"], weight: 1.3, bggRating: 7.4, bggRank: 7538 },
       { slot: "D1", title: "When I Dream", minP: 4, maxP: 10, playersText: "4 - 10", duration: 35, durationText: "30 - 40 min", theme: "Humor / Party", subTheme: "Sueños", mechanics: ["Roles ocultos", "Asociación de palabras"], weight: 1.2, bggRating: 7.0, bggRank: 1210 },
       { slot: "D1", title: "Concept", minP: 4, maxP: 12, playersText: "4 - 12", duration: 40, durationText: "40 min", theme: "Humor / Party", subTheme: "Deducción", mechanics: ["Comunicación por iconos", "Deducción"], weight: 1.4, bggRating: 6.7, bggRank: 1151 },
-      { slot: "D1", title: "Zombicide: ThunderCats (1, 2 y 3)", minP: 1, maxP: 6, playersText: "1 - 6", duration: 60, durationText: "60 min", theme: "Zombis / Acción", subTheme: "Expansión Crossover", mechanics: ["Cooperativo", "Tirada de dados"], weight: 2.5, bggRating: 7.8, bggRank: null, bggNote: "Expansión" },
+      { slot: "D1", title: "Zombicide: ThunderCats (1, 2 y 3)", minP: 1, maxP: 6, playersText: "1 - 6", duration: 60, durationText: "60 min", theme: "Zombis / Acción", subTheme: "Expansión Crossover", mechanics: ["Cooperativo", "Tirada de dados"], weight: 2.5, bggRating: 7.8, bggRank: null, bggNote: "Expansión", isExpansion: true, baseGame: "Zombicide: Black Plague" },
 
-      { slot: "E1", title: "Zombicide: Teenage Mutant Ninja Turtles", minP: 1, maxP: 6, playersText: "1 - 6", duration: 60, durationText: "60 min", theme: "Zombis / Acción", subTheme: "Expansión Crossover", mechanics: ["Cooperativo", "Tirada de dados"], weight: 2.5, bggRating: 8.1, bggRank: null, bggNote: "Expansión" },
+      { slot: "E1", title: "Zombicide: Teenage Mutant Ninja Turtles", minP: 1, maxP: 6, playersText: "1 - 6", duration: 60, durationText: "60 min", theme: "Zombis / Acción", subTheme: "Expansión Crossover", mechanics: ["Cooperativo", "Tirada de dados"], weight: 2.5, bggRating: 8.1, bggRank: null, bggNote: "Expansión", isExpansion: true, baseGame: "Zombicide: Black Plague" },
       { slot: "E1", title: "Zombicide: White Death", minP: 1, maxP: 6, playersText: "1 - 6", duration: 60, durationText: "60 min", theme: "Zombis / Acción", subTheme: "Fantasía medieval", mechanics: ["Cooperativo", "Tirada de dados"], weight: 2.6, bggRating: 8.0, bggRank: 1280 },
 
       { slot: "F1", title: "Tower Up", minP: 2, maxP: 4, playersText: "2 - 4", duration: 45, durationText: "45 min", theme: "Construcción", subTheme: "Ciudad", mechanics: ["Reconocimiento de patrones", "Colección de sets"], weight: 1.9, bggRating: 7.3, bggRank: 1417 },
@@ -538,7 +566,7 @@
       { slot: "B2", title: "Arkham Horror (La Llamada de Cthulhu)", minP: 1, maxP: 6, playersText: "1 - 6", duration: 150, durationText: "120 - 180 min", theme: "Terror / Lovecraft", subTheme: "Mitos de Cthulhu", mechanics: ["Cooperativo", "Gestión de mano", "Tablero modular"], weight: 3.4, bggRating: 7.7, bggRank: 357 },
       { slot: "B2", title: "Arkham Horror: El Juego de Cartas", minP: 1, maxP: 2, playersText: "1 - 2", duration: 90, durationText: "60 - 120 min", theme: "Terror / Lovecraft", subTheme: "LCG / Campaña", mechanics: ["Cooperativo", "Construcción de mazos", "Narrativo"], weight: 3.5, bggRating: 8.1, bggRank: 33 },
 
-      { slot: "D2", title: "Warhammer Quest: Blackstone Fortress - Escalada", minP: 1, maxP: 5, playersText: "1 - 5", duration: 150, durationText: "120 - 180 min", theme: "Ciencia ficción", subTheme: "Warhammer 40.000 / Exploración", mechanics: ["Cooperativo", "Exploración de mazmorras", "Tirada de dados"], weight: 3.1, bggRating: 8.2, bggRank: null, bggNote: "Expansión" },
+      { slot: "D2", title: "Warhammer Quest: Blackstone Fortress - Escalada", minP: 1, maxP: 5, playersText: "1 - 5", duration: 150, durationText: "120 - 180 min", theme: "Ciencia ficción", subTheme: "Warhammer 40.000 / Exploración", mechanics: ["Cooperativo", "Exploración de mazmorras", "Tirada de dados"], weight: 3.1, bggRating: 8.2, bggRank: null, bggNote: "Expansión", isExpansion: true, baseGame: "Warhammer Quest: Blackstone Fortress" },
       { slot: "D2", title: "Orquesta Negra", minP: 1, maxP: 5, playersText: "1 - 5", duration: 90, durationText: "90 min", theme: "Histórico", subTheme: "Segunda Guerra Mundial / Conspiración", mechanics: ["Cooperativo", "Gestión de mano", "Tentación a la suerte"], weight: 2.6, bggRating: 7.5, bggRank: 540 },
       { slot: "D2", title: "Pandemic Legacy: Temporada 1", minP: 2, maxP: 4, playersText: "2 - 4", duration: 60, durationText: "60 min", theme: "Médico / Supervivencia", subTheme: "Legacy / Campaña", mechanics: ["Cooperativo", "Gestión de mano", "Movimiento punto a punto"], weight: 2.8, bggRating: 8.5, bggRank: 3 },
       { slot: "D2", title: "Warhammer Quest: Ciudad Maldita", minP: 1, maxP: 4, playersText: "1 - 4", duration: 150, durationText: "120 - 180 min", theme: "Fantasía", subTheme: "Age of Sigmar / Terror gótico", mechanics: ["Cooperativo", "Exploración de mazmorras", "Tirada de dados"], weight: 2.9, bggRating: 7.5, bggRank: 1120 },
@@ -549,15 +577,16 @@
 
       // Columna 3
       { slot: "A3", title: "Star Wars: Imperial Assault", minP: 1, maxP: 5, playersText: "1 - 5", duration: 90, durationText: "60 - 120 min", theme: "Ciencia ficción", subTheme: "Star Wars / Táctico", mechanics: ["Tirada de dados", "Movimiento en cuadrícula", "Escenarios / Campaña"], weight: 3.3, bggRating: 8.0, bggRank: 88 },
-      { slot: "A3", title: "Imperial Assault: El Reino de Jabba", minP: 1, maxP: 5, playersText: "1 - 5", duration: 90, durationText: "60 - 120 min", theme: "Ciencia ficción", subTheme: "Star Wars / Expansión", mechanics: ["Tirada de dados", "Movimiento en cuadrícula", "Escenarios / Campaña"], weight: 3.3, bggRating: 8.4, bggRank: null, bggNote: "Expansión" },
+      { slot: "A3", title: "Imperial Assault: El Reino de Jabba", minP: 1, maxP: 5, playersText: "1 - 5", duration: 90, durationText: "60 - 120 min", theme: "Ciencia ficción", subTheme: "Star Wars / Expansión", mechanics: ["Tirada de dados", "Movimiento en cuadrícula", "Escenarios / Campaña"], weight: 3.3, bggRating: 8.4, bggRank: null, bggNote: "Expansión", isExpansion: true, baseGame: "Star Wars: Imperial Assault" },
 
-      { slot: "B3", title: "Arkham Horror: Vástagos de Sangre", minP: 1, maxP: 8, playersText: "1 - 8", duration: 180, durationText: "120 - 240 min", theme: "Terror / Lovecraft", subTheme: "Expansión Mitos de Cthulhu", mechanics: ["Cooperativo", "Gestión de mano", "Tirada de dados"], weight: 3.6, bggRating: 7.5, bggRank: null, bggNote: "Expansión" },
+      { slot: "B3", title: "Arkham Horror: Vástagos de Sangre", minP: 1, maxP: 8, playersText: "1 - 8", duration: 180, durationText: "120 - 240 min", theme: "Terror / Lovecraft", subTheme: "Expansión Mitos de Cthulhu", mechanics: ["Cooperativo", "Gestión de mano", "Tirada de dados"], weight: 3.6, bggRating: 7.5, bggRank: null, bggNote: "Expansión", isExpansion: true, baseGame: "Arkham Horror" },
       { slot: "B3", title: "Arkham Horror: El Juego de Cartas", minP: 1, maxP: 2, playersText: "1 - 2", duration: 90, durationText: "60 - 120 min", theme: "Terror / Lovecraft", subTheme: "LCG / Campaña", mechanics: ["Cooperativo", "Construcción de mazos", "Narrativo"], weight: 3.5, bggRating: 8.1, bggRank: 33 },
       { slot: "B3", title: "Las Mansiones de la Locura", minP: 1, maxP: 5, playersText: "1 - 5", duration: 120, durationText: "90 - 180 min", theme: "Terror / Lovecraft", subTheme: "Investigación sobrenatural", mechanics: ["Cooperativo", "Exploración de mazmorras", "App híbrida"], weight: 2.7, bggRating: 8.0, bggRank: 82 },
 
       { slot: "D3", title: "Patchwork", minP: 2, maxP: 2, playersText: "2", duration: 30, durationText: "30 min", theme: "Artesanía / Textil", subTheme: "Edredones / Patchwork", mechanics: ["Poliominós", "Gestión de tiempo"], weight: 1.6, bggRating: 7.6, bggRank: 149 },
       { slot: "D3", title: "Res Arcana", minP: 2, maxP: 4, playersText: "2 - 4", duration: 45, durationText: "45 - 60 min", theme: "Fantasía", subTheme: "Alquimia / Mago", mechanics: ["Construcción de motor", "Gestión de mano", "Gestión de recursos"], weight: 2.6, bggRating: 7.7, bggRank: 142 },
-      { slot: "D3", title: "Quarriors: Quarmageddon", minP: 2, maxP: 4, playersText: "2 - 4", duration: 45, durationText: "45 min", theme: "Fantasía", subTheme: "Dados / Duelo de magos", mechanics: ["Construcción de mazos con dados", "Tirada de dados"], weight: 2.0, bggRating: 6.9, bggRank: null, bggNote: "Expansión" },
+      { slot: "D3", title: "Quarriors!", minP: 2, maxP: 4, playersText: "2 - 4", duration: 45, durationText: "45 min", theme: "Fantasía", subTheme: "Dados / Duelo de magos (Caja compartida con exp.)", mechanics: ["Construcción de mazos con dados", "Tirada de dados"], weight: 1.9, bggRating: 6.7, bggRank: 1682 },
+      { slot: "D3", title: "Quarriors: Quarmageddon", minP: 2, maxP: 4, playersText: "2 - 4", duration: 45, durationText: "45 min", theme: "Fantasía", subTheme: "Expansión · En la caja de Quarriors!", mechanics: ["Construcción de mazos con dados", "Tirada de dados"], weight: 2.0, bggRating: 6.9, bggRank: null, bggNote: "Expansión", isExpansion: true, baseGame: "Quarriors!", sharedBoxWith: "Quarriors!" },
       { slot: "D3", title: "It's a Wonderful World", minP: 1, maxP: 5, playersText: "1 - 5", duration: 45, durationText: "45 - 60 min", theme: "Ciencia ficción", subTheme: "Imperios / Steampunk", mechanics: ["Draft simultáneo de cartas", "Construcción de motor"], weight: 2.3, bggRating: 7.7, bggRank: 188 },
       { slot: "D3", title: "Mariposas", minP: 2, maxP: 5, playersText: "2 - 5", duration: 45, durationText: "30 - 45 min", theme: "Naturaleza", subTheme: "Migración de mariposas monarca", mechanics: ["Colección de sets", "Movimiento punto a punto"], weight: 1.8, bggRating: 6.8, bggRank: 1489 },
 
@@ -577,7 +606,7 @@
 
       // Columna 4
       { slot: "A4", title: "Pathfinder: El Auge de los Señores de las Runas", minP: 1, maxP: 4, playersText: "1 - 4", duration: 90, durationText: "90 min", theme: "Fantasía", subTheme: "Rol / Aventura", mechanics: ["Cooperativo", "Construcción de mazos"], weight: 2.8, bggRating: 7.2, bggRank: 737 },
-      { slot: "A4", title: "Kingdom Come: Deliverance – The Board Game", minP: 1, maxP: 4, playersText: "1 - 4", duration: 220, durationText: "120 - 320 min", theme: "Histórico", subTheme: "Bohemia medieval", mechanics: ["Construcción de mazos", "Gestión de mano", "Movimiento en áreas"], weight: 3.4, bggRating: 8.6, bggRank: null },
+      { slot: "A4", title: "Kingdom Come: Deliverance – The Board Game", minP: 1, maxP: 4, playersText: "1 - 4", duration: 220, durationText: "120 - 320 min", theme: "Histórico", subTheme: "Bohemia medieval", mechanics: ["Construcción de mazos", "Gestión de mano", "Movimiento en áreas"], weight: 3.93, bggRating: 8.7, bggRank: 3487 },
       { slot: "B4", title: "Greylune", minP: 2, maxP: 4, playersText: "2 - 4", duration: 90, durationText: "90 min", theme: "Fantasía", subTheme: "Aventura medieval", mechanics: ["Colocación de trabajadores", "Gestión de recursos"], weight: 2.5, bggRating: 7.3, bggRank: 11852 },
       { slot: "B4", title: "Colt Express", minP: 2, maxP: 6, playersText: "2 - 6", duration: 40, durationText: "40 min", theme: "Lejano Oeste", subTheme: "Robo de trenes", mechanics: ["Programación de acciones", "Toma eso"], weight: 1.9, bggRating: 7.1, bggRank: 495 },
       { slot: "B4", title: "Fromage", minP: 1, maxP: 4, playersText: "1 - 4", duration: 40, durationText: "30 - 45 min", theme: "Gastronomía", subTheme: "Quesos", mechanics: ["Colocación de trabajadores", "Tablero giratorio"], weight: 2.2, bggRating: 7.7, bggRank: 361 },
@@ -587,9 +616,9 @@
       { slot: "C4", title: "Railroad Ink Challenge: Lush Green Edition", minP: 1, maxP: 4, playersText: "1 - 4", duration: 30, durationText: "20 - 30 min", theme: "Abstracto", subTheme: "Bosques y senderos", mechanics: ["Tirada de dados", "Conexión de rutas"], weight: 1.7, bggRating: 7.7, bggRank: 345 },
       { slot: "C4", title: "Fugitive", minP: 2, maxP: 2, playersText: "2", duration: 20, durationText: "15 - 20 min", theme: "Detective / Crimen", subTheme: "Persecución", mechanics: ["Deducción", "Gestión de mano", "Faroleo"], weight: 1.6, bggRating: 7.2, bggRank: 1145 },
       { slot: "C4", title: "Tiny Mountain Goats", minP: 2, maxP: 4, playersText: "2 - 4", duration: 30, durationText: "20 - 30 min", theme: "Animales / Lucha", subTheme: "Cabras montesas", mechanics: ["Tirada de dados", "Gestión de riesgo"], weight: 1.5, bggRating: 6.8, bggRank: 4820 },
-      { slot: "C4", title: "Kingdom Legacy: Exploration", minP: 1, maxP: 1, playersText: "1", duration: 60, durationText: "45 - 60 min", theme: "Fantasía", subTheme: "Expansión Kingdom Legacy", mechanics: ["Solitario", "Construcción de mazos"], weight: 2.1, bggRating: 7.6, bggRank: null, bggNote: "Expansión" },
-      { slot: "C4", title: "Kingdom Legacy: Feudal Kingdom", minP: 1, maxP: 1, playersText: "1", duration: 60, durationText: "45 - 60 min", theme: "Fantasía", subTheme: "Expansión Kingdom Legacy", mechanics: ["Solitario", "Construcción de mazos"], weight: 2.2, bggRating: 7.5, bggRank: null, bggNote: "Expansión" },
-      { slot: "C4", title: "Feudal Kingdom Adventures", minP: 1, maxP: 1, playersText: "1", duration: 60, durationText: "45 - 60 min", theme: "Fantasía", subTheme: "Expansión Kingdom Legacy", mechanics: ["Solitario", "Construcción de mazos"], weight: 2.2, bggRating: 7.4, bggRank: null, bggNote: "Expansión" },
+      { slot: "C4", title: "Kingdom Legacy: Exploration", minP: 1, maxP: 1, playersText: "1", duration: 60, durationText: "45 - 60 min", theme: "Fantasía", subTheme: "Expansión Kingdom Legacy", mechanics: ["Solitario", "Construcción de mazos"], weight: 2.1, bggRating: 7.6, bggRank: null, bggNote: "Expansión", isExpansion: true, baseGame: "Kingdom Legacy" },
+      { slot: "C4", title: "Kingdom Legacy: Feudal Kingdom", minP: 1, maxP: 1, playersText: "1", duration: 60, durationText: "45 - 60 min", theme: "Fantasía", subTheme: "Expansión Kingdom Legacy", mechanics: ["Solitario", "Construcción de mazos"], weight: 2.2, bggRating: 7.5, bggRank: null, bggNote: "Expansión", isExpansion: true, baseGame: "Kingdom Legacy" },
+      { slot: "C4", title: "Feudal Kingdom Adventures", minP: 1, maxP: 1, playersText: "1", duration: 60, durationText: "45 - 60 min", theme: "Fantasía", subTheme: "Expansión Kingdom Legacy", mechanics: ["Solitario", "Construcción de mazos"], weight: 2.2, bggRating: 7.4, bggRank: null, bggNote: "Expansión", isExpansion: true, baseGame: "Kingdom Legacy" },
       { slot: "C4", title: "Barbecubes", minP: 2, maxP: 5, playersText: "2 - 5", duration: 20, durationText: "15 - 25 min", theme: "Gastronomía", subTheme: "Barbacoa / Dados", mechanics: ["Tirada de dados", "Colección de sets"], weight: 1.3, bggRating: 6.5, bggRank: 9410 },
       { slot: "C4", title: "Sushi Go!", minP: 2, maxP: 5, playersText: "2 - 5", duration: 20, durationText: "20 min", theme: "Gastronomía", subTheme: "Sushi", mechanics: ["Draft de cartas", "Colección de sets"], weight: 1.2, bggRating: 7.0, bggRank: 652 },
       { slot: "C4", title: "Time's Up!", minP: 4, maxP: 12, playersText: "4 - 12", duration: 40, durationText: "30 - 45 min", theme: "Humor / Party", subTheme: "Adivinanza", mechanics: ["Juego por equipos", "Tiempo real"], weight: 1.2, bggRating: 7.1, bggRank: 785 },
@@ -597,19 +626,19 @@
       { slot: "C4", title: "Los Hombres Lobo de Castronegro", minP: 8, maxP: 18, playersText: "8 - 18", duration: 45, durationText: "30 - 60 min", theme: "Terror / Lovecraft", subTheme: "Aldea / Licántropos", mechanics: ["Roles ocultos", "Deducción"], weight: 1.3, bggRating: 6.3, bggRank: 2890 },
       { slot: "C4", title: "Dobble", minP: 2, maxP: 8, playersText: "2 - 8", duration: 15, durationText: "15 min", theme: "Abstracto", subTheme: "Reflejos", mechanics: ["Tiempo real", "Cooperativo"], weight: 1.1, bggRating: 6.5, bggRank: 1840 },
       { slot: "C4", title: "Bang!", minP: 4, maxP: 7, playersText: "4 - 7", duration: 30, durationText: "20 - 40 min", theme: "Lejano Oeste", subTheme: "Duelo en el Oeste", mechanics: ["Roles ocultos", "Gestión de mano"], weight: 1.6, bggRating: 6.2, bggRank: 2240 },
-      { slot: "C4", title: "Bang!: Dodge City", minP: 3, maxP: 8, playersText: "3 - 8", duration: 40, durationText: "30 - 45 min", theme: "Lejano Oeste", subTheme: "Expansión Bang!", mechanics: ["Roles ocultos", "Gestión de mano", "Toma eso"], weight: 1.7, bggRating: 6.8, bggRank: null, bggNote: "Expansión" },
-      { slot: "C4", title: "Bang!: A Fistful of Cards", minP: 4, maxP: 7, playersText: "4 - 7", duration: 35, durationText: "30 - 40 min", theme: "Lejano Oeste", subTheme: "Expansión Bang!", mechanics: ["Roles ocultos", "Gestión de mano"], weight: 1.7, bggRating: 6.8, bggRank: null, bggNote: "Expansión" },
+      { slot: "C4", title: "Bang!: Dodge City", minP: 3, maxP: 8, playersText: "3 - 8", duration: 40, durationText: "30 - 45 min", theme: "Lejano Oeste", subTheme: "Expansión Bang!", mechanics: ["Roles ocultos", "Gestión de mano", "Toma eso"], weight: 1.7, bggRating: 6.8, bggRank: null, bggNote: "Expansión", isExpansion: true, baseGame: "Bang!" },
+      { slot: "C4", title: "Bang!: A Fistful of Cards", minP: 4, maxP: 7, playersText: "4 - 7", duration: 35, durationText: "30 - 40 min", theme: "Lejano Oeste", subTheme: "Expansión Bang!", mechanics: ["Roles ocultos", "Gestión de mano"], weight: 1.7, bggRating: 6.8, bggRank: null, bggNote: "Expansión", isExpansion: true, baseGame: "Bang!" },
       { slot: "D4", title: "Sky Team", minP: 2, maxP: 2, playersText: "2", duration: 20, durationText: "15 - 30 min", theme: "Ciencia ficción", subTheme: "Aviación", mechanics: ["Cooperativo", "Draft de dados"], weight: 2.0, bggRating: 8.1, bggRank: 32 },
       { slot: "D4", title: "El Señor de los Anillos: Duelo por la Tierra Media", minP: 2, maxP: 2, playersText: "2", duration: 30, durationText: "30 min", theme: "Fantasía", subTheme: "Tierra Media", mechanics: ["Colección de sets", "Cooperativo"], weight: 2.1, bggRating: 8.4, bggRank: 18 },
       { slot: "D4", title: "Splendor", minP: 2, maxP: 4, playersText: "2 - 4", duration: 30, durationText: "30 min", theme: "Histórico", subTheme: "Gemas / Renacimiento", mechanics: ["Colección de sets", "Gestión de recursos"], weight: 1.8, bggRating: 7.4, bggRank: 244 },
       { slot: "D4", title: "Nova Luna", minP: 1, maxP: 4, playersText: "1 - 4", duration: 45, durationText: "30 - 60 min", theme: "Abstracto", subTheme: "Fases lunares", mechanics: ["Colocación de losetas", "Reconocimiento de patrones"], weight: 1.9, bggRating: 7.4, bggRank: 697 },
       { slot: "D4", title: "Babylon", minP: 2, maxP: 4, playersText: "2 - 4", duration: 50, durationText: "40 - 60 min", theme: "Histórico", subTheme: "Jardines colgantes", mechanics: ["Colocación de losetas", "Gestión de recursos"], weight: 2.4, bggRating: 7.1, bggRank: 3796 },
-      { slot: "D4", title: "Flamecraft: Dragons & Dragons", minP: 1, maxP: 5, playersText: "1 - 5", duration: 60, durationText: "60 min", theme: "Fantasía", subTheme: "Expansión Flamecraft", mechanics: ["Colocación de trabajadores", "Colección de sets"], weight: 2.2, bggRating: 7.0, bggRank: null, bggNote: "Expansión" },
+      { slot: "D4", title: "Flamecraft: Dragons & Dragons", minP: 1, maxP: 5, playersText: "1 - 5", duration: 60, durationText: "60 min", theme: "Fantasía", subTheme: "Expansión Flamecraft", mechanics: ["Colocación de trabajadores", "Colección de sets"], weight: 2.2, bggRating: 7.0, bggRank: null, bggNote: "Expansión", isExpansion: true, baseGame: "Flamecraft" },
       { slot: "E4", title: "Last Bastion", minP: 1, maxP: 4, playersText: "1 - 4", duration: 45, durationText: "45 min", theme: "Fantasía", subTheme: "Defensa de bastión", mechanics: ["Cooperativo", "Tirada de dados", "Gestión de mano"], weight: 2.2, bggRating: 7.3, bggRank: 910 },
       { slot: "E4", title: "Rooms & Roomies", minP: 2, maxP: 6, playersText: "2 - 6", duration: 30, durationText: "25 - 35 min", theme: "Humor / Party", subTheme: "Convivencia", mechanics: ["Colocación de losetas", "Colección de sets", "Gestión de mano"], weight: 1.7, bggRating: 6.8, bggRank: 6420 },
       { slot: "E4", title: "Almighty (The Godliest God Game)", minP: 2, maxP: 4, playersText: "2 - 4", duration: 60, durationText: "45 - 75 min", theme: "Fantasía", subTheme: "Mitología / Dioses", mechanics: ["Gestión de recursos", "Toma eso"], weight: 2.5, bggRating: 7.1, bggRank: 4890 },
       { slot: "E4", title: "A.D.E.L.E.", minP: 1, maxP: 4, playersText: "1 - 4", duration: 45, durationText: "30 - 60 min", theme: "Ciencia ficción", subTheme: "Investigación", mechanics: ["Deducción", "Gestión de mano"], weight: 2.1, bggRating: 7.0, bggRank: 5310 },
-      { slot: "F4", title: "Takenoko: Collector's Edition", minP: 2, maxP: 4, playersText: "2 - 4", duration: 45, durationText: "45 min", theme: "Naturaleza", subTheme: "Edición coleccionista", mechanics: ["Colocación de losetas", "Tirada de dados"], weight: 2.0, bggRating: 8.1, bggRank: null, bggNote: "Edición" }
+      { slot: "F4", title: "Takenoko: Collector's Edition", minP: 2, maxP: 4, playersText: "2 - 4", duration: 45, durationText: "45 min", theme: "Naturaleza", subTheme: "Edición coleccionista", mechanics: ["Colocación de losetas", "Tirada de dados"], weight: 1.97, bggRating: 7.2, bggRank: 453 }
     ];
 
     const confirmedEmptySlots = new Set(["C1", "C2", "C3", "G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8"]);
@@ -627,8 +656,10 @@
 
     function init() {
       populateFilterDropdowns();
+      populateExpansionSlotFilter();
       initCharts();
       applyFilters();
+      renderExpansionsPanel();
     }
 
     function populateFilterDropdowns() {
@@ -696,7 +727,7 @@
       filteredGames = games.filter(g => {
         if (selectedSlot && g.slot !== selectedSlot) return false;
         if (query) {
-          const hay = `${g.title} ${g.theme} ${g.subTheme} ${g.mechanics.join(" ")} ${g.slot}`.toLowerCase();
+          const hay = `${g.title} ${g.theme} ${g.subTheme} ${g.mechanics.join(" ")} ${g.slot} ${g.baseGame || ""}`.toLowerCase();
           if (!hay.includes(query)) return false;
         }
         if (players) {
@@ -725,6 +756,7 @@
         if (bggFilter === "top500" && (!g.bggRank || g.bggRank > 500)) return false;
         if (bggFilter === "top1500" && (!g.bggRank || g.bggRank > 1500)) return false;
         if (bggFilter === "rating75" && (!g.bggRating || g.bggRating < 7.5)) return false;
+        if (bggFilter === "expansionsOnly" && !g.isExpansion && !g.hasExpansionInside) return false;
 
         return true;
       });
@@ -831,7 +863,6 @@
       });
 
       let html = '<div class="grid grid-cols-9 gap-1.5 items-center">';
-      // Header row
       html += '<div></div>';
       cols.forEach(c => {
         html += `<div class="text-center text-xs font-bold text-amber-300/90 pb-1">Col ${c}</div>`;
@@ -914,14 +945,25 @@
       cardsEl.innerHTML = filteredGames.map(g => {
         const w = getWeightBadge(g.weight);
         const bgg = getBggBadge(g);
+        const isExp = Boolean(g.isExpansion);
+        const cardBg = isExp
+          ? "border-2 border-emerald-400 bg-gradient-to-b from-emerald-50/90 to-emerald-100/50"
+          : "border border-emerald-100 bg-gradient-to-b from-white to-kobold-50/40";
+        const expTag = isExp
+          ? `<span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-600 text-white shadow-xs">🧩 Expansión</span>`
+          : (g.hasExpansionInside ? `<span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-900 border border-emerald-300">🧩 +Exp. en caja</span>` : "");
+
         return `
-          <div class="rounded-2xl border border-emerald-100 bg-gradient-to-b from-white to-kobold-50/40 p-4 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+          <div class="rounded-2xl ${cardBg} p-4 shadow-sm hover:shadow-md transition flex flex-col justify-between">
             <div>
               <div class="flex items-start justify-between gap-2 mb-2">
-                <span onclick="selectSlot('${g.slot}')" class="cursor-pointer inline-flex items-center px-2.5 py-1 rounded-lg bg-kobold-800 text-amber-300 font-display font-bold text-xs shadow-sm hover:bg-kobold-700" title="Filtrar hueco ${g.slot}">
-                  📍 ${g.slot}
-                </span>
-                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full border ${w.cls}">
+                <div class="flex flex-wrap items-center gap-1.5">
+                  <span onclick="selectSlot('${g.slot}')" class="cursor-pointer inline-flex items-center px-2.5 py-1 rounded-lg bg-kobold-800 text-amber-300 font-display font-bold text-xs shadow-sm hover:bg-kobold-700" title="Filtrar hueco ${g.slot}">
+                    📍 ${g.slot}
+                  </span>
+                  ${expTag}
+                </div>
+                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full border shrink-0 ${w.cls}">
                   ${w.label}
                 </span>
               </div>
@@ -949,10 +991,18 @@
         const w = getWeightBadge(g.weight);
         const ratingText = g.bggRating ? `⭐ ${g.bggRating.toFixed(1)}` : "N/D";
         const rankText = g.bggRank ? `#${g.bggRank.toLocaleString("es-ES")}` : (g.bggNote || "-");
+        const isExp = Boolean(g.isExpansion);
+        const rowClass = isExp
+          ? "bg-emerald-50/90 hover:bg-emerald-100/80 border-l-4 border-l-emerald-500 transition"
+          : "hover:bg-kobold-50/60 transition";
+        const titleBadge = isExp
+          ? `<span class="ml-1.5 inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-600 text-white align-middle">🧩 Expansión</span>`
+          : (g.hasExpansionInside ? `<span class="ml-1.5 inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 align-middle">🧩 +Exp. en caja</span>` : "");
+
         return `
-          <tr class="hover:bg-kobold-50/60 transition">
+          <tr class="${rowClass}">
             <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded bg-kobold-800 text-amber-300 font-bold text-xs">${g.slot}</span></td>
-            <td class="py-2.5 px-3 font-bold text-kobold-950">${g.title}</td>
+            <td class="py-2.5 px-3 font-bold text-kobold-950">${g.title}${titleBadge}</td>
             <td class="py-2.5 px-3 whitespace-nowrap font-semibold text-indigo-900">${ratingText}</td>
             <td class="py-2.5 px-3 whitespace-nowrap text-slate-700">${rankText}</td>
             <td class="py-2.5 px-3 text-slate-600 whitespace-nowrap">${g.playersText}</td>
@@ -963,6 +1013,77 @@
           </tr>
         `;
       }).join("");
+    }
+
+    function getAllExpansions() {
+      return games.filter(g => g.isExpansion || g.hasExpansionInside);
+    }
+
+    function populateExpansionSlotFilter() {
+      const slotSelect = document.getElementById("expansionSlotFilter");
+      if (!slotSelect) return;
+      const slots = [...new Set(getAllExpansions().map(g => g.slot))].sort();
+      slotSelect.innerHTML = '<option value="">Todos los huecos</option>' +
+        slots.map(s => `<option value="${s}">Hueco ${s}</option>`).join("");
+    }
+
+    function renderExpansionsPanel() {
+      const listEl = document.getElementById("expansionsList");
+      const countEl = document.getElementById("expansionsCount");
+      if (!listEl || !countEl) return;
+
+      const q = (document.getElementById("expansionSearchInput")?.value || "").toLowerCase().trim();
+      const slotF = document.getElementById("expansionSlotFilter")?.value || "";
+
+      const exps = getAllExpansions().filter(g => {
+        if (slotF && g.slot !== slotF) return false;
+        if (q) {
+          const hay = `${g.title} ${g.baseGame || ""} ${g.subTheme} ${g.slot}`.toLowerCase();
+          if (!hay.includes(q)) return false;
+        }
+        return true;
+      });
+
+      countEl.textContent = exps.length;
+
+      if (exps.length === 0) {
+        listEl.innerHTML = `<div class="col-span-full py-4 text-center text-xs text-slate-500">No hay expansiones que coincidan con ese filtro.</div>`;
+        return;
+      }
+
+      listEl.innerHTML = exps.map(g => {
+        const ratingStr = g.bggRating ? `⭐ ${g.bggRating.toFixed(1)}` : "";
+        const baseInfo = g.baseGame ? `Base: ${g.baseGame}` : g.subTheme;
+        const boxNote = g.sharedBoxWith ? ` · 📦 Caja de ${g.sharedBoxWith}` : (g.hasExpansionInside ? " · 📦 Guardadas juntas" : "");
+        return `
+          <div onclick="locateExpansion('${g.title.replace(/'/g, "\'")}')" class="p-2.5 rounded-xl bg-white hover:bg-emerald-50 border border-emerald-200 hover:border-emerald-400 cursor-pointer transition flex items-start justify-between gap-2 shadow-2xs">
+            <div class="min-w-0">
+              <div class="flex items-center gap-1.5 mb-0.5">
+                <span class="px-1.5 py-0.5 rounded bg-kobold-800 text-amber-300 font-bold text-[10px]">${g.slot}</span>
+                <span class="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.2 rounded">${ratingStr}</span>
+              </div>
+              <p class="font-bold text-xs text-kobold-950 truncate" title="${g.title}">${g.title}</p>
+              <p class="text-[11px] text-slate-600 truncate" title="${baseInfo}${boxNote}">${baseInfo}${boxNote}</p>
+            </div>
+            <span class="text-[11px] font-bold text-emerald-700 shrink-0 self-center">Ver →</span>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function locateExpansion(title) {
+      resetFilters();
+      document.getElementById("searchInput").value = title;
+      applyFilters();
+      document.getElementById("resultsCount").scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    function filterOnlyExpansionsMain() {
+      resetFilters();
+      document.getElementById("bggFilter").value = "expansionsOnly";
+      setView("table");
+      applyFilters();
+      document.getElementById("resultsCount").scrollIntoView({ behavior: "smooth", block: "center" });
     }
 
     function setView(view) {
@@ -1267,4 +1388,3 @@
   </script>
 </body>
 </html>
-```[cite: 8]
