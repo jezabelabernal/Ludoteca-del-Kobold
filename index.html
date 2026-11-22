@@ -1355,19 +1355,15 @@
       renderGamesList();
     }
 
-    function buildCardCoverHTML(g, w, expTag) {
+    function buildCardThumbHTML(g) {
       const vis = themeVisuals[g.theme] || { icon: "🎲", grad: "from-kobold-950 via-kobold-800 to-emerald-700", accent: "#fde047" };
       const imgUrl = getGameCoverUrl(g);
       const encodedTitle = encodeURIComponent(g.title);
 
       const fallbackArt = `
         <div class="cover-fallback w-full h-full bg-gradient-to-br ${vis.grad} relative flex items-center justify-center overflow-hidden select-none">
-          <div class="absolute inset-0 opacity-15" style="background-image: radial-gradient(${vis.accent} 1.2px, transparent 1.2px); background-size: 14px 14px;"></div>
-          <div class="absolute -right-4 -bottom-4 text-7xl opacity-20 rotate-12 pointer-events-none">${vis.icon}</div>
-          <div class="relative z-10 flex flex-col items-center text-center px-3">
-            <span class="text-4xl drop-shadow-md mb-1">${vis.icon}</span>
-            <span class="font-display text-[10px] uppercase tracking-widest text-white/85 font-bold px-2 py-0.5 rounded-full bg-black/25 backdrop-blur-[2px]">${g.theme}</span>
-          </div>
+          <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(${vis.accent} 1px, transparent 1px); background-size: 9px 9px;"></div>
+          <span class="relative z-10 text-2xl sm:text-3xl drop-shadow">${vis.icon}</span>
         </div>
       `;
 
@@ -1379,27 +1375,11 @@
         : fallbackArt;
 
       return `
-        <div class="relative h-32 w-full overflow-hidden border-b border-emerald-100/80 bg-kobold-950">
+        <div class="relative w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border border-emerald-200/80 bg-kobold-950 shrink-0 shadow-xs">
           ${imgTag}
-          <div class="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-black/25 pointer-events-none"></div>
-
-          <!-- Top overlays: Slot + Expansion badge on left, Complexity badge on right -->
-          <div class="absolute top-2.5 left-2.5 right-2.5 flex items-start justify-between gap-1.5 z-10">
-            <div class="flex flex-wrap items-center gap-1">
-              <span onclick="selectSlot('${g.slot}')" class="cursor-pointer inline-flex items-center px-2 py-0.5 rounded-lg bg-kobold-900/90 backdrop-blur-xs text-amber-300 border border-amber-400/40 font-display font-bold text-xs shadow hover:bg-kobold-800" title="Filtrar hueco ${g.slot}">
-                📍 ${g.slot}
-              </span>
-              ${expTag}
-            </div>
-            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full border shadow-xs backdrop-blur-xs shrink-0 ${w.cls}">
-              ${w.label}
-            </span>
-          </div>
-
-          <!-- Bottom-right subtle button to set/edit custom cover image -->
-          <button type="button" onclick="setCustomGameCover('${encodedTitle}')" title="Añadir o cambiar imagen de portada"
-            class="absolute bottom-2 right-2 z-10 opacity-85 hover:opacity-100 px-2 py-1 rounded-lg bg-black/60 hover:bg-black/80 text-white text-[10px] font-semibold backdrop-blur-xs border border-white/20 transition cursor-pointer">
-            📷 Portada
+          <button type="button" onclick="setCustomGameCover('${encodedTitle}')" title="Añadir o cambiar imagen en miniatura"
+            class="absolute bottom-1 right-1 z-10 opacity-85 hover:opacity-100 w-5 h-5 rounded-md bg-black/65 hover:bg-black/85 text-white text-[10px] flex items-center justify-center backdrop-blur-xs border border-white/20 transition cursor-pointer">
+            📷
           </button>
         </div>
       `;
@@ -1427,29 +1407,43 @@
           ? "border-2 border-emerald-400 bg-gradient-to-b from-emerald-50/90 to-emerald-100/50"
           : "border border-emerald-100 bg-gradient-to-b from-white to-kobold-50/40";
         const expTag = isExp
-          ? `<span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-600 text-white shadow-xs">🧩 Expansión</span>`
-          : (g.hasExpansionInside ? `<span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-900 border border-emerald-300">🧩 +Exp. en caja</span>` : "");
+          ? `<span class="inline-flex items-center gap-1 text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-emerald-600 text-white shadow-xs">🧩 Exp.</span>`
+          : (g.hasExpansionInside ? `<span class="inline-flex items-center gap-1 text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-emerald-100 text-emerald-900 border border-emerald-300">🧩 +Exp.</span>` : "");
 
         return `
-          <div class="group rounded-2xl ${cardBg} overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between">
-            <div>
-              ${buildCardCoverHTML(g, w, expTag)}
-              <div class="p-4 pb-2">
-                <h3 class="font-bold text-base text-kobold-950 leading-snug mb-1">${g.title}</h3>
-                <p class="text-xs font-medium text-kobold-600 mb-2">${g.theme} · <span class="text-slate-500">${g.subTheme}</span></p>
-                <div class="mb-2">
-                  ${bgg.html}
+          <div class="group rounded-2xl ${cardBg} p-3.5 shadow-sm hover:shadow-md transition flex flex-col justify-between gap-2.5">
+            <div class="space-y-2.5">
+              <!-- Top metadata bar -->
+              <div class="flex items-center justify-between gap-1.5">
+                <div class="flex flex-wrap items-center gap-1">
+                  <span onclick="selectSlot('${g.slot}')" class="cursor-pointer inline-flex items-center px-2 py-0.5 rounded-lg bg-kobold-900 text-amber-300 border border-amber-400/40 font-display font-bold text-[11px] shadow-2xs hover:bg-kobold-800" title="Filtrar hueco ${g.slot}">
+                    📍 ${g.slot}
+                  </span>
+                  ${expTag}
+                </div>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full border shrink-0 ${w.cls}">
+                  ${w.label}
+                </span>
+              </div>
+
+              <!-- Compact thumbnail + title & BGG -->
+              <div class="flex items-start gap-3">
+                ${buildCardThumbHTML(g)}
+                <div class="min-w-0 flex-1">
+                  <h3 class="font-bold text-sm sm:text-[15px] text-kobold-950 leading-snug line-clamp-2 mb-0.5" title="${g.title}">${g.title}</h3>
+                  <p class="text-[11px] font-medium text-kobold-700 truncate mb-1.5" title="${g.theme} · ${g.subTheme}">${g.theme} · <span class="text-slate-500">${g.subTheme}</span></p>
+                  <div>${bgg.html}</div>
                 </div>
               </div>
             </div>
 
-            <div class="space-y-2.5 p-4 pt-2.5 border-t border-emerald-100/80">
+            <div class="space-y-2 pt-2 border-t border-emerald-100/80">
               <div class="flex items-center justify-between text-xs text-slate-600 font-medium">
                 <span>👥 ${g.playersText} jug.</span>
                 <span>⏱️ ${g.durationText}</span>
               </div>
               <div class="flex flex-wrap gap-1">
-                ${g.mechanics.map(m => `<span class="text-[11px] px-2 py-0.5 rounded-md bg-emerald-100/70 text-kobold-800 font-medium">${m}</span>`).join("")}
+                ${g.mechanics.map(m => `<span class="text-[10px] px-1.5 py-0.5 rounded-md bg-emerald-100/70 text-kobold-800 font-medium">${m}</span>`).join("")}
               </div>
             </div>
           </div>
