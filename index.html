@@ -159,8 +159,8 @@
         <div class="w-11 h-11 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center text-xl font-bold">🏆</div>
         <div class="min-w-0">
           <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Mejor Rank BGG</p>
-          <p id="kpiBestRank" class="text-2xl font-extrabold text-kobold-900">#3</p>
-          <p id="kpiBestRankGame" class="text-[11px] text-slate-500 truncate">Pandemic Legacy: T1</p>
+          <p id="kpiBestRank" class="text-2xl font-extrabold text-kobold-900">#2</p>
+          <p id="kpiBestRankGame" class="text-[11px] text-slate-500 truncate">Ark Nova</p>
         </div>
       </div>
     </section>
@@ -191,6 +191,27 @@
           <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-amber-400 ring-2 ring-amber-500 inline-block"></span> Coincide con filtro</span>
           <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-stone-700/60 border border-stone-600 inline-block"></span> Vacío confirmado</span>
           <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-stone-800/40 border border-dashed border-stone-600 inline-block"></span> Sin registrar</span>
+        </div>
+
+        <!-- Outside Kallax Interactive Location Pills (Prestado & Biblioteca) -->
+        <div class="mt-3 pt-3 border-t border-emerald-100 flex flex-wrap items-center justify-between gap-2">
+          <span class="text-xs font-bold text-kobold-900 flex items-center gap-1.5">
+            <span>📦</span> Fuera de la Kallax:
+          </span>
+          <div id="outsideKallaxQuickBadges" class="flex flex-wrap items-center gap-2">
+            <button type="button" id="badge-Prestado" onclick="selectSlot('Prestado')"
+              class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-rose-200 bg-rose-50/80 hover:bg-rose-100 text-rose-950 font-bold text-xs shadow-2xs transition cursor-pointer">
+              <span class="text-base leading-none">🤝</span>
+              <span>Prestado</span>
+              <span id="count-Prestado" class="px-1.5 py-0.5 rounded-full bg-rose-600 text-white text-[10px] font-extrabold">1</span>
+            </button>
+            <button type="button" id="badge-Biblioteca" onclick="selectSlot('Biblioteca')"
+              class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-amber-300 bg-amber-50/90 hover:bg-amber-100 text-amber-950 font-bold text-xs shadow-2xs transition cursor-pointer">
+              <span class="text-base leading-none">📚</span>
+              <span>Biblioteca</span>
+              <span id="count-Biblioteca" class="px-1.5 py-0.5 rounded-full bg-amber-600 text-white text-[10px] font-extrabold">10</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -691,7 +712,7 @@
 
       { slot: "B5", title: "Cytosis: Un Juego de Biología Celular", minP: 2, maxP: 5, playersText: "2 - 5", duration: 75, durationText: "60 - 90 min", theme: "Ciencia / Biología", subTheme: "Célula humana", mechanics: ["Colocación de trabajadores", "Gestión de recursos", "Colección de sets"], weight: 2.4, bggRating: 7.2, bggRank: 1340 },
       { slot: "B5", title: "Root", minP: 2, maxP: 4, playersText: "2 - 4", duration: 75, durationText: "60 - 90 min", theme: "Fantasía", subTheme: "Guerra asimétrica del bosque", mechanics: ["Control de áreas", "Poderes variables", "Gestión de mano"], weight: 3.8, bggRating: 8.1, bggRank: 31 },
-      { slot: "B5", title: "Ark Nova", minP: 1, maxP: 4, playersText: "1 - 4", duration: 120, durationText: "90 - 150 min", theme: "Naturaleza", subTheme: "Gestión de zoológico moderno", mechanics: ["Gestión de mano", "Colocación de losetas", "Construcción de motor"], weight: 3.7, bggRating: 8.5, bggRank: 4 },
+      { slot: "B5", title: "Ark Nova", minP: 1, maxP: 4, playersText: "1 - 4", duration: 120, durationText: "90 - 150 min", theme: "Naturaleza", subTheme: "Gestión de zoológico moderno", mechanics: ["Gestión de mano", "Colocación de losetas", "Construcción de motor"], weight: 3.7, bggRating: 8.54, bggRank: 2 },
       { slot: "B5", title: "Mystic Vale: Essential Edition", minP: 2, maxP: 4, playersText: "2 - 4", duration: 45, durationText: "45 min", theme: "Fantasía", subTheme: "Druidas / Fundas transparentes", mechanics: ["Construcción de cartas (Card Crafting)", "Tentación a la suerte"], weight: 2.2, bggRating: 7.5, bggRank: 412 },
 
       // Hueco C5.1 (División superior de C5)
@@ -794,7 +815,7 @@
 
       { slot: "E7", title: "Welcome to the Moon", minP: 1, maxP: 6, playersText: "1 - 6", duration: 30, durationText: "25 - 30 min", theme: "Ciencia ficción", subTheme: "Colonización lunar / Flip & Write", mechanics: ["Flip & Write", "Campaña", "Reconocimiento de patrones"], weight: 2.3, bggRating: 8.0, bggRank: 112 },
       { slot: "E7", title: "BOOoop. (2023)", minP: 2, maxP: 2, playersText: "2", duration: 25, durationText: "20 - 30 min", theme: "Abstracto", subTheme: "Gatitos y fantasmas en la cama", mechanics: ["Abstracto", "Reconocimiento de patrones"], weight: 1.5, bggRating: 7.4, bggRank: 2450 },
-      { slot: "E7", title: "Dune: Imperium", minP: 1, maxP: 4, playersText: "1 - 4", duration: 90, durationText: "60 - 120 min", theme: "Ciencia ficción", subTheme: "Arrakis / Estrategia", mechanics: ["Construcción de mazos", "Colocación de trabajadores", "Gestión de recursos"], weight: 3.0, bggRating: 8.4, bggRank: 6 },
+      { slot: "E7", title: "Dune: Imperium", minP: 1, maxP: 4, playersText: "1 - 4", duration: 90, durationText: "60 - 120 min", theme: "Ciencia ficción", subTheme: "Arrakis / Estrategia", mechanics: ["Construcción de mazos", "Colocación de trabajadores", "Gestión de recursos"], weight: 3.0, bggRating: 8.41, bggRank: 6 },
       { slot: "E7", title: "Rum & Bones", minP: 2, maxP: 6, playersText: "2 - 6", duration: 60, durationText: "60 min", theme: "Piratas / Aventura", subTheme: "MOBA pirata con miniaturas", mechanics: ["Tirada de dados", "Táctico", "Control de áreas"], weight: 2.4, bggRating: 7.1, bggRank: 1295 },
       { slot: "E7", title: "Rum & Bones: Mercenaries – Zee: The Poet Tyrant (2016)", minP: 2, maxP: 6, playersText: "2 - 6", duration: 60, durationText: "60 min", theme: "Piratas / Aventura", subTheme: "Expansión Mercenario Rum & Bones", mechanics: ["Tirada de dados", "Táctico"], weight: 2.4, bggRating: 7.3, bggRank: null, bggNote: "Expansión", isExpansion: true, baseGame: "Rum & Bones" },
 
@@ -841,123 +862,123 @@
     const outsideKallaxGames = [
       // Prestado
       {
+        slot: "Prestado",
+        outsideLocation: "Prestado",
         title: "Gloomhaven",
-        location: "Prestado",
-        category: "Campaña / Mazmorreo",
-        note: "Prestado a un amigo",
-        playersText: "1 - 4",
-        durationText: "60 - 120 min",
-        bggRating: 8.5,
-        bggRank: 5
+        minP: 1, maxP: 4, playersText: "1 - 4",
+        duration: 120, durationText: "60 - 120 min",
+        theme: "Fantasía", subTheme: "Campaña / Mazmorreo · Prestado a un amigo",
+        mechanics: ["Cooperativo", "Gestión de mano", "Exploración de mazmorras"],
+        weight: 3.9, bggRating: 8.53, bggRank: 4
       },
 
       // Biblioteca — Investigación / Murder Mystery
       {
+        slot: "Biblioteca",
+        outsideLocation: "Biblioteca",
         title: "Sherlock Holmes: Los crímenes del Támesis y otros casos",
-        location: "Biblioteca",
-        category: "Investigación / Deducción",
-        note: "Biblioteca",
-        playersText: "1 - 8",
-        durationText: "60 - 120 min",
-        bggRating: 7.7,
-        bggRank: 158
+        minP: 1, maxP: 8, playersText: "1 - 8",
+        duration: 90, durationText: "60 - 120 min",
+        theme: "Detective / Crimen", subTheme: "Investigación / Deducción · Biblioteca",
+        mechanics: ["Cooperativo", "Deducción", "Narrativo"],
+        weight: 2.7, bggRating: 7.7, bggRank: 162
       },
       {
+        slot: "Biblioteca",
+        outsideLocation: "Biblioteca",
         title: "Mystery Party in the Box: La bruja que se fue con el crepúsculo",
-        location: "Biblioteca",
-        category: "Mystery Party / Asesinato",
-        note: "Biblioteca",
-        playersText: "6 - 8",
-        durationText: "120 - 180 min",
-        bggRating: 7.2,
-        bggRank: null
+        minP: 6, maxP: 8, playersText: "6 - 8",
+        duration: 150, durationText: "120 - 180 min",
+        theme: "Detective / Crimen", subTheme: "Mystery Party / Asesinato · Biblioteca",
+        mechanics: ["Roles ocultos", "Deducción", "Interpretación"],
+        weight: 1.8, bggRating: 7.2, bggRank: null
       },
       {
+        slot: "Biblioteca",
+        outsideLocation: "Biblioteca",
         title: "Mystery Party in the Box: Asesinato en la mansión Cthulhu",
-        location: "Biblioteca",
-        category: "Mystery Party / Asesinato",
-        note: "Biblioteca",
-        playersText: "6 - 8",
-        durationText: "120 - 180 min",
-        bggRating: 7.3,
-        bggRank: null
+        minP: 6, maxP: 8, playersText: "6 - 8",
+        duration: 150, durationText: "120 - 180 min",
+        theme: "Terror / Lovecraft", subTheme: "Mystery Party / Asesinato · Biblioteca",
+        mechanics: ["Roles ocultos", "Deducción", "Interpretación"],
+        weight: 1.8, bggRating: 7.3, bggRank: null
       },
       {
+        slot: "Biblioteca",
+        outsideLocation: "Biblioteca",
         title: "Mystery Party in the Box: Solsticio oscuro",
-        location: "Biblioteca",
-        category: "Mystery Party / Asesinato",
-        note: "Biblioteca",
-        playersText: "6 - 8",
-        durationText: "120 - 180 min",
-        bggRating: 7.1,
-        bggRank: null
+        minP: 6, maxP: 8, playersText: "6 - 8",
+        duration: 150, durationText: "120 - 180 min",
+        theme: "Detective / Crimen", subTheme: "Mystery Party / Asesinato · Biblioteca",
+        mechanics: ["Roles ocultos", "Deducción", "Interpretación"],
+        weight: 1.8, bggRating: 7.1, bggRank: null
       },
       {
+        slot: "Biblioteca",
+        outsideLocation: "Biblioteca",
         title: "Cómo organizar un asesinato: El caso de la mansión Watersdown",
-        location: "Biblioteca",
-        category: "Mystery Party / Asesinato",
-        note: "Biblioteca",
-        playersText: "6 - 8",
-        durationText: "120 - 180 min",
-        bggRating: 6.8,
-        bggRank: null
+        minP: 6, maxP: 8, playersText: "6 - 8",
+        duration: 150, durationText: "120 - 180 min",
+        theme: "Detective / Crimen", subTheme: "Mystery Party / Asesinato · Biblioteca",
+        mechanics: ["Roles ocultos", "Deducción", "Interpretación"],
+        weight: 1.7, bggRating: 6.8, bggRank: null
       },
       {
+        slot: "Biblioteca",
+        outsideLocation: "Biblioteca",
         title: "Cómo organizar un asesinato: El último tren de París",
-        location: "Biblioteca",
-        category: "Mystery Party / Asesinato",
-        note: "Biblioteca",
-        playersText: "6 - 8",
-        durationText: "120 - 180 min",
-        bggRating: 6.9,
-        bggRank: null
+        minP: 6, maxP: 8, playersText: "6 - 8",
+        duration: 150, durationText: "120 - 180 min",
+        theme: "Detective / Crimen", subTheme: "Mystery Party / Asesinato · Biblioteca",
+        mechanics: ["Roles ocultos", "Deducción", "Interpretación"],
+        weight: 1.7, bggRating: 6.9, bggRank: null
       },
 
       // Biblioteca — Lógica / Inteligencia (SmartGames / ingenio)
       {
+        slot: "Biblioteca",
+        outsideLocation: "Biblioteca",
         title: "IQ Puzzler Pro",
-        location: "Biblioteca",
-        category: "Lógica / Inteligencia",
-        note: "Biblioteca · Ingenio solitario",
-        playersText: "1",
-        durationText: "15 - 30 min",
-        bggRating: 7.1,
-        bggRank: 5840
+        minP: 1, maxP: 1, playersText: "1",
+        duration: 20, durationText: "15 - 30 min",
+        theme: "Deducción / Lógica", subTheme: "Lógica / Inteligencia · Biblioteca",
+        mechanics: ["Solitario", "Poliominós", "Reconocimiento de patrones"],
+        weight: 1.4, bggRating: 7.1, bggRank: 5420
       },
       {
+        slot: "Biblioteca",
+        outsideLocation: "Biblioteca",
         title: "Cats & Boxes",
-        location: "Biblioteca",
-        category: "Lógica / Inteligencia",
-        note: "Biblioteca · Ingenio solitario",
-        playersText: "1",
-        durationText: "15 - 30 min",
-        bggRating: 6.9,
-        bggRank: 11420
+        minP: 1, maxP: 1, playersText: "1",
+        duration: 20, durationText: "15 - 30 min",
+        theme: "Deducción / Lógica", subTheme: "Lógica / Inteligencia · Biblioteca",
+        mechanics: ["Solitario", "Reconocimiento de patrones"],
+        weight: 1.4, bggRating: 6.9, bggRank: 10850
       },
       {
+        slot: "Biblioteca",
+        outsideLocation: "Biblioteca",
         title: "Temple Trap",
-        location: "Biblioteca",
-        category: "Lógica / Inteligencia",
-        note: "Biblioteca · Ingenio solitario",
-        playersText: "1",
-        durationText: "15 - 30 min",
-        bggRating: 6.7,
-        bggRank: 9210
+        minP: 1, maxP: 1, playersText: "1",
+        duration: 20, durationText: "15 - 30 min",
+        theme: "Deducción / Lógica", subTheme: "Lógica / Inteligencia · Biblioteca",
+        mechanics: ["Solitario", "Movimiento en cuadrícula"],
+        weight: 1.5, bggRating: 6.7, bggRank: 8910
       },
       {
+        slot: "Biblioteca",
+        outsideLocation: "Biblioteca",
         title: "Rush Hour",
-        location: "Biblioteca",
-        category: "Lógica / Inteligencia",
-        note: "Biblioteca · Ingenio solitario",
-        playersText: "1",
-        durationText: "15 - 30 min",
-        bggRating: 6.6,
-        bggRank: 2890
+        minP: 1, maxP: 1, playersText: "1",
+        duration: 20, durationText: "15 - 30 min",
+        theme: "Deducción / Lógica", subTheme: "Lógica / Inteligencia · Biblioteca",
+        mechanics: ["Solitario", "Movimiento en cuadrícula"],
+        weight: 1.4, bggRating: 6.6, bggRank: 2740
       }
     ];
 
     const confirmedEmptySlots = new Set(["C1", "C2", "C3", "C6", "C7", "C8", "G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8"]);
-    let games = [...initialGames];
+    let games = [...initialGames, ...outsideKallaxGames];
     let selectedSlot = null;
     let selectedWeight = "";
     let currentView = "cards";
@@ -1079,6 +1100,8 @@
       });
 
       const parseSlotKey = (s) => {
+        if (s === "Prestado") return 900001;
+        if (s === "Biblioteca") return 900002;
         const m = /^([∅ØA-G])(\d+)(?:\.(\d+))?$/.exec((s || "").replace("ø", "∅").replace("Ø", "∅").toUpperCase().trim());
         if (!m) return 999999;
         const rowIdx = rows.indexOf(m[1]);
@@ -1125,7 +1148,7 @@
       document.getElementById("kpiTotal").textContent = filteredGames.length;
       document.getElementById("resultsCount").textContent = filteredGames.length;
 
-      const occupiedSlots = new Set(games.map(g => g.slot.split(".")[0])).size;
+      const occupiedSlots = new Set(games.filter(g => !g.outsideLocation).map(g => g.slot.split(".")[0])).size;
       document.getElementById("kpiSlots").innerHTML = `${occupiedSlots} <span class="text-sm font-normal text-slate-400">/ 64</span>`;
 
       if (filteredGames.length > 0) {
@@ -1269,6 +1292,29 @@
 
       html += '</div>';
       container.innerHTML = html;
+
+      // Update Prestado & Biblioteca badge states below Kallax
+      ["Prestado", "Biblioteca"].forEach(loc => {
+        const btn = document.getElementById(`badge-${loc}`);
+        const countEl = document.getElementById(`count-${loc}`);
+        if (!btn || !countEl) return;
+        const totalInLoc = games.filter(g => g.slot === loc).length;
+        const matchingInLoc = filteredGames.filter(g => g.slot === loc).length;
+        countEl.textContent = hasActiveFilter ? `${matchingInLoc}/${totalInLoc}` : totalInLoc;
+
+        const isSel = selectedSlot === loc;
+        const isMatch = hasActiveFilter && matchingInLoc > 0;
+
+        if (isSel) {
+          btn.className = "inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border-2 border-kobold-900 bg-amber-400 text-kobold-950 font-extrabold text-xs shadow-md ring-2 ring-amber-300 transition cursor-pointer";
+        } else if (isMatch) {
+          btn.className = "inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border-2 border-amber-500 bg-amber-300/90 text-kobold-950 font-extrabold text-xs shadow transition cursor-pointer";
+        } else if (loc === "Prestado") {
+          btn.className = "inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-rose-200 bg-rose-50/80 hover:bg-rose-100 text-rose-950 font-bold text-xs shadow-2xs transition cursor-pointer";
+        } else {
+          btn.className = "inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-amber-300 bg-amber-50/90 hover:bg-amber-100 text-amber-950 font-bold text-xs shadow-2xs transition cursor-pointer";
+        }
+      });
     }
 
     function getWeightBadge(weight) {
@@ -1416,8 +1462,8 @@
               <!-- Top metadata bar -->
               <div class="flex items-center justify-between gap-1.5">
                 <div class="flex flex-wrap items-center gap-1">
-                  <span onclick="selectSlot('${g.slot}')" class="cursor-pointer inline-flex items-center px-2 py-0.5 rounded-lg bg-kobold-900 text-amber-300 border border-amber-400/40 font-display font-bold text-[11px] shadow-2xs hover:bg-kobold-800" title="Filtrar hueco ${g.slot}">
-                    📍 ${g.slot}
+                  <span onclick="selectSlot('${g.slot}')" class="cursor-pointer inline-flex items-center px-2 py-0.5 rounded-lg ${g.slot === 'Prestado' ? 'bg-rose-800 text-rose-100 border-rose-400/50 hover:bg-rose-700' : (g.slot === 'Biblioteca' ? 'bg-amber-800 text-amber-100 border-amber-400/50 hover:bg-amber-700' : 'bg-kobold-900 text-amber-300 border-amber-400/40 hover:bg-kobold-800')} border font-display font-bold text-[11px] shadow-2xs transition" title="Filtrar ubicación ${g.slot}">
+                    ${g.slot === 'Prestado' ? '🤝' : (g.slot === 'Biblioteca' ? '📚' : '📍')} ${g.slot}
                   </span>
                   ${expTag}
                 </div>
@@ -1552,7 +1598,7 @@
     function populateOutsideCategoryFilter() {
       const catSelect = document.getElementById("outsideCategoryFilter");
       if (!catSelect) return;
-      const cats = [...new Set(outsideKallaxGames.map(g => g.category))].sort();
+      const cats = [...new Set(outsideKallaxGames.map(g => g.category || (g.subTheme ? g.subTheme.split(' · ')[0] : g.theme)))].sort();
       catSelect.innerHTML = '<option value="">Todas las categorías</option>' +
         cats.map(c => `<option value="${c}">${c}</option>`).join("");
     }
@@ -1567,10 +1613,11 @@
       const catF = document.getElementById("outsideCategoryFilter")?.value || "";
 
       const items = outsideKallaxGames.filter(g => {
-        if (locF && g.location !== locF) return false;
-        if (catF && g.category !== catF) return false;
+        if (locF && (g.outsideLocation || g.location) !== locF) return false;
+        const gCat = g.category || (g.subTheme ? g.subTheme.split(' · ')[0] : g.theme);
+        if (catF && gCat !== catF) return false;
         if (q) {
-          const hay = `${g.title} ${g.location} ${g.category} ${g.note || ""}`.toLowerCase();
+          const hay = `${g.title} ${g.outsideLocation || g.location || ''} ${gCat} ${g.subTheme || ''}`.toLowerCase();
           if (!hay.includes(q)) return false;
         }
         return true;
@@ -1584,7 +1631,7 @@
       }
 
       listEl.innerHTML = items.map(g => {
-        const isLoaned = g.location === "Prestado";
+        const isLoaned = (g.outsideLocation || g.location) === "Prestado";
         const locBadge = isLoaned
           ? `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-rose-100 text-rose-900 border border-rose-300 font-bold text-[10px]">🤝 Prestado</span>`
           : `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-100 text-amber-950 border border-amber-300 font-bold text-[10px]">📚 Biblioteca</span>`;
@@ -1593,8 +1640,9 @@
           ? "border-rose-200 hover:border-rose-400 bg-rose-50/30"
           : "border-amber-200 hover:border-amber-400 bg-white";
 
+        const catLabel = g.category || (g.subTheme ? g.subTheme.split(" · ")[0] : g.theme);
         return `
-          <div class="p-2.5 rounded-xl border ${cardBorder} transition flex flex-col justify-between gap-1.5 shadow-2xs">
+          <div onclick="locateExpansion('${g.title.replace(/'/g, "\'")}')" class="p-2.5 rounded-xl border ${cardBorder} cursor-pointer transition flex flex-col justify-between gap-1.5 shadow-2xs">
             <div>
               <div class="flex items-center justify-between gap-1.5 mb-1">
                 ${locBadge}
@@ -1603,7 +1651,7 @@
               <p class="font-bold text-xs text-kobold-950 leading-snug" title="${g.title}">${g.title}</p>
             </div>
             <div class="pt-1 border-t border-slate-100 flex items-center justify-between gap-1 text-[11px] text-slate-600">
-              <span class="font-medium text-kobold-800 truncate" title="${g.category}">🏷️ ${g.category}</span>
+              <span class="font-medium text-kobold-800 truncate" title="${catLabel}">🏷️ ${catLabel}</span>
               <span class="text-[10px] text-slate-500 shrink-0">👥 ${g.playersText} · ⏱️ ${g.durationText}</span>
             </div>
           </div>
