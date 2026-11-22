@@ -1366,67 +1366,13 @@
       "Ciencia / Biología": { icon: "🧬", grad: "from-teal-950 via-cyan-800 to-emerald-700", accent: "#99f6e4" }
     };
 
-    const customCoverStorageKey = "kobold_ludoteca_custom_covers_v1";
-    let customCovers = {};
-    try {
-      customCovers = JSON.parse(localStorage.getItem(customCoverStorageKey) || "{}");
-    } catch (e) {
-      customCovers = {};
-    }
-
-    function getGameCoverUrl(g) {
-      return customCovers[g.title] || g.image || "";
-    }
-
-    function setCustomGameCover(encodedTitle) {
-      const title = decodeURIComponent(encodedTitle);
-      const current = customCovers[title] || "";
-      const url = prompt(
-        `Pega la URL de la portada (o ruta local ej. img/juego.jpg) para:
-"${title}"
-
-(Deja vacío y acepta para restaurar la portada ilustrada por defecto)`,
-        current
-      );
-      if (url === null) return;
-      const trimmed = url.trim();
-      if (trimmed) {
-        customCovers[title] = trimmed;
-      } else {
-        delete customCovers[title];
-      }
-      try {
-        localStorage.setItem(customCoverStorageKey, JSON.stringify(customCovers));
-      } catch (e) {}
-      renderGamesList();
-    }
-
     function buildCardThumbHTML(g) {
       const vis = themeVisuals[g.theme] || { icon: "🎲", grad: "from-kobold-950 via-kobold-800 to-emerald-700", accent: "#fde047" };
-      const imgUrl = getGameCoverUrl(g);
-      const encodedTitle = encodeURIComponent(g.title);
-
-      const fallbackArt = `
-        <div class="cover-fallback w-full h-full bg-gradient-to-br ${vis.grad} relative flex items-center justify-center overflow-hidden select-none">
-          <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(${vis.accent} 1px, transparent 1px); background-size: 9px 9px;"></div>
-          <span class="relative z-10 text-2xl sm:text-3xl drop-shadow">${vis.icon}</span>
-        </div>
-      `;
-
-      const imgTag = imgUrl
-        ? `<img src="${imgUrl}" alt="${g.title.replace(/"/g, '&quot;')}" loading="lazy"
-             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-             class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300" />
-           <div style="display:none" class="w-full h-full">${fallbackArt}</div>`
-        : fallbackArt;
 
       return `
-        <div class="relative w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border border-emerald-200/80 bg-kobold-950 shrink-0 shadow-xs">
-          ${imgTag}
-          <button type="button" onclick="setCustomGameCover('${encodedTitle}')" title="Añadir o cambiar imagen en miniatura"
-            class="absolute bottom-1 right-1 z-10 opacity-85 hover:opacity-100 w-5 h-5 rounded-md bg-black/65 hover:bg-black/85 text-white text-[10px] flex items-center justify-center backdrop-blur-xs border border-white/20 transition cursor-pointer">
-            📷
-          </button>
+        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border border-emerald-200/80 bg-gradient-to-br ${vis.grad} relative flex items-center justify-center shrink-0 shadow-xs select-none">
+          <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(${vis.accent} 1px, transparent 1px); background-size: 9px 9px;"></div>
+          <span class="relative z-10 text-2xl sm:text-3xl drop-shadow group-hover:scale-105 transition-transform duration-300">${vis.icon}</span>
         </div>
       `;
     }
