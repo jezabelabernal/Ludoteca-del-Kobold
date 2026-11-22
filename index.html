@@ -98,7 +98,7 @@
             </h1>
           </div>
           <p class="text-emerald-200/90 text-sm mt-0.5">
-            Inventario mágico de tesoros lúdicos · <span id="headerCount" class="font-semibold text-white">58</span> juegos catalogados
+            Inventario mágico de tesoros lúdicos · <span id="headerCount" class="font-semibold text-white">240</span> juegos catalogados
           </p>
         </div>
       </div>
@@ -124,35 +124,35 @@
         <div class="w-11 h-11 rounded-xl bg-emerald-100 text-kobold-700 flex items-center justify-center text-xl font-bold">♟️</div>
         <div>
           <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Total Juegos</p>
-          <p id="kpiTotal" class="text-2xl font-extrabold text-kobold-900">58</p>
+          <p id="kpiTotal" class="text-2xl font-extrabold text-kobold-900">240</p>
         </div>
       </div>
       <div class="bg-white rounded-2xl p-4 shadow-sm border border-emerald-100 flex items-center gap-3.5">
         <div class="w-11 h-11 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-xl font-bold">🗄️</div>
         <div>
           <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Huecos Ocupados</p>
-          <p id="kpiSlots" class="text-2xl font-extrabold text-kobold-900">15 <span class="text-sm font-normal text-slate-400">/ 64</span></p>
+          <p id="kpiSlots" class="text-2xl font-extrabold text-kobold-900">42 <span class="text-sm font-normal text-slate-400">/ 64</span></p>
         </div>
       </div>
       <div class="bg-white rounded-2xl p-4 shadow-sm border border-emerald-100 flex items-center gap-3.5">
         <div class="w-11 h-11 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-xl font-bold">⏱️</div>
         <div>
           <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Duración Media</p>
-          <p id="kpiAvgTime" class="text-2xl font-extrabold text-kobold-900">61 min</p>
+          <p id="kpiAvgTime" class="text-2xl font-extrabold text-kobold-900">58 min</p>
         </div>
       </div>
       <div class="bg-white rounded-2xl p-4 shadow-sm border border-emerald-100 flex items-center gap-3.5">
         <div class="w-11 h-11 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center text-xl font-bold">🧠</div>
         <div>
           <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Complejidad Media</p>
-          <p id="kpiAvgWeight" class="text-2xl font-extrabold text-kobold-900">2.27 <span class="text-sm font-normal text-slate-400">/ 5</span></p>
+          <p id="kpiAvgWeight" class="text-2xl font-extrabold text-kobold-900">2.09 <span class="text-sm font-normal text-slate-400">/ 5</span></p>
         </div>
       </div>
       <div class="bg-white rounded-2xl p-4 shadow-sm border border-emerald-100 flex items-center gap-3.5">
         <div class="w-11 h-11 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-xl font-bold">⭐</div>
         <div>
           <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Nota Media BGG</p>
-          <p id="kpiAvgBgg" class="text-2xl font-extrabold text-kobold-900">7.40 <span class="text-sm font-normal text-slate-400">/ 10</span></p>
+          <p id="kpiAvgBgg" class="text-2xl font-extrabold text-kobold-900">7.20 <span class="text-sm font-normal text-slate-400">/ 10</span></p>
         </div>
       </div>
       <div class="bg-white rounded-2xl p-4 shadow-sm border border-emerald-100 flex items-center gap-3.5">
@@ -209,7 +209,7 @@
               class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-amber-300 bg-amber-50/90 hover:bg-amber-100 text-amber-950 font-bold text-xs shadow-2xs transition cursor-pointer">
               <span class="text-base leading-none">📚</span>
               <span>Biblioteca</span>
-              <span id="count-Biblioteca" class="px-1.5 py-0.5 rounded-full bg-amber-600 text-white text-[10px] font-extrabold">10</span>
+              <span id="count-Biblioteca" class="px-1.5 py-0.5 rounded-full bg-amber-600 text-white text-[10px] font-extrabold">15</span>
             </button>
           </div>
         </div>
@@ -339,7 +339,7 @@
       <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
         <div>
           <h2 class="font-display text-xl font-bold text-kobold-900">
-            Tesoros Encontrados (<span id="resultsCount">58</span>)
+            Tesoros Encontrados (<span id="resultsCount">240</span>)
           </h2>
           <p class="text-xs text-slate-500">
             Incluye puntuación media y ranking mundial de BoardGameGeek (BGG) ·
@@ -882,7 +882,7 @@
         theme: "Detective / Crimen", subTheme: "Investigación / Deducción · Biblioteca",
         mechanics: ["Cooperativo", "Deducción", "Narrativo"],
         weight: 2.7, bggRating: 7.7, bggRank: 162
-      },
+      , "category": "Investigación / Deducción"},
       {
         slot: "Biblioteca",
         outsideLocation: "Biblioteca",
@@ -933,6 +933,13 @@
         mechanics: ["Roles ocultos", "Deducción", "Interpretación"],
         weight: 1.7, bggRating: 6.9, bggRank: null
       },
+
+
+      {"slot": "Biblioteca", "outsideLocation": "Biblioteca", "title": "Caso 1: El Crimen de Los Álamos", "minP": 1, "maxP": 6, "playersText": "1 - 6", "duration": 90, "durationText": "60 - 120 min", "theme": "Detective / Crimen", "subTheme": "Investigación / Deducción · Biblioteca", "mechanics": ["Deducción", "Cooperativo", "Narrativo"], "weight": 2.0, "bggRating": 7.1, "bggRank": null, "category": "Investigación / Deducción"},
+      {"slot": "Biblioteca", "outsideLocation": "Biblioteca", "title": "Hidden Games Escena del Crimen – La Diadema Escarlata", "minP": 1, "maxP": 6, "playersText": "1 - 6", "duration": 105, "durationText": "90 - 120 min", "theme": "Detective / Crimen", "subTheme": "Investigación / Deducción · Biblioteca", "mechanics": ["Deducción", "Cooperativo", "Narrativo"], "weight": 2.1, "bggRating": 7.4, "bggRank": null, "category": "Investigación / Deducción"},
+      {"slot": "Biblioteca", "outsideLocation": "Biblioteca", "title": "Hidden Games Escena del Crimen – Una Solución Venenosa", "minP": 1, "maxP": 6, "playersText": "1 - 6", "duration": 105, "durationText": "90 - 120 min", "theme": "Detective / Crimen", "subTheme": "Investigación / Deducción · Biblioteca", "mechanics": ["Deducción", "Cooperativo", "Narrativo"], "weight": 2.1, "bggRating": 7.3, "bggRank": null, "category": "Investigación / Deducción"},
+      {"slot": "Biblioteca", "outsideLocation": "Biblioteca", "title": "Hidden Games: El Crimen de Quintana de la Matanza", "minP": 1, "maxP": 6, "playersText": "1 - 6", "duration": 105, "durationText": "90 - 120 min", "theme": "Detective / Crimen", "subTheme": "Investigación / Deducción · Biblioteca", "mechanics": ["Deducción", "Cooperativo", "Narrativo"], "weight": 2.1, "bggRating": 7.5, "bggRank": null, "category": "Investigación / Deducción"},
+      {"slot": "Biblioteca", "outsideLocation": "Biblioteca", "title": "Hidden Games Escena del Crimen – Crimen en la Familia Regio", "minP": 1, "maxP": 6, "playersText": "1 - 6", "duration": 105, "durationText": "90 - 120 min", "theme": "Detective / Crimen", "subTheme": "Investigación / Deducción · Biblioteca", "mechanics": ["Deducción", "Cooperativo", "Narrativo"], "weight": 2.1, "bggRating": 7.2, "bggRank": null, "category": "Investigación / Deducción"},
 
       // Biblioteca — Lógica / Inteligencia (SmartGames / ingenio)
       {
