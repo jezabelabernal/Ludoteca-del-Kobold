@@ -291,7 +291,7 @@
       <div class="bg-white rounded-2xl p-4 shadow-sm border border-emerald-100">
         <div class="flex items-center justify-between mb-2">
           <h3 class="text-xs font-bold uppercase tracking-wider text-kobold-800">🎭 Por Temática</h3>
-          <span class="text-[10px] text-slate-400">Desliza ↓</span>
+          <span class="text-[10px] text-slate-400">Clic filtra · ↓</span>
         </div>
         <div class="h-48 overflow-y-auto pr-1 relative">
           <div id="themeChartBox" class="relative min-h-full">
@@ -1292,6 +1292,119 @@
       };
     }
 
+    const themeVisuals = {
+      "Fantasía": { icon: "🐉", grad: "from-emerald-900 via-teal-800 to-amber-700", accent: "#fde047" },
+      "Abstracto": { icon: "🔷", grad: "from-indigo-900 via-sky-700 to-cyan-600", accent: "#bae6fd" },
+      "Carreras / Deportes": { icon: "🏎️", grad: "from-rose-900 via-red-700 to-amber-600", accent: "#fecdd3" },
+      "Detective / Crimen": { icon: "🕵️", grad: "from-slate-900 via-zinc-800 to-amber-800", accent: "#fde68a" },
+      "Ciencia ficción": { icon: "🚀", grad: "from-slate-950 via-indigo-900 to-violet-700", accent: "#c4b5fd" },
+      "Construcción": { icon: "🏰", grad: "from-amber-900 via-orange-700 to-yellow-600", accent: "#fef08a" },
+      "Deducción / Lógica": { icon: "🧩", grad: "from-cyan-950 via-teal-800 to-emerald-600", accent: "#a7f3d0" },
+      "Cultura / Arte": { icon: "🎨", grad: "from-fuchsia-900 via-purple-800 to-pink-600", accent: "#fbcfe8" },
+      "Humor / Party": { icon: "🎉", grad: "from-amber-700 via-orange-600 to-rose-600", accent: "#fef08a" },
+      "Animales / Lucha": { icon: "🪲", grad: "from-lime-900 via-emerald-800 to-amber-700", accent: "#d9f99d" },
+      "Zombis / Acción": { icon: "🧟", grad: "from-zinc-950 via-red-950 to-emerald-900", accent: "#fca5a5" },
+      "Histórico / Prehistoria": { icon: "🦣", grad: "from-stone-900 via-amber-900 to-orange-700", accent: "#fed7aa" },
+      "Histórico": { icon: "⚔️", grad: "from-stone-900 via-red-900 to-amber-700", accent: "#fde68a" },
+      "Histórico / Táctico": { icon: "🛡️", grad: "from-slate-900 via-stone-800 to-amber-700", accent: "#fde68a" },
+      "Terror / Lovecraft": { icon: "🐙", grad: "from-emerald-950 via-purple-950 to-slate-900", accent: "#5eead4" },
+      "Médico / Supervivencia": { icon: "🧪", grad: "from-sky-950 via-cyan-900 to-teal-700", accent: "#67e8f9" },
+      "Piratas / Aventura": { icon: "🏴‍☠️", grad: "from-sky-950 via-blue-900 to-amber-700", accent: "#fde047" },
+      "Piratas / Humor": { icon: "🦜", grad: "from-teal-900 via-amber-800 to-rose-700", accent: "#fef08a" },
+      "Artesanía / Textil": { icon: "🧵", grad: "from-rose-900 via-amber-800 to-emerald-800", accent: "#fecdd3" },
+      "Naturaleza": { icon: "🌿", grad: "from-emerald-950 via-green-800 to-lime-700", accent: "#bbf7d0" },
+      "Ciencia ficción / Misterio": { icon: "⏳", grad: "from-violet-950 via-indigo-900 to-fuchsia-800", accent: "#e9d5ff" },
+      "Lejano Oeste": { icon: "🤠", grad: "from-amber-950 via-orange-800 to-yellow-700", accent: "#fde68a" },
+      "Gastronomía": { icon: "🧀", grad: "from-amber-900 via-yellow-700 to-orange-600", accent: "#fef9c3" },
+      "Mitología / Historia": { icon: "🏛️", grad: "from-amber-950 via-stone-800 to-yellow-700", accent: "#fef08a" },
+      "Ciencia / Biología": { icon: "🧬", grad: "from-teal-950 via-cyan-800 to-emerald-700", accent: "#99f6e4" }
+    };
+
+    const customCoverStorageKey = "kobold_ludoteca_custom_covers_v1";
+    let customCovers = {};
+    try {
+      customCovers = JSON.parse(localStorage.getItem(customCoverStorageKey) || "{}");
+    } catch (e) {
+      customCovers = {};
+    }
+
+    function getGameCoverUrl(g) {
+      return customCovers[g.title] || g.image || "";
+    }
+
+    function setCustomGameCover(encodedTitle) {
+      const title = decodeURIComponent(encodedTitle);
+      const current = customCovers[title] || "";
+      const url = prompt(
+        `Pega la URL de la portada (o ruta local ej. img/juego.jpg) para:
+"${title}"
+
+(Deja vacío y acepta para restaurar la portada ilustrada por defecto)`,
+        current
+      );
+      if (url === null) return;
+      const trimmed = url.trim();
+      if (trimmed) {
+        customCovers[title] = trimmed;
+      } else {
+        delete customCovers[title];
+      }
+      try {
+        localStorage.setItem(customCoverStorageKey, JSON.stringify(customCovers));
+      } catch (e) {}
+      renderGamesList();
+    }
+
+    function buildCardCoverHTML(g, w, expTag) {
+      const vis = themeVisuals[g.theme] || { icon: "🎲", grad: "from-kobold-950 via-kobold-800 to-emerald-700", accent: "#fde047" };
+      const imgUrl = getGameCoverUrl(g);
+      const encodedTitle = encodeURIComponent(g.title);
+
+      const fallbackArt = `
+        <div class="cover-fallback w-full h-full bg-gradient-to-br ${vis.grad} relative flex items-center justify-center overflow-hidden select-none">
+          <div class="absolute inset-0 opacity-15" style="background-image: radial-gradient(${vis.accent} 1.2px, transparent 1.2px); background-size: 14px 14px;"></div>
+          <div class="absolute -right-4 -bottom-4 text-7xl opacity-20 rotate-12 pointer-events-none">${vis.icon}</div>
+          <div class="relative z-10 flex flex-col items-center text-center px-3">
+            <span class="text-4xl drop-shadow-md mb-1">${vis.icon}</span>
+            <span class="font-display text-[10px] uppercase tracking-widest text-white/85 font-bold px-2 py-0.5 rounded-full bg-black/25 backdrop-blur-[2px]">${g.theme}</span>
+          </div>
+        </div>
+      `;
+
+      const imgTag = imgUrl
+        ? `<img src="${imgUrl}" alt="${g.title.replace(/"/g, '&quot;')}" loading="lazy"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+             class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300" />
+           <div style="display:none" class="w-full h-full">${fallbackArt}</div>`
+        : fallbackArt;
+
+      return `
+        <div class="relative h-32 w-full overflow-hidden border-b border-emerald-100/80 bg-kobold-950">
+          ${imgTag}
+          <div class="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-black/25 pointer-events-none"></div>
+
+          <!-- Top overlays: Slot + Expansion badge on left, Complexity badge on right -->
+          <div class="absolute top-2.5 left-2.5 right-2.5 flex items-start justify-between gap-1.5 z-10">
+            <div class="flex flex-wrap items-center gap-1">
+              <span onclick="selectSlot('${g.slot}')" class="cursor-pointer inline-flex items-center px-2 py-0.5 rounded-lg bg-kobold-900/90 backdrop-blur-xs text-amber-300 border border-amber-400/40 font-display font-bold text-xs shadow hover:bg-kobold-800" title="Filtrar hueco ${g.slot}">
+                📍 ${g.slot}
+              </span>
+              ${expTag}
+            </div>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full border shadow-xs backdrop-blur-xs shrink-0 ${w.cls}">
+              ${w.label}
+            </span>
+          </div>
+
+          <!-- Bottom-right subtle button to set/edit custom cover image -->
+          <button type="button" onclick="setCustomGameCover('${encodedTitle}')" title="Añadir o cambiar imagen de portada"
+            class="absolute bottom-2 right-2 z-10 opacity-85 hover:opacity-100 px-2 py-1 rounded-lg bg-black/60 hover:bg-black/80 text-white text-[10px] font-semibold backdrop-blur-xs border border-white/20 transition cursor-pointer">
+            📷 Portada
+          </button>
+        </div>
+      `;
+    }
+
     function renderGamesList() {
       const cardsEl = document.getElementById("cardsContainer");
       const tableBody = document.getElementById("tableBody");
@@ -1318,27 +1431,19 @@
           : (g.hasExpansionInside ? `<span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-900 border border-emerald-300">🧩 +Exp. en caja</span>` : "");
 
         return `
-          <div class="rounded-2xl ${cardBg} p-4 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+          <div class="group rounded-2xl ${cardBg} overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between">
             <div>
-              <div class="flex items-start justify-between gap-2 mb-2">
-                <div class="flex flex-wrap items-center gap-1.5">
-                  <span onclick="selectSlot('${g.slot}')" class="cursor-pointer inline-flex items-center px-2.5 py-1 rounded-lg bg-kobold-800 text-amber-300 font-display font-bold text-xs shadow-sm hover:bg-kobold-700" title="Filtrar hueco ${g.slot}">
-                    📍 ${g.slot}
-                  </span>
-                  ${expTag}
+              ${buildCardCoverHTML(g, w, expTag)}
+              <div class="p-4 pb-2">
+                <h3 class="font-bold text-base text-kobold-950 leading-snug mb-1">${g.title}</h3>
+                <p class="text-xs font-medium text-kobold-600 mb-2">${g.theme} · <span class="text-slate-500">${g.subTheme}</span></p>
+                <div class="mb-2">
+                  ${bgg.html}
                 </div>
-                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full border shrink-0 ${w.cls}">
-                  ${w.label}
-                </span>
-              </div>
-              <h3 class="font-bold text-base text-kobold-950 leading-snug mb-1">${g.title}</h3>
-              <p class="text-xs font-medium text-kobold-600 mb-2">${g.theme} · <span class="text-slate-500">${g.subTheme}</span></p>
-              <div class="mb-3">
-                ${bgg.html}
               </div>
             </div>
 
-            <div class="space-y-2.5 pt-2 border-t border-emerald-100/80">
+            <div class="space-y-2.5 p-4 pt-2.5 border-t border-emerald-100/80">
               <div class="flex items-center justify-between text-xs text-slate-600 font-medium">
                 <span>👥 ${g.playersText} jug.</span>
                 <span>⏱️ ${g.durationText}</span>
@@ -1532,29 +1637,93 @@
       }
     }
 
+    function toggleChartFilterValue(selectId, value) {
+      const el = document.getElementById(selectId);
+      if (!el) return;
+      el.value = (el.value === String(value)) ? "" : String(value);
+      applyFilters();
+    }
+
+    function handleChartClick(chartKey, event, elements) {
+      if (!elements || elements.length === 0) return;
+      const chart = charts[chartKey];
+      if (!chart) return;
+      const idx = elements[0].index;
+      const label = chart.data.labels[idx];
+      if (!label) return;
+
+      if (chartKey === "theme") {
+        toggleChartFilterValue("themeFilter", label);
+      } else if (chartKey === "mechanic") {
+        toggleChartFilterValue("mechanicFilter", label);
+      } else if (chartKey === "duration") {
+        const durMap = ["30", "45", "60", "999"];
+        toggleChartFilterValue("durationFilter", durMap[idx] || "");
+      } else if (chartKey === "players") {
+        const pMap = ["1", "2", "3", "4", "5", "6"];
+        toggleChartFilterValue("playersFilter", pMap[idx] || "");
+      }
+    }
+
+    function handleChartHover(event, elements) {
+      const target = event && event.native && event.native.target;
+      if (target) {
+        target.style.cursor = (elements && elements.length > 0) ? "pointer" : "default";
+      }
+    }
+
     function initCharts() {
       charts.theme = new Chart(document.getElementById("themeChart"), {
         type: "bar",
         data: { labels: [], datasets: [{ label: "Juegos", data: [], backgroundColor: "#1c4d3a", borderRadius: 6 }] },
-        options: { indexAxis: "y", responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { stepSize: 1, font: { size: 10 } } }, y: { ticks: { font: { size: 10 } } } } }
+        options: {
+          indexAxis: "y",
+          responsive: true,
+          maintainAspectRatio: false,
+          onClick: (event, elements) => handleChartClick("theme", event, elements),
+          onHover: handleChartHover,
+          plugins: { legend: { display: false } },
+          scales: { x: { ticks: { stepSize: 1, font: { size: 10 } } }, y: { ticks: { font: { size: 10 } } } }
+        }
       });
 
       charts.duration = new Chart(document.getElementById("durationChart"), {
         type: "doughnut",
         data: { labels: ["≤ 30 min", "31-45 min", "46-60 min", "> 60 min"], datasets: [{ data: [0,0,0,0], backgroundColor: ["#10b981", "#eab308", "#2563eb", "#e11d48"], borderWidth: 1 }] },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: "right", labels: { boxWidth: 10, font: { size: 10 } } } } }
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          onClick: (event, elements) => handleChartClick("duration", event, elements),
+          onHover: handleChartHover,
+          plugins: { legend: { position: "right", labels: { boxWidth: 10, font: { size: 10 } } } }
+        }
       });
 
       charts.players = new Chart(document.getElementById("playersChart"), {
         type: "bar",
         data: { labels: ["1J", "2J", "3J", "4J", "5J", "6J+"], datasets: [{ label: "Compatibles", data: [0,0,0,0,0,0], backgroundColor: "#9333ea", borderRadius: 6 }] },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { font: { size: 10 } } }, y: { beginAtZero: true, ticks: { stepSize: 5, font: { size: 10 } } } } }
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          onClick: (event, elements) => handleChartClick("players", event, elements),
+          onHover: handleChartHover,
+          plugins: { legend: { display: false } },
+          scales: { x: { ticks: { font: { size: 10 } } }, y: { beginAtZero: true, ticks: { stepSize: 5, font: { size: 10 } } } }
+        }
       });
 
       charts.mechanic = new Chart(document.getElementById("mechanicChart"), {
         type: "bar",
         data: { labels: [], datasets: [{ label: "Juegos", data: [], backgroundColor: "#25664d", borderRadius: 6 }] },
-        options: { indexAxis: "y", responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { stepSize: 1, font: { size: 10 } } }, y: { ticks: { font: { size: 10 } } } } }
+        options: {
+          indexAxis: "y",
+          responsive: true,
+          maintainAspectRatio: false,
+          onClick: (event, elements) => handleChartClick("mechanic", event, elements),
+          onHover: handleChartHover,
+          plugins: { legend: { display: false } },
+          scales: { x: { ticks: { stepSize: 1, font: { size: 10 } } }, y: { ticks: { font: { size: 10 } } } }
+        }
       });
     }
 
