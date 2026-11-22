@@ -131,7 +131,7 @@
         <div class="w-11 h-11 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-xl font-bold">🗄️</div>
         <div>
           <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Huecos Ocupados</p>
-          <p id="kpiSlots" class="text-2xl font-extrabold text-kobold-900">15 <span class="text-sm font-normal text-slate-400">/ 56</span></p>
+          <p id="kpiSlots" class="text-2xl font-extrabold text-kobold-900">15 <span class="text-sm font-normal text-slate-400">/ 64</span></p>
         </div>
       </div>
       <div class="bg-white rounded-2xl p-4 shadow-sm border border-emerald-100 flex items-center gap-3.5">
@@ -173,7 +173,7 @@
         <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
           <div>
             <h2 class="font-display text-lg font-bold text-kobold-900 flex items-center gap-2">
-              <span>📚</span> Mapa de la Kallax (7 Filas × 8 Columnas)
+              <span>📚</span> Mapa de la Kallax
             </h2>
             <p class="text-xs text-slate-500">Haz clic en un hueco para filtrar sus juegos. Los huecos iluminados coinciden con tu búsqueda.</p>
           </div>
@@ -730,7 +730,7 @@
 
     let charts = {};
 
-    const rows = ["A", "B", "C", "D", "E", "F", "G"];
+    const rows = ["∅", "A", "B", "C", "D", "E", "F", "G"];
     const cols = [1, 2, 3, 4, 5, 6, 7, 8];
 
     function init() {
@@ -841,7 +841,7 @@
       });
 
       const parseSlotKey = (s) => {
-        const m = /^([A-G])(\d+)(?:\.(\d+))?$/.exec((s || "").toUpperCase().trim());
+        const m = /^([∅ØA-G])(\d+)(?:\.(\d+))?$/.exec((s || "").replace("ø", "∅").replace("Ø", "∅").toUpperCase().trim());
         if (!m) return 999999;
         const rowIdx = rows.indexOf(m[1]);
         const colIdx = parseInt(m[2], 10);
@@ -888,7 +888,7 @@
       document.getElementById("resultsCount").textContent = filteredGames.length;
 
       const occupiedSlots = new Set(games.map(g => g.slot.split(".")[0])).size;
-      document.getElementById("kpiSlots").innerHTML = `${occupiedSlots} <span class="text-sm font-normal text-slate-400">/ 56</span>`;
+      document.getElementById("kpiSlots").innerHTML = `${occupiedSlots} <span class="text-sm font-normal text-slate-400">/ 64</span>`;
 
       if (filteredGames.length > 0) {
         const avgTime = Math.round(filteredGames.reduce((acc, g) => acc + g.duration, 0) / filteredGames.length);
@@ -951,7 +951,7 @@
       });
 
       rows.forEach(r => {
-        html += `<div class="text-center text-xs font-bold text-amber-300/90 pr-1">Fila ${r}</div>`;
+        html += `<div class="text-center text-xs font-bold ${r === "∅" ? "text-emerald-300" : "text-amber-300/90"} pr-1" title="${r === "∅" ? "Parte superior (techo de la Kallax)" : "Fila " + r}">Fila ${r}</div>`;
         cols.forEach(c => {
           const slotId = `${r}${c}`;
 
@@ -996,8 +996,11 @@
           const isMatch = hasActiveFilter && matchingSlots.has(slotId);
           const isSelected = selectedSlot === slotId;
           const isEmptyConfirmed = confirmedEmptySlots.has(slotId);
+          const isTopRow = r === "∅";
 
-          let cellClasses = "kallax-cell h-11 rounded-lg flex flex-col items-center justify-center text-xs font-bold cursor-pointer select-none border ";
+          let cellClasses = isTopRow
+            ? "kallax-cell h-7 rounded-md flex flex-row items-center justify-center gap-1 text-[11px] font-bold cursor-pointer select-none border "
+            : "kallax-cell h-11 rounded-lg flex flex-col items-center justify-center text-xs font-bold cursor-pointer select-none border ";
           if (isSelected) {
             cellClasses += "bg-amber-400 text-kobold-950 border-white ring-2 ring-amber-300 shadow-lg";
           } else if (isMatch) {
@@ -1011,7 +1014,7 @@
           }
 
           const badge = count > 0
-            ? `<span class="text-[10px] font-semibold px-1.5 rounded-full ${isMatch || isSelected ? 'bg-kobold-950 text-amber-300' : 'bg-kobold-950/60 text-emerald-200'}">${count}</span>`
+            ? `<span class="${isTopRow ? 'text-[9px] px-1' : 'text-[10px] px-1.5'} font-semibold rounded-full ${isMatch || isSelected ? 'bg-kobold-950 text-amber-300' : 'bg-kobold-950/60 text-emerald-200'}">${count}</span>`
             : (isEmptyConfirmed ? `<span class="text-[9px] font-normal">Vacío</span>` : "");
 
           html += `
@@ -1021,6 +1024,9 @@
             </div>
           `;
         });
+        if (r === "∅") {
+          html += `<div class="col-span-9 h-[2px] bg-amber-400/40 rounded-full my-0.5" title="Superficie superior de la Kallax"></div>`;
+        }
       });
 
       html += '</div>';
