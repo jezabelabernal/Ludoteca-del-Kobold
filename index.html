@@ -397,6 +397,32 @@
       <div id="expansionsList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2.5 max-h-64 overflow-y-auto pr-1"></div>
     </section>
 
+    <!-- Compact Out-of-Kallax Section (Prestado y Biblioteca) -->
+    <section id="outsideKallaxSection" class="bg-gradient-to-br from-amber-50/80 via-white to-orange-50/40 rounded-2xl p-4 sm:p-5 shadow-sm border-2 border-amber-200/80">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mb-3">
+        <div>
+          <h2 class="font-display text-base sm:text-lg font-bold text-kobold-900 flex items-center gap-2">
+            <span>📦</span> Fuera de la Kallax — Prestado y Biblioteca (<span id="outsideCount">0</span>)
+          </h2>
+          <p class="text-xs text-slate-600">Juegos prestados o guardados en la biblioteca, clasificados por categoría.</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <input id="outsideSearchInput" type="text" placeholder="Buscar título o categoría..." oninput="renderOutsideKallaxPanel()"
+            class="px-3 py-1.5 rounded-xl border border-amber-200 bg-white focus:border-kobold-500 outline-none text-xs w-48 sm:w-56" />
+          <select id="outsideLocationFilter" onchange="renderOutsideKallaxPanel()" class="px-2.5 py-1.5 rounded-xl border border-emerald-600 bg-white focus:border-kobold-500 outline-none text-xs font-medium text-slate-800">
+            <option value="">Todo (Prestado / Biblioteca)</option>
+            <option value="Prestado">🤝 Prestado</option>
+            <option value="Biblioteca">📚 Biblioteca</option>
+          </select>
+          <select id="outsideCategoryFilter" onchange="renderOutsideKallaxPanel()" class="px-2.5 py-1.5 rounded-xl border border-amber-200 bg-white focus:border-kobold-500 outline-none text-xs text-slate-800">
+            <option value="">Todas las categorías</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="outsideKallaxList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2.5 max-h-72 overflow-y-auto pr-1"></div>
+    </section>
+
   </main>
 
   <!-- D20 Modal -->
@@ -812,6 +838,124 @@
 
     ];
 
+    const outsideKallaxGames = [
+      // Prestado
+      {
+        title: "Gloomhaven",
+        location: "Prestado",
+        category: "Campaña / Mazmorreo",
+        note: "Prestado a un amigo",
+        playersText: "1 - 4",
+        durationText: "60 - 120 min",
+        bggRating: 8.5,
+        bggRank: 5
+      },
+
+      // Biblioteca — Investigación / Murder Mystery
+      {
+        title: "Sherlock Holmes: Los crímenes del Támesis y otros casos",
+        location: "Biblioteca",
+        category: "Investigación / Deducción",
+        note: "Biblioteca",
+        playersText: "1 - 8",
+        durationText: "60 - 120 min",
+        bggRating: 7.7,
+        bggRank: 158
+      },
+      {
+        title: "Mystery Party in the Box: La bruja que se fue con el crepúsculo",
+        location: "Biblioteca",
+        category: "Mystery Party / Asesinato",
+        note: "Biblioteca",
+        playersText: "6 - 8",
+        durationText: "120 - 180 min",
+        bggRating: 7.2,
+        bggRank: null
+      },
+      {
+        title: "Mystery Party in the Box: Asesinato en la mansión Cthulhu",
+        location: "Biblioteca",
+        category: "Mystery Party / Asesinato",
+        note: "Biblioteca",
+        playersText: "6 - 8",
+        durationText: "120 - 180 min",
+        bggRating: 7.3,
+        bggRank: null
+      },
+      {
+        title: "Mystery Party in the Box: Solsticio oscuro",
+        location: "Biblioteca",
+        category: "Mystery Party / Asesinato",
+        note: "Biblioteca",
+        playersText: "6 - 8",
+        durationText: "120 - 180 min",
+        bggRating: 7.1,
+        bggRank: null
+      },
+      {
+        title: "Cómo organizar un asesinato: El caso de la mansión Watersdown",
+        location: "Biblioteca",
+        category: "Mystery Party / Asesinato",
+        note: "Biblioteca",
+        playersText: "6 - 8",
+        durationText: "120 - 180 min",
+        bggRating: 6.8,
+        bggRank: null
+      },
+      {
+        title: "Cómo organizar un asesinato: El último tren de París",
+        location: "Biblioteca",
+        category: "Mystery Party / Asesinato",
+        note: "Biblioteca",
+        playersText: "6 - 8",
+        durationText: "120 - 180 min",
+        bggRating: 6.9,
+        bggRank: null
+      },
+
+      // Biblioteca — Lógica / Inteligencia (SmartGames / ingenio)
+      {
+        title: "IQ Puzzler Pro",
+        location: "Biblioteca",
+        category: "Lógica / Inteligencia",
+        note: "Biblioteca · Ingenio solitario",
+        playersText: "1",
+        durationText: "15 - 30 min",
+        bggRating: 7.1,
+        bggRank: 5840
+      },
+      {
+        title: "Cats & Boxes",
+        location: "Biblioteca",
+        category: "Lógica / Inteligencia",
+        note: "Biblioteca · Ingenio solitario",
+        playersText: "1",
+        durationText: "15 - 30 min",
+        bggRating: 6.9,
+        bggRank: 11420
+      },
+      {
+        title: "Temple Trap",
+        location: "Biblioteca",
+        category: "Lógica / Inteligencia",
+        note: "Biblioteca · Ingenio solitario",
+        playersText: "1",
+        durationText: "15 - 30 min",
+        bggRating: 6.7,
+        bggRank: 9210
+      },
+      {
+        title: "Rush Hour",
+        location: "Biblioteca",
+        category: "Lógica / Inteligencia",
+        note: "Biblioteca · Ingenio solitario",
+        playersText: "1",
+        durationText: "15 - 30 min",
+        bggRating: 6.6,
+        bggRank: 2890
+      }
+    ];
+
     const confirmedEmptySlots = new Set(["C1", "C2", "C3", "C6", "C7", "C8", "G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8"]);
     let games = [...initialGames];
     let selectedSlot = null;
@@ -828,9 +972,11 @@
     function init() {
       populateFilterDropdowns();
       populateExpansionSlotFilter();
+      populateOutsideCategoryFilter();
       initCharts();
       applyFilters();
       renderExpansionsPanel();
+      renderOutsideKallaxPanel();
     }
 
     function populateFilterDropdowns() {
@@ -1302,6 +1448,68 @@
       setView("table");
       applyFilters();
       document.getElementById("resultsCount").scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    function populateOutsideCategoryFilter() {
+      const catSelect = document.getElementById("outsideCategoryFilter");
+      if (!catSelect) return;
+      const cats = [...new Set(outsideKallaxGames.map(g => g.category))].sort();
+      catSelect.innerHTML = '<option value="">Todas las categorías</option>' +
+        cats.map(c => `<option value="${c}">${c}</option>`).join("");
+    }
+
+    function renderOutsideKallaxPanel() {
+      const listEl = document.getElementById("outsideKallaxList");
+      const countEl = document.getElementById("outsideCount");
+      if (!listEl || !countEl) return;
+
+      const q = (document.getElementById("outsideSearchInput")?.value || "").toLowerCase().trim();
+      const locF = document.getElementById("outsideLocationFilter")?.value || "";
+      const catF = document.getElementById("outsideCategoryFilter")?.value || "";
+
+      const items = outsideKallaxGames.filter(g => {
+        if (locF && g.location !== locF) return false;
+        if (catF && g.category !== catF) return false;
+        if (q) {
+          const hay = `${g.title} ${g.location} ${g.category} ${g.note || ""}`.toLowerCase();
+          if (!hay.includes(q)) return false;
+        }
+        return true;
+      });
+
+      countEl.textContent = items.length;
+
+      if (items.length === 0) {
+        listEl.innerHTML = `<div class="col-span-full py-4 text-center text-xs text-slate-500">No hay juegos fuera de la Kallax con ese filtro.</div>`;
+        return;
+      }
+
+      listEl.innerHTML = items.map(g => {
+        const isLoaned = g.location === "Prestado";
+        const locBadge = isLoaned
+          ? `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-rose-100 text-rose-900 border border-rose-300 font-bold text-[10px]">🤝 Prestado</span>`
+          : `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-100 text-amber-950 border border-amber-300 font-bold text-[10px]">📚 Biblioteca</span>`;
+        const ratingStr = g.bggRating ? `<span class="text-[10px] font-bold text-indigo-900 bg-indigo-50 border border-indigo-200 px-1.5 py-0.2 rounded">⭐ ${g.bggRating.toFixed(1)}</span>` : "";
+        const cardBorder = isLoaned
+          ? "border-rose-200 hover:border-rose-400 bg-rose-50/30"
+          : "border-amber-200 hover:border-amber-400 bg-white";
+
+        return `
+          <div class="p-2.5 rounded-xl border ${cardBorder} transition flex flex-col justify-between gap-1.5 shadow-2xs">
+            <div>
+              <div class="flex items-center justify-between gap-1.5 mb-1">
+                ${locBadge}
+                ${ratingStr}
+              </div>
+              <p class="font-bold text-xs text-kobold-950 leading-snug" title="${g.title}">${g.title}</p>
+            </div>
+            <div class="pt-1 border-t border-slate-100 flex items-center justify-between gap-1 text-[11px] text-slate-600">
+              <span class="font-medium text-kobold-800 truncate" title="${g.category}">🏷️ ${g.category}</span>
+              <span class="text-[10px] text-slate-500 shrink-0">👥 ${g.playersText} · ⏱️ ${g.durationText}</span>
+            </div>
+          </div>
+        `;
+      }).join("");
     }
 
     function setView(view) {
