@@ -1373,8 +1373,102 @@
       "Ciencia / Biología": { icon: "🧬", grad: "from-teal-950 via-cyan-800 to-emerald-700", accent: "#99f6e4" }
     };
 
+    const customThumbVisuals = {
+      "Tsuro": {
+            "icon": "🐉",
+            "grad": "from-emerald-950 via-teal-900 to-amber-800",
+            "accent": "#fde047"
+      },
+      "Greylune": {
+            "icon": "⚔️",
+            "grad": "from-stone-900 via-red-950 to-amber-800",
+            "accent": "#fde68a"
+      },
+      "Ark Nova": {
+            "icon": "🪲",
+            "grad": "from-lime-950 via-emerald-900 to-teal-800",
+            "accent": "#d9f99d"
+      },
+      "Metal Manía": {
+            "icon": "🎸",
+            "grad": "from-zinc-950 via-purple-950 to-rose-900",
+            "accent": "#f5d0fe"
+      },
+      "Kingdom Legacy: Exploration": {
+            "icon": "⚔️",
+            "grad": "from-stone-900 via-amber-950 to-red-900",
+            "accent": "#fde68a"
+      },
+      "Kingdom Legacy: Feudal Kingdom": {
+            "icon": "⚔️",
+            "grad": "from-stone-900 via-amber-950 to-red-900",
+            "accent": "#fde68a"
+      },
+      "Feudal Kingdom Adventures": {
+            "icon": "⚔️",
+            "grad": "from-stone-900 via-amber-950 to-red-900",
+            "accent": "#fde68a"
+      },
+      "Railroad Ink: Edición Azul Profundo": {
+            "icon": "🚂",
+            "grad": "from-sky-950 via-blue-900 to-cyan-800",
+            "accent": "#bae6fd"
+      },
+      "Railroad Ink: Edición Rojo Abrasador": {
+            "icon": "🚂",
+            "grad": "from-rose-950 via-red-900 to-amber-800",
+            "accent": "#fecdd3"
+      },
+      "Railroad Ink Challenge: Lush Green Edition": {
+            "icon": "🚂",
+            "grad": "from-emerald-950 via-green-900 to-teal-800",
+            "accent": "#bbf7d0"
+      },
+      "Railroad Ink: Engineer Expansion Pack (2021)": {
+            "icon": "🚂",
+            "grad": "from-slate-900 via-amber-900 to-stone-800",
+            "accent": "#fde68a"
+      },
+      "Railroad Ink: Eldritch Expansion Pack (2021)": {
+            "icon": "🚂",
+            "grad": "from-purple-950 via-slate-900 to-emerald-950",
+            "accent": "#c4b5fd"
+      },
+      "Mariposas": {
+            "icon": "🪲",
+            "grad": "from-emerald-950 via-green-800 to-amber-700",
+            "accent": "#d9f99d"
+      },
+      "Sky Team": {
+            "icon": "✈️",
+            "grad": "from-sky-950 via-blue-800 to-indigo-900",
+            "accent": "#bae6fd"
+      },
+      "Palabra de Pirata": {
+            "icon": "🏴‍☠️",
+            "grad": "from-slate-950 via-amber-950 to-rose-900",
+            "accent": "#fde047"
+      },
+      "That Time You Killed Me": {
+            "icon": "⏳",
+            "grad": "from-violet-950 via-indigo-900 to-purple-800",
+            "accent": "#e9d5ff"
+      },
+      "Las Ruinas Perdidas de Arnak": {
+            "icon": "🏺",
+            "grad": "from-amber-950 via-stone-800 to-emerald-900",
+            "accent": "#fde68a"
+      },
+      "Time Walkers": {
+            "icon": "⏳",
+            "grad": "from-indigo-950 via-violet-900 to-cyan-900",
+            "accent": "#c4b5fd"
+      }
+};
+
     function buildCardThumbHTML(g) {
-      const vis = themeVisuals[g.theme] || { icon: "🎲", grad: "from-kobold-950 via-kobold-800 to-emerald-700", accent: "#fde047" };
+      const baseVis = themeVisuals[g.theme] || { icon: "🎲", grad: "from-kobold-950 via-kobold-800 to-emerald-700", accent: "#fde047" };
+      const vis = customThumbVisuals[g.title] ? { ...baseVis, ...customThumbVisuals[g.title] } : baseVis;
 
       return `
         <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border border-emerald-200/80 bg-gradient-to-br ${vis.grad} relative flex items-center justify-center shrink-0 shadow-xs select-none">
