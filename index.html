@@ -16969,13 +16969,13 @@
 
       <div id="localStatusBanner" class="p-3 rounded-2xl bg-emerald-50 border border-emerald-200 text-xs text-kobold-900 flex items-center justify-between gap-2">
         <span id="localStatusText">Inventario cargado desde el archivo base (240 juegos).</span>
-      </div>
+              </div>
 
       <div class="space-y-3">
         <!-- Download CSV -->
         <div class="p-4 rounded-2xl border border-emerald-200 bg-kobold-50/50 space-y-2">
-          <h4 class="font-bold text-sm text-kobold-900">1. Descargar CSV (para Excel, Google Sheets o enviártelo)</h4>
-          <p class="text-xs text-slate-600">Descarga la tabla completa con tus ediciones y juegos nuevos. Puedes abrirla en Google Sheets o pasárnosla para regenerar el HTML.</p>
+          <h4 class="font-bold text-sm text-kobold-900">1. Descargar CSV (para Excel, Google Sheets o enviárnoslo)</h4>
+          <p class="text-xs text-slate-600">Para revisar en Google Sheets o guardar backup de todo.</p>
           <button type="button" onclick="downloadInventoryCSV()" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs cursor-pointer transition">
             <span>📊</span> Descargar ludoteca-kobold.csv
           </button>
@@ -16984,7 +16984,7 @@
         <!-- Download Updated HTML -->
         <div class="p-4 rounded-2xl border border-amber-200 bg-amber-50/50 space-y-2">
           <h4 class="font-bold text-sm text-kobold-900">2. Descargar HTML actualizado (listo para reemplazar en GitHub)</h4>
-          <p class="text-xs text-slate-600">Genera una copia completa de este <code class="bg-white px-1 py-0.5 rounded border">index.html</code> con todos tus juegos actuales incrustados dentro, lista para subir directamente a tu repositorio.</p>
+          <p class="text-xs text-slate-600">Actualiza una copia de este <code class="bg-white px-1 py-0.5 rounded border">index.html</code> con todos los juegos incrustados dentro, lista para subir directamente al repositorio.</p>
           <button type="button" onclick="downloadUpdatedHTML()" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-kobold-800 hover:bg-kobold-700 text-amber-300 font-bold text-xs shadow-xs cursor-pointer transition">
             <span>🌐</span> Descargar index.html actualizado
           </button>
@@ -16993,7 +16993,7 @@
         <!-- Import CSV -->
         <div class="p-4 rounded-2xl border border-slate-200 bg-slate-50/70 space-y-2">
           <h4 class="font-bold text-sm text-kobold-900">3. Cargar desde un archivo CSV (de Google Sheets o copia previa)</h4>
-          <p class="text-xs text-slate-600">Si habéis editado juegos en vuestro Google Sheet de respaldo, descargadlo como <strong>.csv</strong> y seleccionadlo aquí para actualizar la web al instante.</p>
+          <p class="text-xs text-slate-600">Por si editamos en el Google Sheet,  de respaldo. Lo bajamos como <strong>.csv</strong> y lo subimosaquí para actualizar al instante.</p>
           <input id="csvFileInput" type="file" accept=".csv,text/csv" onchange="handleCsvUpload(event)" class="block w-full text-xs text-slate-600 file:mr-3 file:py-2 file:px-3.5 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-kobold-700 file:text-white hover:file:bg-kobold-600 cursor-pointer">
         </div>
       </div>
@@ -22708,16 +22708,6 @@
           ? `Tienes cambios guardados en este navegador (${games.length} juegos en total). Recuerda descargar el CSV o HTML si quieres actualizar GitHub.`
           : `Inventario cargado desde el archivo base (${games.length} juegos).`;
       }
-    }
-
-    function resetToEmbeddedGames() {
-      if (!confirm("¿Seguro que quieres descartar las ediciones guardadas en este navegador y volver a los 240 juegos originales del archivo?")) return;
-      localStorage.removeItem(STORAGE_KEY);
-      nextGameUid = 1;
-      games = assignUids([...initialGames, ...outsideKallaxGames]);
-      hasUnsavedLocalChanges = false;
-      updateUnsavedIndicator();
-      refreshAllViewsAfterDataChange();
     }
 
     function refreshAllViewsAfterDataChange() {
