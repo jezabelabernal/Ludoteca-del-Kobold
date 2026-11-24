@@ -9,6 +9,183 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Modal: Editar / Añadir Juego -->
+  <div id="gameEditorModal" class="hidden fixed inset-0 z-50 bg-kobold-950/75 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-2xl w-full p-6 border-2 border-meeple-amber shadow-2xl space-y-4 my-auto">
+      <div class="flex items-center justify-between border-b border-emerald-100 pb-3">
+        <div class="flex items-center gap-2.5">
+          <span class="text-2xl">✏️</span>
+          <div>
+            <h3 id="gameEditorTitle" class="font-display text-lg font-bold text-kobold-900">Editar Juego</h3>
+            <p class="text-xs text-slate-500">Los cambios actualizan la Kallax y se sincronizan con Google Sheets si está enlazado</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeGameEditorModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 font-bold cursor-pointer">✕</button>
+      </div>
+
+      <form id="gameEditorForm" onsubmit="saveGameFromEditor(event)" class="space-y-3.5 text-sm">
+        <input type="hidden" id="editGameId" value="">
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-kobold-900 mb-1">Hueco / Ubicación *</label>
+            <input type="text" id="editSlot" required placeholder="Ej: A1, C4.1, Prestado, Biblioteca" class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:border-kobold-600 outline-none text-sm font-semibold">
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-bold text-kobold-900 mb-1">Título del juego *</label>
+            <input type="text" id="editTitle" required placeholder="Ej: Terraforming Mars" class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:border-kobold-600 outline-none text-sm font-semibold">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-kobold-900 mb-1">Mín. Jugadores</label>
+            <input type="number" id="editMinP" min="1" max="100" value="1" class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:border-kobold-600 outline-none text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-kobold-900 mb-1">Máx. Jugadores</label>
+            <input type="number" id="editMaxP" min="1" max="100" value="4" class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:border-kobold-600 outline-none text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-kobold-900 mb-1">Duración media (min)</label>
+            <input type="number" id="editDuration" min="5" max="600" value="45" class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:border-kobold-600 outline-none text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-kobold-900 mb-1">Duración texto</label>
+            <input type="text" id="editDurationText" placeholder="Ej: 30 - 60 min" class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:border-kobold-600 outline-none text-sm">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-kobold-900 mb-1">Temática principal *</label>
+            <input type="text" id="editTheme" list="themesDatalist" required placeholder="Ej: Fantasía, Ciencia ficción..." class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:border-kobold-600 outline-none text-sm">
+            <datalist id="themesDatalist"></datalist>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-kobold-900 mb-1">Subtemática / Notas</label>
+            <input type="text" id="editSubTheme" placeholder="Ej: Mazmorras, Edición coleccionista..." class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:border-kobold-600 outline-none text-sm">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-kobold-900 mb-1">Mecánicas (separadas por comas)</label>
+          <input type="text" id="editMechanics" placeholder="Ej: Cooperativo, Construcción de mazos, Gestión de mano" class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:border-kobold-600 outline-none text-sm">
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-kobold-900 mb-1">Complejidad (1-5)</label>
+            <input type="number" id="editWeight" step="0.01" min="1" max="5" value="2.0" class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:border-kobold-600 outline-none text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-kobold-900 mb-1">Nota BGG (1-10)</label>
+            <input type="number" id="editBggRating" step="0.01" min="0" max="10" placeholder="Ej: 7.8" class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:border-kobold-600 outline-none text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-kobold-900 mb-1">Ranking BGG</label>
+            <input type="number" id="editBggRank" min="1" placeholder="Vacío si sin rank" class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:border-kobold-600 outline-none text-sm">
+          </div>
+        </div>
+
+        <div class="p-3 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-2.5">
+          <div class="flex flex-wrap items-center gap-4">
+            <label class="inline-flex items-center gap-2 text-xs font-bold text-emerald-950 cursor-pointer">
+              <input type="checkbox" id="editIsExpansion" class="rounded text-emerald-600">
+              <span>🧩 Es una expansión</span>
+            </label>
+            <label class="inline-flex items-center gap-2 text-xs font-bold text-emerald-950 cursor-pointer">
+              <input type="checkbox" id="editHasExpansionInside" class="rounded text-emerald-600">
+              <span>📦 Incluye expansión dentro de la caja</span>
+            </label>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-[11px] font-semibold text-emerald-900 mb-0.5">Juego base (si aplica)</label>
+              <input type="text" id="editBaseGame" placeholder="Ej: Zombicide: Black Plague" class="w-full px-2.5 py-1.5 rounded-lg border border-emerald-200 bg-white outline-none text-xs">
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-emerald-900 mb-0.5">Caja compartida con</label>
+              <input type="text" id="editSharedBoxWith" placeholder="Ej: Quarriors!" class="w-full px-2.5 py-1.5 rounded-lg border border-emerald-200 bg-white outline-none text-xs">
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100">
+          <button type="button" id="deleteGameBtn" onclick="deleteCurrentEditingGame()" class="hidden px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold text-xs cursor-pointer transition">
+            🗑️ Eliminar juego
+          </button>
+          <div class="flex items-center gap-2 ml-auto">
+            <button type="button" onclick="closeGameEditorModal()" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs cursor-pointer transition">
+              Cancelar
+            </button>
+            <button type="submit" id="saveGameBtn" class="px-5 py-2 rounded-xl bg-kobold-700 hover:bg-kobold-600 text-white font-bold text-xs shadow-sm cursor-pointer transition">
+              💾 Guardar cambios
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Enlace con Google Sheets -->
+  <div id="sheetsConfigModal" class="hidden fixed inset-0 z-50 bg-kobold-950/75 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-xl w-full p-6 border-2 border-emerald-500 shadow-2xl space-y-4 my-auto">
+      <div class="flex items-center justify-between border-b border-emerald-100 pb-3">
+        <div class="flex items-center gap-2.5">
+          <span class="text-2xl">📊</span>
+          <div>
+            <h3 class="font-display text-lg font-bold text-kobold-900">Sincronización con Google Sheets</h3>
+            <p class="text-xs text-slate-500">Conecta esta web con vuestra hoja compartida de Google Drive</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeSheetsConfigModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 font-bold cursor-pointer">✕</button>
+      </div>
+
+      <div class="space-y-3 text-xs text-slate-700">
+        <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-200 space-y-1">
+          <p class="font-bold text-emerald-950">¿Cómo funciona?</p>
+          <p>1. Pega el código de <strong>Apps Script</strong> en vuestro Google Sheet (<em>Extensiones → Apps Script</em>) y despliégalo como <strong>Aplicación web</strong> (acceso: <em>Cualquier usuario</em>).</p>
+          <p>2. Pega aquí debajo la URL de la aplicación web y la clave secreta que hayáis puesto en el script.</p>
+          <p>3. A partir de ese momento, cada edición con el lápiz ✏️ o juego nuevo se guardará directamente en Google Sheets.</p>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-kobold-900 mb-1">URL de Google Apps Script (Web App)</label>
+          <input type="url" id="sheetsWebAppUrl" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:border-kobold-600 outline-none text-xs font-mono">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-kobold-900 mb-1">Clave secreta compartida (Token)</label>
+          <input type="text" id="sheetsSecretToken" placeholder="Ej: kobold2026" class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:border-kobold-600 outline-none text-xs font-mono">
+        </div>
+
+        <div id="sheetsSyncFeedback" class="hidden p-2.5 rounded-xl text-xs font-semibold"></div>
+      </div>
+
+      <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100">
+        <div class="flex flex-wrap items-center gap-1.5">
+          <button type="button" onclick="syncFromGoogleSheet(true)" class="px-3 py-2 rounded-xl bg-emerald-100 hover:bg-emerald-200 text-emerald-950 font-bold text-xs cursor-pointer transition">
+            🔄 Cargar desde Sheet
+          </button>
+          <button type="button" onclick="pushAllToGoogleSheet()" class="px-3 py-2 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-950 font-bold text-xs cursor-pointer transition" title="Subir todo el inventario actual al Google Sheet">
+            ⬆️ Volcar todo al Sheet
+          </button>
+          <button type="button" onclick="resetLocalToDefault()" class="px-2.5 py-2 rounded-xl bg-slate-100 hover:bg-rose-100 text-slate-600 hover:text-rose-700 font-semibold text-xs cursor-pointer transition" title="Restaurar los 240 juegos originales">
+            Restaurar copia base
+          </button>
+        </div>
+        <button type="button" onclick="saveSheetsConfig()" class="px-4 py-2 rounded-xl bg-kobold-700 hover:bg-kobold-600 text-white font-bold text-xs shadow-sm cursor-pointer transition">
+          Guardar enlace
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast notificación -->
+  <div id="koboldToast" class="hidden fixed bottom-5 right-5 z-50 max-w-sm px-4 py-3 rounded-2xl bg-kobold-950 text-white border border-amber-400/60 shadow-xl text-xs font-semibold flex items-center gap-2.5"></div>
+
   <script>
     tailwind.config = {
       theme: {
@@ -110,6 +287,9 @@
         </button>
         <button onclick="openPlayModal()" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-kobold-700 hover:bg-kobold-600 text-white font-semibold text-sm border border-emerald-400/30 shadow transition cursor-pointer">
           <span>✨</span> Elige tu propia aventura
+        </button>
+        <button onclick="openSheetsConfigModal()" id="sheetsHeaderBtn" class="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-emerald-950/90 hover:bg-emerald-900 text-emerald-200 font-semibold text-sm border border-emerald-400/40 shadow transition cursor-pointer" title="Configurar sincronización con Google Sheets">
+          <span>📊</span> <span id="sheetsStatusLabel">Google Sheet</span>
         </button>
       </div>
     </div>
@@ -347,6 +527,9 @@
           </p>
         </div>
         <div class="flex flex-wrap items-center gap-2">
+          <button type="button" onclick="openGameEditorModal(null)" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-kobold-700 hover:bg-kobold-600 text-white font-bold text-xs shadow-xs transition cursor-pointer">
+            <span>➕</span> Añadir juego
+          </button>
           <div class="inline-flex items-center gap-1 bg-slate-50 border border-slate-200 rounded-xl px-2 py-1">
             <select id="sortField" onchange="applyFilters()" class="text-xs font-semibold text-slate-700 bg-transparent outline-none cursor-pointer">
               <option value="slot">Ordenar: Hueco</option>
@@ -387,6 +570,7 @@
               <th onclick="sortByColumn('theme')" class="py-2.5 px-3 font-bold cursor-pointer hover:bg-emerald-100/70 transition whitespace-nowrap">Temática <span id="thArrow-theme" class="text-slate-400 ml-0.5">↕</span></th>
               <th onclick="sortByColumn('mechanic')" class="py-2.5 px-3 font-bold cursor-pointer hover:bg-emerald-100/70 transition whitespace-nowrap">Mecánica <span id="thArrow-mechanic" class="text-slate-400 ml-0.5">↕</span></th>
               <th onclick="sortByColumn('weight')" class="py-2.5 px-3 font-bold cursor-pointer hover:bg-emerald-100/70 transition whitespace-nowrap">Complejidad <span id="thArrow-weight" class="text-slate-400 ml-0.5">↕</span></th>
+              <th class="py-2.5 px-3 font-bold text-center whitespace-nowrap">Editar</th>
             </tr>
           </thead>
           <tbody id="tableBody" class="divide-y divide-slate-100"></tbody>
@@ -984,8 +1168,18 @@
       }
     ];
 
-    const confirmedEmptySlots = new Set(["C1", "C2", "C3", "C6", "C7", "C8", "F2", "G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8"]);
-    let games = [...initialGames, ...outsideKallaxGames];
+    let confirmedEmptySlots = new Set(["C1", "C2", "C3", "C6", "C7", "C8", "F2", "G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8"]);
+    const defaultGames = [...initialGames, ...outsideKallaxGames].map((g, i) => ({ ...g, _id: i + 1 }));
+    let games = JSON.parse(JSON.stringify(defaultGames));
+    let nextGameId = games.length + 1;
+
+    const STORAGE_GAMES_KEY = "kobold_ludoteca_games_v1";
+    const STORAGE_EMPTY_KEY = "kobold_ludoteca_empty_v1";
+    const STORAGE_SHEETS_KEY = "kobold_ludoteca_sheets_cfg_v1";
+
+    function isOutsideGame(g) {
+      return Boolean(g.outsideLocation || g.slot === "Prestado" || g.slot === "Biblioteca");
+    }
     let selectedSlot = null;
     let selectedWeight = "";
     let currentView = "cards";
@@ -1488,7 +1682,7 @@
           <p class="text-sm mt-1">Prueba a ampliar el tiempo de partida o limpiar los filtros.</p>
         </div>`;
         cardsEl.innerHTML = emptyMsg;
-        tableBody.innerHTML = `<tr><td colspan="9" class="py-8 text-center text-slate-500">No hay juegos que coincidan con la búsqueda.</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="10" class="py-8 text-center text-slate-500">No hay juegos que coincidan con la búsqueda.</td></tr>`;
         return;
       }
 
@@ -1514,9 +1708,14 @@
                   </span>
                   ${expTag}
                 </div>
-                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full border shrink-0 ${w.cls}">
-                  ${w.label}
-                </span>
+                <div class="flex items-center gap-1 shrink-0">
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-full border ${w.cls}">
+                    ${w.label}
+                  </span>
+                  <button type="button" onclick="openGameEditorModal(${g._id})" title="Editar este juego en el inventario" class="w-6 h-6 rounded-lg bg-white/90 hover:bg-amber-100 border border-slate-200 hover:border-amber-400 flex items-center justify-center text-xs shadow-2xs transition cursor-pointer">
+                    ✏️
+                  </button>
+                </div>
               </div>
 
               <!-- Compact thumbnail + title & BGG -->
@@ -1566,6 +1765,11 @@
             <td class="py-2.5 px-3 text-slate-700">${g.theme}</td>
             <td class="py-2.5 px-3 text-slate-600 text-xs">${g.mechanics.join(", ")}</td>
             <td class="py-2.5 px-3 whitespace-nowrap"><span class="text-xs font-semibold px-2 py-0.5 rounded-full border ${w.cls}">${w.label}</span></td>
+            <td class="py-2.5 px-3 text-center whitespace-nowrap">
+              <button type="button" onclick="openGameEditorModal(${g._id})" title="Editar juego" class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-white hover:bg-amber-100 border border-slate-200 hover:border-amber-400 text-xs shadow-2xs transition cursor-pointer">
+                ✏️
+              </button>
+            </td>
           </tr>
         `;
       }).join("");
@@ -1645,7 +1849,7 @@
     function populateOutsideCategoryFilter() {
       const catSelect = document.getElementById("outsideCategoryFilter");
       if (!catSelect) return;
-      const cats = [...new Set(outsideKallaxGames.map(g => g.category || (g.subTheme ? g.subTheme.split(' · ')[0] : g.theme)))].sort();
+      const cats = [...new Set(games.filter(isOutsideGame).map(g => g.category || (g.subTheme ? g.subTheme.split(' · ')[0] : g.theme)))].sort();
       catSelect.innerHTML = '<option value="">Todas las categorías</option>' +
         cats.map(c => `<option value="${c}">${c}</option>`).join("");
     }
@@ -1659,7 +1863,7 @@
       const locF = document.getElementById("outsideLocationFilter")?.value || "";
       const catF = document.getElementById("outsideCategoryFilter")?.value || "";
 
-      const items = outsideKallaxGames.filter(g => {
+      const items = games.filter(isOutsideGame).filter(g => {
         if (locF && (g.outsideLocation || g.location) !== locF) return false;
         const gCat = g.category || (g.subTheme ? g.subTheme.split(' · ')[0] : g.theme);
         if (catF && gCat !== catF) return false;
@@ -2068,7 +2272,385 @@
       });
     }
 
+
+    // =========================================================================
+    // EDICIÓN DE JUEGOS (LÁPIZ) Y SINCRONIZACIÓN CON GOOGLE SHEETS
+    // =========================================================================
+    function showToast(msg, isError = false) {
+      const toast = document.getElementById("koboldToast");
+      if (!toast) return;
+      toast.className = `fixed bottom-5 right-5 z-50 max-w-sm px-4 py-3 rounded-2xl ${isError ? 'bg-rose-950 border-rose-400' : 'bg-kobold-950 border-amber-400/60'} text-white border shadow-xl text-xs font-semibold flex items-center gap-2`;
+      toast.textContent = msg;
+      toast.classList.remove("hidden");
+      clearTimeout(window._koboldToastTimer);
+      window._koboldToastTimer = setTimeout(() => toast.classList.add("hidden"), 4000);
+    }
+
+    function getSheetsConfig() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_SHEETS_KEY) || "{}");
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function updateSheetsHeaderBadge() {
+      const cfg = getSheetsConfig();
+      const lbl = document.getElementById("sheetsStatusLabel");
+      const btn = document.getElementById("sheetsHeaderBtn");
+      if (!lbl || !btn) return;
+      if (cfg.url) {
+        lbl.textContent = "Sheet Conectado";
+        btn.className = "inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm border border-emerald-300/60 shadow transition cursor-pointer";
+      } else {
+        lbl.textContent = "Enlazar Google Sheet";
+        btn.className = "inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-emerald-950/90 hover:bg-emerald-900 text-emerald-200 font-semibold text-sm border border-emerald-400/40 shadow transition cursor-pointer";
+      }
+    }
+
+    function saveLocalState() {
+      try {
+        localStorage.setItem(STORAGE_GAMES_KEY, JSON.stringify(games));
+        localStorage.setItem(STORAGE_EMPTY_KEY, JSON.stringify([...confirmedEmptySlots]));
+      } catch (e) {
+        console.warn("No se pudo guardar en localStorage:", e);
+      }
+    }
+
+    function loadLocalState() {
+      try {
+        const saved = localStorage.getItem(STORAGE_GAMES_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            games = parsed.map((g, idx) => ({ ...g, _id: g._id || idx + 1 }));
+            nextGameId = Math.max(...games.map(g => g._id || 0), 0) + 1;
+          }
+        }
+        const savedEmpty = localStorage.getItem(STORAGE_EMPTY_KEY);
+        if (savedEmpty) {
+          const parsedEmpty = JSON.parse(savedEmpty);
+          if (Array.isArray(parsedEmpty)) {
+            confirmedEmptySlots = new Set(parsedEmpty);
+          }
+        }
+      } catch (e) {
+        console.warn("Error leyendo caché local:", e);
+      }
+    }
+
+    function refreshAllViews() {
+      populateFilterDropdowns();
+      populateExpansionSlotFilter();
+      populateOutsideCategoryFilter();
+      applyFilters();
+      renderExpansionsPanel();
+      renderOutsideKallaxPanel();
+    }
+
+    function openGameEditorModal(gameId) {
+      const modal = document.getElementById("gameEditorModal");
+      const titleEl = document.getElementById("gameEditorTitle");
+      const delBtn = document.getElementById("deleteGameBtn");
+      const datalist = document.getElementById("themesDatalist");
+
+      const themes = [...new Set(games.map(g => g.theme))].sort();
+      datalist.innerHTML = themes.map(t => `<option value="${t}">`).join("");
+
+      if (gameId === null || gameId === undefined) {
+        titleEl.textContent = "➕ Añadir nuevo tesoro a la ludoteca";
+        document.getElementById("editGameId").value = "";
+        document.getElementById("editSlot").value = "";
+        document.getElementById("editTitle").value = "";
+        document.getElementById("editMinP").value = 1;
+        document.getElementById("editMaxP").value = 4;
+        document.getElementById("editDuration").value = 45;
+        document.getElementById("editDurationText").value = "45 min";
+        document.getElementById("editTheme").value = "";
+        document.getElementById("editSubTheme").value = "";
+        document.getElementById("editMechanics").value = "";
+        document.getElementById("editWeight").value = 2.0;
+        document.getElementById("editBggRating").value = "";
+        document.getElementById("editBggRank").value = "";
+        document.getElementById("editIsExpansion").checked = false;
+        document.getElementById("editHasExpansionInside").checked = false;
+        document.getElementById("editBaseGame").value = "";
+        document.getElementById("editSharedBoxWith").value = "";
+        delBtn.classList.add("hidden");
+      } else {
+        const g = games.find(item => item._id === gameId);
+        if (!g) return;
+        titleEl.textContent = `Editar: ${g.title}`;
+        document.getElementById("editGameId").value = g._id;
+        document.getElementById("editSlot").value = g.slot || "";
+        document.getElementById("editTitle").value = g.title || "";
+        document.getElementById("editMinP").value = g.minP ?? 1;
+        document.getElementById("editMaxP").value = g.maxP ?? 4;
+        document.getElementById("editDuration").value = g.duration ?? 45;
+        document.getElementById("editDurationText").value = g.durationText || `${g.duration || 45} min`;
+        document.getElementById("editTheme").value = g.theme || "";
+        document.getElementById("editSubTheme").value = g.subTheme || "";
+        document.getElementById("editMechanics").value = (g.mechanics || []).join(", ");
+        document.getElementById("editWeight").value = g.weight ?? 2.0;
+        document.getElementById("editBggRating").value = g.bggRating ?? "";
+        document.getElementById("editBggRank").value = g.bggRank ?? "";
+        document.getElementById("editIsExpansion").checked = Boolean(g.isExpansion || g.bggNote === "Expansión");
+        document.getElementById("editHasExpansionInside").checked = Boolean(g.hasExpansionInside);
+        document.getElementById("editBaseGame").value = g.baseGame || "";
+        document.getElementById("editSharedBoxWith").value = g.sharedBoxWith || "";
+        delBtn.classList.remove("hidden");
+      }
+
+      modal.classList.remove("hidden");
+    }
+
+    function closeGameEditorModal() {
+      document.getElementById("gameEditorModal").classList.add("hidden");
+    }
+
+    function normalizeSlotInput(raw) {
+      const s = (raw || "").trim();
+      if (/^prestado$/i.test(s)) return "Prestado";
+      if (/^biblioteca$/i.test(s)) return "Biblioteca";
+      return s.replace(/^0/, "∅").replace(/^ø/i, "∅").replace(/^Ø/, "∅").toUpperCase();
+    }
+
+    async function saveGameFromEditor(e) {
+      e.preventDefault();
+      const idStr = document.getElementById("editGameId").value;
+      const isNew = !idStr;
+      const gameId = isNew ? nextGameId++ : parseInt(idStr, 10);
+
+      const slot = normalizeSlotInput(document.getElementById("editSlot").value);
+      const title = document.getElementById("editTitle").value.trim();
+      const minP = Math.max(1, parseInt(document.getElementById("editMinP").value, 10) || 1);
+      const maxP = Math.max(minP, parseInt(document.getElementById("editMaxP").value, 10) || minP);
+      const playersText = minP === maxP ? `${minP}` : `${minP} - ${maxP}`;
+      const duration = Math.max(5, parseInt(document.getElementById("editDuration").value, 10) || 45);
+      const durationText = document.getElementById("editDurationText").value.trim() || `${duration} min`;
+      const theme = document.getElementById("editTheme").value.trim() || "Fantasía";
+      const subTheme = document.getElementById("editSubTheme").value.trim();
+      const mechanics = document.getElementById("editMechanics").value
+        .split(",")
+        .map(m => m.trim())
+        .filter(Boolean);
+      if (mechanics.length === 0) mechanics.push("Estrategia");
+
+      const weight = parseFloat(document.getElementById("editWeight").value) || 2.0;
+      const ratingRaw = document.getElementById("editBggRating").value.trim();
+      const rankRaw = document.getElementById("editBggRank").value.trim();
+      const bggRating = ratingRaw !== "" ? parseFloat(ratingRaw) : null;
+      const bggRank = rankRaw !== "" ? parseInt(rankRaw, 10) : null;
+
+      const isExpansion = document.getElementById("editIsExpansion").checked;
+      const hasExpansionInside = document.getElementById("editHasExpansionInside").checked;
+      const baseGame = document.getElementById("editBaseGame").value.trim();
+      const sharedBoxWith = document.getElementById("editSharedBoxWith").value.trim();
+
+      const updatedObj = {
+        _id: gameId,
+        slot,
+        title,
+        minP,
+        maxP,
+        playersText,
+        duration,
+        durationText,
+        theme,
+        subTheme,
+        mechanics,
+        weight,
+        bggRating,
+        bggRank,
+        bggNote: isExpansion ? "Expansión" : "",
+        isExpansion,
+        baseGame,
+        hasExpansionInside,
+        sharedBoxWith,
+        outsideLocation: (slot === "Prestado" || slot === "Biblioteca") ? slot : ""
+      };
+
+      if (isNew) {
+        games.push(updatedObj);
+      } else {
+        const idx = games.findIndex(item => item._id === gameId);
+        if (idx !== -1) games[idx] = { ...games[idx], ...updatedObj };
+      }
+
+      // Si el hueco estaba marcado como vacío confirmado, quitarlo
+      confirmedEmptySlots.delete(slot.split(".")[0]);
+
+      saveLocalState();
+      refreshAllViews();
+      closeGameEditorModal();
+      showToast(isNew ? `✅ "${title}" añadido a ${slot}` : `✅ "${title}" actualizado`);
+
+      // Enviar cambio a Google Sheets si está enlazado
+      await sendMutationToGoogleSheet(isNew ? "add" : "update", updatedObj);
+    }
+
+    async function deleteCurrentEditingGame() {
+      const idStr = document.getElementById("editGameId").value;
+      if (!idStr) return;
+      const gameId = parseInt(idStr, 10);
+      const target = games.find(g => g._id === gameId);
+      if (!target) return;
+      if (!confirm(`¿Seguro que quieres eliminar "${target.title}" del inventario?`)) return;
+
+      games = games.filter(g => g._id !== gameId);
+      saveLocalState();
+      refreshAllViews();
+      closeGameEditorModal();
+      showToast(`🗑️ "${target.title}" eliminado`);
+
+      await sendMutationToGoogleSheet("delete", target);
+    }
+
+    // --- Configuración y comunicación con Google Apps Script ---
+    function openSheetsConfigModal() {
+      const cfg = getSheetsConfig();
+      document.getElementById("sheetsWebAppUrl").value = cfg.url || "";
+      document.getElementById("sheetsSecretToken").value = cfg.token || "";
+      document.getElementById("sheetsSyncFeedback").classList.add("hidden");
+      document.getElementById("sheetsConfigModal").classList.remove("hidden");
+    }
+
+    function closeSheetsConfigModal() {
+      document.getElementById("sheetsConfigModal").classList.add("hidden");
+    }
+
+    function setSheetsFeedback(msg, isError = false) {
+      const box = document.getElementById("sheetsSyncFeedback");
+      box.className = `p-2.5 rounded-xl text-xs font-semibold ${isError ? 'bg-rose-50 text-rose-800 border border-rose-200' : 'bg-emerald-50 text-emerald-900 border border-emerald-200'}`;
+      box.textContent = msg;
+      box.classList.remove("hidden");
+    }
+
+    async function saveSheetsConfig() {
+      const url = document.getElementById("sheetsWebAppUrl").value.trim();
+      const token = document.getElementById("sheetsSecretToken").value.trim();
+      localStorage.setItem(STORAGE_SHEETS_KEY, JSON.stringify({ url, token }));
+      updateSheetsHeaderBadge();
+      if (url) {
+        setSheetsFeedback("Enlace guardado. Sincronizando con Google Sheets...");
+        await syncFromGoogleSheet(true);
+      } else {
+        setSheetsFeedback("Enlace desactivado. Se usará la memoria local del navegador.");
+      }
+    }
+
+    async function syncFromGoogleSheet(showAlert = false) {
+      const cfg = getSheetsConfig();
+      if (!cfg.url) {
+        if (showAlert) setSheetsFeedback("Introduce primero la URL del Apps Script.", true);
+        return;
+      }
+      try {
+        const sep = cfg.url.includes("?") ? "&" : "?";
+        const res = await fetch(`${cfg.url}${sep}action=list&token=${encodeURIComponent(cfg.token || "")}`);
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error || "Respuesta no válida del Sheet");
+
+        if (Array.isArray(data.games) && data.games.length > 0) {
+          games = data.games.map((g, idx) => ({
+            ...g,
+            _id: parseInt(g._id || g.id, 10) || (idx + 1),
+            minP: parseInt(g.minP, 10) || 1,
+            maxP: parseInt(g.maxP, 10) || 1,
+            duration: parseInt(g.duration, 10) || 45,
+            weight: parseFloat(g.weight) || 2.0,
+            bggRating: g.bggRating !== "" && g.bggRating !== null ? parseFloat(g.bggRating) : null,
+            bggRank: g.bggRank !== "" && g.bggRank !== null ? parseInt(g.bggRank, 10) : null,
+            mechanics: Array.isArray(g.mechanics)
+              ? g.mechanics
+              : String(g.mechanics || "").split(",").map(s => s.trim()).filter(Boolean),
+            isExpansion: g.isExpansion === true || g.isExpansion === "Sí" || g.bggNote === "Expansión",
+            hasExpansionInside: g.hasExpansionInside === true || g.hasExpansionInside === "Sí"
+          }));
+          nextGameId = Math.max(...games.map(g => g._id || 0), 0) + 1;
+        }
+        if (Array.isArray(data.emptySlots)) {
+          confirmedEmptySlots = new Set(data.emptySlots);
+        }
+        saveLocalState();
+        refreshAllViews();
+        if (showAlert) setSheetsFeedback(`✅ Sincronizado: ${games.length} juegos cargados desde Google Sheets.`);
+        showToast(`📊 Sincronizado con Google Sheets (${games.length} juegos)`);
+      } catch (err) {
+        console.error(err);
+        if (showAlert) setSheetsFeedback(`❌ Error al conectar: ${err.message}`, true);
+        showToast("⚠️ No se pudo leer el Google Sheet (usando copia local)", true);
+      }
+    }
+
+    async function sendMutationToGoogleSheet(action, gameObj) {
+      const cfg = getSheetsConfig();
+      if (!cfg.url) return;
+      try {
+        const res = await fetch(cfg.url, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({
+            token: cfg.token || "",
+            action,
+            game: gameObj,
+            emptySlots: [...confirmedEmptySlots]
+          })
+        });
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error || "Error guardando en Google Sheets");
+        showToast(`☁️ Guardado en Google Sheets (${gameObj.title})`);
+      } catch (err) {
+        console.error(err);
+        showToast(`⚠️ Guardado en local, pero falló Google Sheets: ${err.message}`, true);
+      }
+    }
+
+    async function pushAllToGoogleSheet() {
+      const cfg = getSheetsConfig();
+      if (!cfg.url) {
+        setSheetsFeedback("Guarda primero la URL de tu Google Apps Script.", true);
+        return;
+      }
+      if (!confirm(`¿Volcar los ${games.length} juegos actuales y los huecos vacíos a la hoja de Google Sheets? Esto sobrescribirá las filas de la hoja.`)) return;
+      setSheetsFeedback("Subiendo inventario completo al Google Sheet...");
+      try {
+        const res = await fetch(cfg.url, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({
+            token: cfg.token || "",
+            action: "replaceAll",
+            games,
+            emptySlots: [...confirmedEmptySlots]
+          })
+        });
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error || "Error en volcado");
+        setSheetsFeedback(`✅ ¡Listo! ${games.length} juegos volcados en Google Sheets.`);
+        showToast("☁️ Inventario completo subido a Google Sheets");
+      } catch (err) {
+        setSheetsFeedback(`❌ Error al volcar: ${err.message}`, true);
+      }
+    }
+
+    function resetLocalToDefault() {
+      if (!confirm("¿Restaurar la copia base de 240 juegos en este navegador?")) return;
+      localStorage.removeItem(STORAGE_GAMES_KEY);
+      localStorage.removeItem(STORAGE_EMPTY_KEY);
+      games = JSON.parse(JSON.stringify(defaultGames));
+      confirmedEmptySlots = new Set(["C1", "C2", "C3", "C6", "C7", "C8", "F2", "G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8"]);
+      nextGameId = games.length + 1;
+      refreshAllViews();
+      setSheetsFeedback("Copia base de 240 juegos restaurada.");
+    }
+
+    loadLocalState();
+    updateSheetsHeaderBadge();
     init();
+    if (getSheetsConfig().url) {
+      syncFromGoogleSheet(false);
+    }
   </script>
 </body>
 </html>
